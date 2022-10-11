@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/home"
+        android:title="null"
+        android:icon="@drawable/home"/>
+
+    <item
+        android:id="@+id/chat"
+        android:icon="@drawable/search"
+        android:title="null" />
+
+    <item
+        android:id="@+id/mypage"
+        android:title="null"
+        android:icon="@drawable/mypage"/>
+</menu>
