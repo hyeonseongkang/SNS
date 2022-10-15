@@ -15,7 +15,7 @@ import java.util.List;
 public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.MyViewHolder> {
 
     public List<Profile> profiles = new ArrayList<>();
-
+    private onItemClickListener listener;
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -42,6 +42,22 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.MyViewHo
 
         public MyViewHolder(View itemView) {
             super(itemView);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    if (listener != null && position != RecyclerView.NO_POSITION) {
+                        listener.onItemClick(profiles.get(position), position);
+                    }
+                }
+            });
         }
     }
+
+    public interface onItemClickListener {
+        void onItemClick(Profile profile, int position);
+    }
+
+    public void setOnItemClickListener(onItemClickListener listener) { this.listener = listener;}
 }
