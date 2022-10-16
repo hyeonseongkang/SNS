@@ -1,16 +1,22 @@
 package com.mirror.sns.adapter;
 
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.mirror.sns.R;
 import com.mirror.sns.classes.Profile;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.MyViewHolder> {
 
@@ -27,6 +33,16 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.MyViewHo
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
+        Profile profile = profiles.get(position);
+
+        holder.userNickName.setText(profile.getNickName());
+
+        if (profile.getPhotoUri().length() > 0) {
+            Glide.with(holder.itemView)
+                    .load(Uri.parse(profile.getPhotoUri()))
+                    .into(holder.userPhoto);
+        }
+
 
     }
 
@@ -40,8 +56,14 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.MyViewHo
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
+        private CircleImageView userPhoto;
+        private TextView userNickName;
+
         public MyViewHolder(View itemView) {
             super(itemView);
+
+            userPhoto = itemView.findViewById(R.id.userPhoto);
+            userNickName = itemView.findViewById(R.id.userNickName);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
