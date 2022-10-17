@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mirror.sns.adapter.ProfileAdapter;
+import com.mirror.sns.adapter.SnsAdapter;
 import com.mirror.sns.classes.Profile;
 import com.mirror.sns.databinding.FragmentHomeBinding;
 
@@ -26,6 +27,7 @@ public class HomeFragment extends Fragment {
     private FragmentHomeBinding homeBinding;
 
     private ProfileAdapter profileAdapter;
+    private SnsAdapter snsAdapter;
 
     public HomeFragment() {
 
@@ -45,6 +47,11 @@ public class HomeFragment extends Fragment {
         homeBinding.friendRecyclerview.setHasFixedSize(true);
         profileAdapter = new ProfileAdapter();
         homeBinding.friendRecyclerview.setAdapter(profileAdapter);
+
+        homeBinding.snsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        homeBinding.snsRecyclerView.setHasFixedSize(true);
+        snsAdapter = new SnsAdapter();
+        homeBinding.snsRecyclerView.setAdapter(snsAdapter);
 
         /*
         friend profile test

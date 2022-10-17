@@ -36,7 +36,7 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/firends_layout"
+        android:id="@+id/friendsLayout"
         android:layout_width="match_parent"
         android:layout_height="85dp"
         android:orientation="horizontal"
@@ -84,5 +84,14 @@
             tools:itemCount="5"
             app:reverseLayout="true"/>
     </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/snsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/friendsLayout"/>
 
 </RelativeLayout>
