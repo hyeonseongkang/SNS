@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.mirror.sns.adapter.ProfileAdapter;
 import com.mirror.sns.adapter.SnsAdapter;
 import com.mirror.sns.classes.Profile;
+import com.mirror.sns.classes.Sns;
 import com.mirror.sns.databinding.FragmentHomeBinding;
 
 import java.util.ArrayList;
@@ -67,6 +68,17 @@ public class HomeFragment extends Fragment {
         profileList.add(new Profile("", "", "user7" ,""));
 
         profileAdapter.setProfiles(profileList);
+
+        List<Sns> snsList = new ArrayList<>();
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+
+        snsAdapter.setSnses(snsList);
     }
 
 

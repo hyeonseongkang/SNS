@@ -32,6 +32,11 @@ public class SnsAdapter extends RecyclerView.Adapter<SnsAdapter.MyViewHolder>{
     @Override
     public int getItemCount() { return snsList == null ? 0 : snsList.size(); }
 
+    public void setSnses(List<Sns> snsList) {
+        this.snsList = snsList;
+        notifyDataSetChanged();
+    }
+
     class MyViewHolder extends RecyclerView.ViewHolder {
 
         public MyViewHolder(View itemView) {
