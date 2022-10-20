@@ -15,6 +15,7 @@ import java.util.List;
 public class SnsAdapter extends RecyclerView.Adapter<SnsAdapter.MyViewHolder>{
 
     List<Sns> snsList = new ArrayList<>();
+    private onItemClickListener listener;
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -41,8 +42,23 @@ public class SnsAdapter extends RecyclerView.Adapter<SnsAdapter.MyViewHolder>{
 
         public MyViewHolder(View itemView) {
             super(itemView);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    if (listener != null && position != RecyclerView.NO_POSITION) {
+                        listener.onItemClick(snsList.get(position), position);
+                    }
+                }
+            });
         }
     }
 
+    public interface onItemClickListener {
+        void onItemClick(Sns sns, int position);
+    }
+
+    public void setOnItemClickListener(onItemClickListener listener) { this.listener = listener; }
 
 }

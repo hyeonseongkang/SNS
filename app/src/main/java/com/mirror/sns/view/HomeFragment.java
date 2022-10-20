@@ -69,6 +69,13 @@ public class HomeFragment extends Fragment {
 
         profileAdapter.setProfiles(profileList);
 
+        profileAdapter.setOnItemClickListener(new ProfileAdapter.onItemClickListener() {
+            @Override
+            public void onItemClick(Profile profile, int position) {
+
+            }
+        });
+
         List<Sns> snsList = new ArrayList<>();
         snsList.add(new Sns("", "", ""));
         snsList.add(new Sns("", "", ""));
@@ -79,6 +86,13 @@ public class HomeFragment extends Fragment {
         snsList.add(new Sns("", "", ""));
 
         snsAdapter.setSnses(snsList);
+
+        snsAdapter.setOnItemClickListener(new SnsAdapter.onItemClickListener() {
+            @Override
+            public void onItemClick(Sns sns, int position) {
+                
+            }
+        });
     }
 
 
