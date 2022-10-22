@@ -37,12 +37,14 @@
                 android:textSize="18dp" />
 
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/createPost"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:fontFamily="@font/gmm"
+                android:background="@null"
                 android:text="공유"
                 android:textColor="#000000"
                 android:textSize="17dp" />
@@ -117,6 +119,7 @@
                 </RelativeLayout>
 
                 <EditText
+                    android:id="@+id/postText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
