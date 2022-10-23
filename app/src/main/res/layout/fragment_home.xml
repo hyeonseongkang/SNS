@@ -24,15 +24,23 @@
             android:layout_marginLeft="10dp"/>
 
         <ImageButton
-            android:id="@+id/friend_search_button"
+            android:id="@+id/createPost"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:background="@drawable/search"
-            android:layout_marginRight="20dp"
-            android:layout_alignParentRight="true"
+            android:background="@drawable/plus_sns"
+            android:layout_marginRight="15dp"
+            android:layout_toLeftOf="@+id/dm"
             android:layout_centerVertical="true"/>
 
 
+        <ImageButton
+            android:id="@+id/dm"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/chat_sns"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"/>
     </RelativeLayout>
 
     <LinearLayout

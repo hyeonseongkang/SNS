@@ -1,5 +1,6 @@
 package com.mirror.sns.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -91,6 +92,22 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemClick(Sns sns, int position) {
                 
+            }
+        });
+
+        homeBinding.createPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), CreatePostActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        homeBinding.dm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Intent intent = new Intent(getActivity(), DmActivity.class);
+//                startActivity(intent);
             }
         });
     }
