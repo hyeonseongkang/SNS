@@ -8,9 +8,21 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.mirror.sns.adapter.ProfileAdapter;
+import com.mirror.sns.adapter.SearchPostAdapter;
+import com.mirror.sns.adapter.SnsAdapter;
+import com.mirror.sns.adapter.TagAdapter;
+import com.mirror.sns.classes.Sns;
+import com.mirror.sns.classes.Tag;
 import com.mirror.sns.databinding.FragmentHomeBinding;
 import com.mirror.sns.databinding.FragmentSearchBinding;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SearchFragment extends Fragment {
 
@@ -18,6 +30,9 @@ public class SearchFragment extends Fragment {
 
 
     private FragmentSearchBinding searchBinding;
+
+    private SearchPostAdapter searchPostAdapter;
+    private TagAdapter tagAdapter;
 
     public SearchFragment() {
 
@@ -32,6 +47,59 @@ public class SearchFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
+        searchBinding.postsRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+        searchBinding.postsRecyclerView.setHasFixedSize(true);
+        searchPostAdapter = new SearchPostAdapter();
+        searchBinding.postsRecyclerView.setAdapter(searchPostAdapter);
+
+        searchBinding.tagsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
+        searchBinding.tagsRecyclerView.setHasFixedSize(true);
+        tagAdapter = new TagAdapter();
+        searchBinding.tagsRecyclerView.setAdapter(tagAdapter);
+
+        List<Tag> tagList = new ArrayList<>();
+
+        tagList.add(new Tag(""));
+        tagList.add(new Tag(""));
+        tagList.add(new Tag(""));
+        tagList.add(new Tag(""));
+        tagList.add(new Tag(""));
+        tagList.add(new Tag(""));
+        tagList.add(new Tag(""));
+        tagList.add(new Tag(""));
+
+        tagAdapter.setTagList(tagList);
+
+
+        List<Sns> snsList = new ArrayList<>();
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+        searchPostAdapter.setSnses(snsList);
+
+
+
+
     }
 
 

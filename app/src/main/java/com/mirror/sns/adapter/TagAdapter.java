@@ -1,6 +1,5 @@
 package com.mirror.sns.adapter;
 
-import android.nfc.Tag;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,18 +7,19 @@ import android.view.ViewGroup;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mirror.sns.R;
+import com.mirror.sns.classes.Tag;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TagAdapter extends RecyclerView.Adapter<TagAdapter.MyViewHolder>{
 
-    List<Tag> tagList = new ArrayList<>();
+    List<com.mirror.sns.classes.Tag> tagList = new ArrayList<>();
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.adapter_sns_item, parent, false);
+                .inflate(R.layout.adapter_tag_item, parent, false);
 
         return new MyViewHolder(itemView);
     }
