@@ -36,8 +36,12 @@ public class MainActivity extends AppCompatActivity {
                     getSupportFragmentManager().beginTransaction().replace(R.id.container, new HomeFragment()).commit();
                     return true;
 
-                case R.id.chat:
+                case R.id.search:
                     getSupportFragmentManager().beginTransaction().replace(R.id.container, new SearchFragment()).commit();
+                    return true;
+
+                case R.id.post:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container, new PostFragment()).commit();
                     return true;
 
                 case R.id.mypage:

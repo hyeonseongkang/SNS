@@ -7,8 +7,13 @@
         android:icon="@drawable/home"/>
 
     <item
-        android:id="@+id/chat"
+        android:id="@+id/search"
         android:icon="@drawable/search"
+        android:title="null" />
+
+    <item
+        android:id="@+id/post"
+        android:icon="@drawable/plus_sns"
         android:title="null" />
 
     <item
