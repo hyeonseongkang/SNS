@@ -17,6 +17,11 @@
         android:title="null" />
 
     <item
+        android:id="@+id/heart"
+        android:icon="@drawable/heart"
+        android:title="null" />
+
+    <item
         android:id="@+id/mypage"
         android:title="null"
         android:icon="@drawable/mypage"/>

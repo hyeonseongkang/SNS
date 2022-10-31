@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     NavigationBarView.OnItemSelectedListener onItemSelectedListener = new NavigationBarView.OnItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch(item.getItemId()) {
+            switch (item.getItemId()) {
                 case R.id.home:
                     getSupportFragmentManager().beginTransaction().replace(R.id.container, new HomeFragment()).commit();
                     return true;
@@ -44,6 +44,10 @@ public class MainActivity extends AppCompatActivity {
                     getSupportFragmentManager().beginTransaction().replace(R.id.container, new PostFragment()).commit();
                     return true;
 
+                case R.id.heart:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container, new LikeFragment()).commit();
+                    return true;
+                    
                 case R.id.mypage:
                     getSupportFragmentManager().beginTransaction().replace(R.id.container, new MyPageFragment()).commit();
                     return true;
