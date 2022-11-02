@@ -8,9 +8,15 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 
+import com.mirror.sns.adapter.PostAdapter;
+import com.mirror.sns.classes.Sns;
 import com.mirror.sns.databinding.FragmentHomeBinding;
 import com.mirror.sns.databinding.FragmentMypageBinding;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MyPageFragment extends Fragment {
 
@@ -18,6 +24,8 @@ public class MyPageFragment extends Fragment {
 
 
     private FragmentMypageBinding mypageBinding;
+
+    private PostAdapter postAdapter;
 
     public MyPageFragment() {
 
@@ -32,6 +40,35 @@ public class MyPageFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        mypageBinding.postsRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+        mypageBinding.postsRecyclerView.setHasFixedSize(true);
+        postAdapter = new PostAdapter();
+        mypageBinding.postsRecyclerView.setAdapter(postAdapter);
+
+        List<Sns> snsList = new ArrayList<>();
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+        snsList.add(new Sns("", "", ""));
+        postAdapter.setSnses(snsList);
     }
 
 

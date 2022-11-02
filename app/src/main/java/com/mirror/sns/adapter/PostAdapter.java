@@ -12,7 +12,7 @@ import com.mirror.sns.classes.Sns;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchPostAdapter extends RecyclerView.Adapter<SearchPostAdapter.MyViewHolder>{
+public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder>{
 
     List<Sns> snsList = new ArrayList<>();
     private onItemClickListener listener;
@@ -20,14 +20,14 @@ public class SearchPostAdapter extends RecyclerView.Adapter<SearchPostAdapter.My
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.adapter_search_post_item, parent, false);
+                .inflate(R.layout.adapter_post_item, parent, false);
 
         return  new MyViewHolder(itemView);
     }
 
 
     @Override
-    public void onBindViewHolder(SearchPostAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(PostAdapter.MyViewHolder holder, int position) {
 
     }
 
@@ -60,6 +60,6 @@ public class SearchPostAdapter extends RecyclerView.Adapter<SearchPostAdapter.My
         void onItemClick(Sns sns, int position);
     }
 
-    public void setOnItemClickListener(SearchPostAdapter.onItemClickListener listener) { this.listener = listener; }
+    public void setOnItemClickListener(PostAdapter.onItemClickListener listener) { this.listener = listener; }
 
 }

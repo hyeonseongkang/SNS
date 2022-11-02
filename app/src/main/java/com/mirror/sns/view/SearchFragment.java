@@ -12,13 +12,10 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.mirror.sns.adapter.ProfileAdapter;
-import com.mirror.sns.adapter.SearchPostAdapter;
-import com.mirror.sns.adapter.SnsAdapter;
+import com.mirror.sns.adapter.PostAdapter;
 import com.mirror.sns.adapter.TagAdapter;
 import com.mirror.sns.classes.Sns;
 import com.mirror.sns.classes.Tag;
-import com.mirror.sns.databinding.FragmentHomeBinding;
 import com.mirror.sns.databinding.FragmentSearchBinding;
 
 import java.util.ArrayList;
@@ -31,7 +28,7 @@ public class SearchFragment extends Fragment {
 
     private FragmentSearchBinding searchBinding;
 
-    private SearchPostAdapter searchPostAdapter;
+    private PostAdapter postAdapter;
     private TagAdapter tagAdapter;
 
     public SearchFragment() {
@@ -51,8 +48,8 @@ public class SearchFragment extends Fragment {
 
         searchBinding.postsRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         searchBinding.postsRecyclerView.setHasFixedSize(true);
-        searchPostAdapter = new SearchPostAdapter();
-        searchBinding.postsRecyclerView.setAdapter(searchPostAdapter);
+        postAdapter = new PostAdapter();
+        searchBinding.postsRecyclerView.setAdapter(postAdapter);
 
         searchBinding.tagsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
         searchBinding.tagsRecyclerView.setHasFixedSize(true);
@@ -95,7 +92,7 @@ public class SearchFragment extends Fragment {
         snsList.add(new Sns("", "", ""));
         snsList.add(new Sns("", "", ""));
         snsList.add(new Sns("", "", ""));
-        searchPostAdapter.setSnses(snsList);
+        postAdapter.setSnses(snsList);
 
 
 

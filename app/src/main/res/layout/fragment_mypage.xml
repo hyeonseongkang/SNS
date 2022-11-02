@@ -54,9 +54,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginRight="10dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -234,22 +234,14 @@
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/postsRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="15dp"
-        android:background="#BAF4F2F2"
-        android:layout_marginTop="15dp"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:orientation="vertical">
-
-
-
-    </LinearLayout>
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tagsRecyclerView"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="9dp"
+        android:layout_marginRight="10dp"/>
 
 
 </LinearLayout>
