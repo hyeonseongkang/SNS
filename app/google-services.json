@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "412959230039",
+    "firebase_url": "https://sns-android-917ec-default-rtdb.firebaseio.com",
     "project_id": "sns-android-917ec",
     "storage_bucket": "sns-android-917ec.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "412959230039-5aqafbjrtoe0esk26bq1dd50snkikh59.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mirror.sns",
+            "certificate_hash": "88e90cb9ead8abb4440742dd1148ee0a3a3a4f5b"
+          }
+        },
         {
           "client_id": "412959230039-fo2bpqs5ei727eh5ugkoafcop3adoh0r.apps.googleusercontent.com",
           "client_type": 3

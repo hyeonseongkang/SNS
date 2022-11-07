@@ -1,6 +1,7 @@
 package com.mirror.sns.model;
 
 import android.app.Application;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -8,16 +9,31 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.identity.BeginSignInRequest;
+import com.google.android.gms.auth.api.identity.SignInCredential;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.mirror.sns.R;
 import com.mirror.sns.classes.User;
+import com.mirror.sns.view.LoginActivity;
 
 import org.jetbrains.annotations.NotNull;
+
+import static androidx.core.app.ActivityCompat.startActivityForResult;
 
 public class LoginRepository {
 
@@ -34,6 +50,13 @@ public class LoginRepository {
 
     private MutableLiveData<Boolean> loginValid;
 
+    // 구글api클라이언트
+    private GoogleSignInClient googleSignInClient;
+
+    // 파이어베이스 인증 객체 생성
+    private FirebaseAuth firebaseAuth;
+
+
     public LoginRepository(Application application) {
         this.application = application;
         usersRef = FirebaseDatabase.getInstance().getReference("users");
@@ -45,6 +68,8 @@ public class LoginRepository {
     public MutableLiveData<FirebaseUser> getFirebaseUser() { return firebaseUser; }
 
     public MutableLiveData<Boolean> getLoginValid() { return loginValid; }
+
+
 
     public void login(User user) {
         String email = user.getEmail();
