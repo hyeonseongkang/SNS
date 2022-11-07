@@ -32,16 +32,19 @@ public class LoginRepository {
     private FirebaseUser mUser;
     private MutableLiveData<FirebaseUser> firebaseUser;
 
+    private MutableLiveData<Boolean> loginValid;
+
     public LoginRepository(Application application) {
         this.application = application;
         usersRef = FirebaseDatabase.getInstance().getReference("users");
-
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = new MutableLiveData<>();
+        loginValid = new MutableLiveData<>();
     }
 
-
     public MutableLiveData<FirebaseUser> getFirebaseUser() { return firebaseUser; }
+
+    public MutableLiveData<Boolean> getLoginValid() { return loginValid; }
 
     public void login(User user) {
         String email = user.getEmail();
@@ -63,9 +66,11 @@ public class LoginRepository {
                              */
                             mUser = mAuth.getCurrentUser();
                             firebaseUser.setValue(mUser);
+                            loginValid.setValue(true);
                             Log.d(TAG, "로그인 성공");
                         } else {
                             // 로그인 실패
+                            loginValid.setValue(false);
                             Log.d(TAG, "로그인 실패");
                         }
                     }
@@ -99,12 +104,28 @@ public class LoginRepository {
                             mUser = mAuth.getCurrentUser();
                             firebaseUser.setValue(mUser);
                             // String uid, String email, String password, String nickName, String photoUri
+                            loginValid.setValue(true);
                             Log.d(TAG, "회원가입 성공");
                         } else {
                             // 가입 실패
                             Log.d(TAG, "회원가입 실패");
+                            loginValid.setValue(false);
                         }
                     }
                 });
+    }
+
+    public void logout() {
+        FirebaseAuth.getInstance().signOut();
+    }
+
+    public void loginCheck() {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            firebaseUser.setValue(currentUser);
+            loginValid.setValue(true);
+        } else {
+            loginValid.setValue(false);
+        }
     }
 }
