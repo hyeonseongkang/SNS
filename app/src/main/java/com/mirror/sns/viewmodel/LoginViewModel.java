@@ -25,30 +25,28 @@ public class LoginViewModel extends AndroidViewModel {
 
     private LoginRepository repository;
     private MutableLiveData<FirebaseUser> firebaseUser;
-    private MutableLiveData<Boolean> loginValid;
 
     public LoginViewModel(Application application) {
         super(application);
         repository = new LoginRepository(application);
         firebaseUser = repository.getFirebaseUser();
-        loginValid = repository.getLoginValid();
     }
 
     public LiveData<FirebaseUser> getFirebaseUser() { return firebaseUser;}
 
-    public LiveData<Boolean> getLoginValid() { return loginValid; }
+    public void emailLogin(User user) { repository.emailLogin(user); }
 
-    public void login(User user) { repository.login(user); }
+    public void emailSignIn(User user) { repository.emailSignIn(user); }
 
-    public void signUp(User user) { repository.signUp(user); }
+    public void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+        repository.firebaseAuthWithGoogle(acct);
+    }
 
     public void logout() { repository.logout(); }
 
     public void loginCheck() { repository.loginCheck(); }
 
-    public void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-        repository.firebaseAuthWithGoogle(acct);
-    }
+
 
 
 }

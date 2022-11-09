@@ -43,31 +43,18 @@ public class LoginRepository {
     
     private Application application;
 
-    private DatabaseReference usersRef;
-
     // Firebase
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
     private MutableLiveData<FirebaseUser> firebaseUser;
 
-    private MutableLiveData<Boolean> loginValid;
-
-
     public LoginRepository(Application application) {
         this.application = application;
-        usersRef = FirebaseDatabase.getInstance().getReference("users");
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = new MutableLiveData<>();
-        loginValid = new MutableLiveData<>();
-
     }
 
     public MutableLiveData<FirebaseUser> getFirebaseUser() { return firebaseUser; }
-
-    public MutableLiveData<Boolean> getLoginValid() { return loginValid; }
-
-
-
 
     public void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
 
@@ -89,7 +76,8 @@ public class LoginRepository {
                 });
     }
 
-    public void login(User user) {
+    // email login
+    public void emailLogin(User user) {
         String email = user.getEmail();
         String password = user.getPassword();
 
@@ -109,31 +97,22 @@ public class LoginRepository {
                              */
                             mUser = mAuth.getCurrentUser();
                             firebaseUser.setValue(mUser);
-                            loginValid.setValue(true);
-                            Log.d(TAG, "로그인 성공");
+                            Log.d(TAG, "success email login");
                         } else {
                             // 로그인 실패
-                            loginValid.setValue(false);
-                            Log.d(TAG, "로그인 실패");
+                            Log.d(TAG, "fail email login");
                         }
                     }
                 });
     }
 
-    public void signUp(User user) {
+    // email signin
+    public void emailSignIn(User user) {
         String email = user.getEmail();
         String password = user.getPassword();
 
         if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
             Toast.makeText(application, "입력사항을 확인해 주세요.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        int index = email.indexOf("@");
-        String emailCheck = email.substring(index);
-
-        if (!(emailCheck.equals("@jbnu.ac.kr"))) {
-            Toast.makeText(application, "전북대 메일로만 가입할 수 있습니다.", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -147,12 +126,10 @@ public class LoginRepository {
                             mUser = mAuth.getCurrentUser();
                             firebaseUser.setValue(mUser);
                             // String uid, String email, String password, String nickName, String photoUri
-                            loginValid.setValue(true);
-                            Log.d(TAG, "회원가입 성공");
+                            Log.d(TAG, "success email signIn");
                         } else {
                             // 가입 실패
-                            Log.d(TAG, "회원가입 실패");
-                            loginValid.setValue(false);
+                            Log.d(TAG, "fail email signIn");
                         }
                     }
                 });
@@ -166,9 +143,6 @@ public class LoginRepository {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             firebaseUser.setValue(currentUser);
-            loginValid.setValue(true);
-        } else {
-            loginValid.setValue(false);
         }
     }
 }
