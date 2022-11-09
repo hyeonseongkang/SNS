@@ -2,11 +2,13 @@ package com.mirror.sns.model;
 
 import android.app.Application;
 import android.content.Intent;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.auth.api.Auth;
@@ -50,12 +52,6 @@ public class LoginRepository {
 
     private MutableLiveData<Boolean> loginValid;
 
-    // 구글api클라이언트
-    private GoogleSignInClient googleSignInClient;
-
-    // 파이어베이스 인증 객체 생성
-    private FirebaseAuth firebaseAuth;
-
 
     public LoginRepository(Application application) {
         this.application = application;
@@ -63,6 +59,7 @@ public class LoginRepository {
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = new MutableLiveData<>();
         loginValid = new MutableLiveData<>();
+
     }
 
     public MutableLiveData<FirebaseUser> getFirebaseUser() { return firebaseUser; }
@@ -70,6 +67,27 @@ public class LoginRepository {
     public MutableLiveData<Boolean> getLoginValid() { return loginValid; }
 
 
+
+
+    public void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+
+        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(application.getMainExecutor(), new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithCredential:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            firebaseUser.setValue(user);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+                        }
+                    }
+                });
+    }
 
     public void login(User user) {
         String email = user.getEmail();

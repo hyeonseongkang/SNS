@@ -10,6 +10,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -44,6 +45,10 @@ public class LoginViewModel extends AndroidViewModel {
     public void logout() { repository.logout(); }
 
     public void loginCheck() { repository.loginCheck(); }
+
+    public void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+        repository.firebaseAuthWithGoogle(acct);
+    }
 
 
 }
