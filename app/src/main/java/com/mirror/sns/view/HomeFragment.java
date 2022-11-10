@@ -2,6 +2,7 @@ package com.mirror.sns.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,6 +19,7 @@ import com.mirror.sns.adapter.SnsAdapter;
 import com.mirror.sns.classes.Profile;
 import com.mirror.sns.classes.Sns;
 import com.mirror.sns.databinding.FragmentHomeBinding;
+import com.mirror.sns.viewmodel.LoginViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +34,8 @@ public class HomeFragment extends Fragment {
     private ProfileAdapter profileAdapter;
     private SnsAdapter snsAdapter;
 
+    private LoginViewModel loginViewModel;
+
     public HomeFragment() {
 
     }
@@ -44,6 +49,8 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
 
         homeBinding.friendRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
         homeBinding.friendRecyclerview.setHasFixedSize(true);
@@ -106,8 +113,7 @@ public class HomeFragment extends Fragment {
         homeBinding.dm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(getActivity(), DmActivity.class);
-//                startActivity(intent);
+                loginViewModel.logout();
             }
         });
     }

@@ -56,17 +56,18 @@ public class LoginActivity extends AppCompatActivity {
         loginBinding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(loginBinding.getRoot());
 
-
-
         loginViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(LoginViewModel.class);
 
         // LoginRepository FirebaseUser 에 값이 들어오면 Main Activity 로 이동
         loginViewModel.getFirebaseUser().observe(this, new Observer<FirebaseUser>() {
             @Override
             public void onChanged(FirebaseUser firebaseUser) {
-                Log.d(TAG, "Success Firebase Login");
-                Log.d(TAG, "FirebaseUser UID: " + firebaseUser.getUid()) ;
-                Log.d(TAG, "FirebaseUser Email: " + firebaseUser.getEmail()) ;
+//                Log.d(TAG, "Success Firebase Login");
+//                Log.d(TAG, "FirebaseUser UID: " + firebaseUser.getUid()) ;
+//                Log.d(TAG, "FirebaseUser Email: " + firebaseUser.getEmail());
+
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -97,9 +98,8 @@ public class LoginActivity extends AppCompatActivity {
         loginBinding.signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FirebaseAuth.getInstance().signOut();
-//                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
-//                startActivity(intent);
+                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+                startActivity(intent);
             }
         });
     }

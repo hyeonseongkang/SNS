@@ -36,7 +36,7 @@ public class LoginViewModel extends AndroidViewModel {
 
     public void emailLogin(User user) { repository.emailLogin(user); }
 
-    public void emailSignIn(User user) { repository.emailSignIn(user); }
+    public void emailSignUp(User user) { repository.emailSignUp(user); }
 
     public void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         repository.firebaseAuthWithGoogle(acct);

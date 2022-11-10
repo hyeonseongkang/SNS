@@ -57,7 +57,6 @@ public class LoginRepository {
     public MutableLiveData<FirebaseUser> getFirebaseUser() { return firebaseUser; }
 
     public void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(application.getMainExecutor(), new OnCompleteListener<AuthResult>() {
@@ -107,7 +106,7 @@ public class LoginRepository {
     }
 
     // email signin
-    public void emailSignIn(User user) {
+    public void emailSignUp(User user) {
         String email = user.getEmail();
         String password = user.getPassword();
 
