@@ -5,6 +5,8 @@ public class Post {
     private String userUid;
     private String content;
 
+    public Post() {}
+
     public Post(String key, String userUid, String content) {
         this.key = key;
         this.userUid = userUid;

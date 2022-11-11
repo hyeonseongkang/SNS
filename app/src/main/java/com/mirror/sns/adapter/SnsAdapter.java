@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mirror.sns.R;
+import com.mirror.sns.classes.Post;
 import com.mirror.sns.classes.Sns;
 
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import java.util.List;
 
 public class SnsAdapter extends RecyclerView.Adapter<SnsAdapter.MyViewHolder>{
 
-    List<Sns> snsList = new ArrayList<>();
+    List<Post> snsList = new ArrayList<>();
     private onItemClickListener listener;
 
     @Override
@@ -33,7 +34,7 @@ public class SnsAdapter extends RecyclerView.Adapter<SnsAdapter.MyViewHolder>{
     @Override
     public int getItemCount() { return snsList == null ? 0 : snsList.size(); }
 
-    public void setSnses(List<Sns> snsList) {
+    public void setSnses(List<Post> snsList) {
         this.snsList = snsList;
         notifyDataSetChanged();
     }
@@ -56,7 +57,7 @@ public class SnsAdapter extends RecyclerView.Adapter<SnsAdapter.MyViewHolder>{
     }
 
     public interface onItemClickListener {
-        void onItemClick(Sns sns, int position);
+        void onItemClick(Post sns, int position);
     }
 
     public void setOnItemClickListener(onItemClickListener listener) { this.listener = listener; }

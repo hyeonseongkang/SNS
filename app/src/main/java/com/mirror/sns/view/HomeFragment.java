@@ -10,16 +10,19 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mirror.sns.adapter.ProfileAdapter;
 import com.mirror.sns.adapter.SnsAdapter;
+import com.mirror.sns.classes.Post;
 import com.mirror.sns.classes.Profile;
 import com.mirror.sns.classes.Sns;
 import com.mirror.sns.databinding.FragmentHomeBinding;
 import com.mirror.sns.viewmodel.LoginViewModel;
+import com.mirror.sns.viewmodel.PostViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +38,7 @@ public class HomeFragment extends Fragment {
     private SnsAdapter snsAdapter;
 
     private LoginViewModel loginViewModel;
+    private PostViewModel postViewModel;
 
     public HomeFragment() {
 
@@ -51,6 +55,16 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
+        postViewModel = new ViewModelProvider(requireActivity()).get(PostViewModel.class);
+
+        postViewModel.getPosts();
+
+        postViewModel.getPostsLiveData().observe(getActivity(), new Observer<List<Post>>() {
+            @Override
+            public void onChanged(List<Post> posts) {
+                snsAdapter.setSnses(posts);
+            }
+        });
 
         homeBinding.friendRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
         homeBinding.friendRecyclerview.setHasFixedSize(true);
@@ -93,11 +107,11 @@ public class HomeFragment extends Fragment {
         snsList.add(new Sns("", "", ""));
         snsList.add(new Sns("", "", ""));
 
-        snsAdapter.setSnses(snsList);
+//        snsAdapter.setSnses(snsList);
 
         snsAdapter.setOnItemClickListener(new SnsAdapter.onItemClickListener() {
             @Override
-            public void onItemClick(Sns sns, int position) {
+            public void onItemClick(Post sns, int position) {
                 
             }
         });
