@@ -4,6 +4,7 @@ import android.app.Application;
 
 import androidx.lifecycle.AndroidViewModel;
 
+import com.mirror.sns.classes.Post;
 import com.mirror.sns.model.PostRepository;
 
 public class PostViewModel extends AndroidViewModel {
@@ -14,5 +15,9 @@ public class PostViewModel extends AndroidViewModel {
         super(application);
 
         repository = new PostRepository(application);
+    }
+
+    public void createPost(Post post) {
+        repository.createPost(post);
     }
 }
