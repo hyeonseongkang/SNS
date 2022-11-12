@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.mirror.sns.adapter.PostAdapter;
 import com.mirror.sns.classes.Sns;
 import com.mirror.sns.databinding.FragmentHomeBinding;
@@ -22,6 +23,8 @@ public class MyPageFragment extends Fragment {
 
     private static final String TAG = "MyPageFragment";
 
+
+    private FirebaseAuth firebaseAuth;
 
     private FragmentMypageBinding mypageBinding;
 
@@ -40,6 +43,8 @@ public class MyPageFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        firebaseAuth = FirebaseAuth.getInstance();
 
         mypageBinding.postsRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         mypageBinding.postsRecyclerView.setHasFixedSize(true);

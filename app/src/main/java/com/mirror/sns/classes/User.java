@@ -6,6 +6,9 @@ public class User {
     private String password;
     private String nickName;
     private String photoUri;
+    private String posts;
+    private String followers;
+    private String following;
 
     public User() {}
 
@@ -20,12 +23,15 @@ public class User {
         this.password = password;
     }
 
-    public User(String uid, String email, String password, String nickName, String photoUri) {
+    public User(String uid, String email, String password, String nickName, String photoUri, String posts, String followers, String following) {
         this.uid = uid;
         this.email = email;
         this.password = password;
         this.nickName = nickName;
         this.photoUri = photoUri;
+        this.posts = posts;
+        this.followers = followers;
+        this.following = following;
     }
 
     public String getEmail() {
@@ -50,5 +56,17 @@ public class User {
 
     public void setPhotoUri(String uri) {
         this.photoUri = uri;
+    }
+
+    public String getPosts() {
+        return posts;
+    }
+
+    public String getFollowers() {
+        return followers;
+    }
+
+    public String getFollowing() {
+        return following;
     }
 }
