@@ -20,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserInfoRepository {
+public class UserManagementRepository {
 
     private Application application;
 
@@ -29,7 +29,7 @@ public class UserInfoRepository {
     private MutableLiveData<User> userLiveData;
     private MutableLiveData<List<User>> userListLiveData;
 
-    public UserInfoRepository(Application application) {
+    public UserManagementRepository(Application application) {
         this.application = application;
         usersRef = FirebaseDatabase.getInstance().getReference("users");
         userLiveData = new MutableLiveData<>();

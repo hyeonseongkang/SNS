@@ -8,13 +8,16 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.mirror.sns.adapter.PostAdapter;
 import com.mirror.sns.classes.Sns;
-import com.mirror.sns.databinding.FragmentHomeBinding;
+import com.mirror.sns.classes.User;
 import com.mirror.sns.databinding.FragmentMypageBinding;
+import com.mirror.sns.viewmodel.UserManagementViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +30,7 @@ public class MyPageFragment extends Fragment {
     private FirebaseAuth firebaseAuth;
 
     private FragmentMypageBinding mypageBinding;
+    private UserManagementViewModel userInfoViewModel;
 
     private PostAdapter postAdapter;
 
@@ -45,6 +49,30 @@ public class MyPageFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         firebaseAuth = FirebaseAuth.getInstance();
+
+        userInfoViewModel = new ViewModelProvider(requireActivity()).get(UserManagementViewModel.class);
+
+        userInfoViewModel.getUserInfo(firebaseAuth.getUid());
+        userInfoViewModel.getUserLiveData().observe(getActivity(), new Observer<User>() {
+            @Override
+            public void onChanged(User user) {
+                // User (String uid, String email, String password, String nickName, String photoUri, String posts, String followers, String following)
+                String uid = user.getUid();
+                String email = user.getEmail();
+                String password = user.getPassword();
+                String nickName = user.getNickName();
+                String photoUri = user.getPhotoUri();
+                String posts = user.getPosts();
+                String followers = user.getFollowers();
+                String following = user.getFollowing();
+
+                mypageBinding.userNickName.setText(nickName);
+                mypageBinding.userEmail.setText(email);
+                mypageBinding.userPosts.setText(posts);
+                mypageBinding.userFollowers.setText(followers);
+                mypageBinding.userFollowing.setText(following);
+            }
+        });
 
         mypageBinding.postsRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         mypageBinding.postsRecyclerView.setHasFixedSize(true);

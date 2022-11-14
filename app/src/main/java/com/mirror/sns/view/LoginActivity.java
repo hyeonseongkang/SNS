@@ -4,7 +4,6 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -13,31 +12,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.identity.BeginSignInRequest;
-import com.google.android.gms.auth.api.identity.SignInClient;
-import com.google.android.gms.auth.api.identity.SignInCredential;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
 import com.mirror.sns.R;
 import com.mirror.sns.classes.User;
 import com.mirror.sns.databinding.ActivityLoginBinding;
 import com.mirror.sns.viewmodel.LoginViewModel;
-import com.mirror.sns.viewmodel.UserInfoViewModel;
+import com.mirror.sns.viewmodel.UserManagementViewModel;
 
 import java.util.List;
 
@@ -47,7 +34,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private ActivityLoginBinding loginBinding;
     private LoginViewModel loginViewModel;
-    private UserInfoViewModel userInfoViewModel;
+    private UserManagementViewModel userInfoViewModel;
     // Google Login
     private GoogleSignInClient mGoogleSignInClient;
     private static final int RC_SIGN_IN = 9001;
@@ -60,7 +47,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(loginBinding.getRoot());
 
         loginViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(LoginViewModel.class);
-        userInfoViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(UserInfoViewModel.class);
+        userInfoViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(UserManagementViewModel.class);
 
         // LoginRepository FirebaseUser 에 값이 들어오면 Main Activity 로 이동
         loginViewModel.getFirebaseUser().observe(this, new Observer<FirebaseUser>() {
@@ -75,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
                 //  User(String uid, String email, String password, String nickName, String photoUri, String posts, String followers, String following) {
                 User user = new User(uid, email, "", "", "", "", "" , "");
                 userInfoViewModel.setUserInfo(uid, user);
-
+               // userInfoViewModel.getUserList();
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
             }

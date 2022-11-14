@@ -6,21 +6,21 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.mirror.sns.classes.User;
-import com.mirror.sns.model.UserInfoRepository;
+import com.mirror.sns.model.UserManagementRepository;
 
 import java.util.List;
 
-public class UserInfoViewModel extends AndroidViewModel {
+public class UserManagementViewModel extends AndroidViewModel {
 
-    private UserInfoRepository repository;
+    private UserManagementRepository repository;
 
     private LiveData<User> userLiveData;
     private LiveData<List<User>> userListLiveData;
 
-    public UserInfoViewModel(Application application) {
+    public UserManagementViewModel(Application application) {
         super(application);
 
-        repository = new UserInfoRepository(application);
+        repository = new UserManagementRepository(application);
         userLiveData = repository.getUserLiveData();
         userListLiveData = repository.getUserListLiveData();
     }
