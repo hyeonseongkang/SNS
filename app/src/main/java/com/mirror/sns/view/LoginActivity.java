@@ -37,6 +37,9 @@ import com.mirror.sns.R;
 import com.mirror.sns.classes.User;
 import com.mirror.sns.databinding.ActivityLoginBinding;
 import com.mirror.sns.viewmodel.LoginViewModel;
+import com.mirror.sns.viewmodel.UserInfoViewModel;
+
+import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -44,7 +47,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private ActivityLoginBinding loginBinding;
     private LoginViewModel loginViewModel;
-
+    private UserInfoViewModel userInfoViewModel;
     // Google Login
     private GoogleSignInClient mGoogleSignInClient;
     private static final int RC_SIGN_IN = 9001;
@@ -57,6 +60,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(loginBinding.getRoot());
 
         loginViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(LoginViewModel.class);
+        userInfoViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(UserInfoViewModel.class);
 
         // LoginRepository FirebaseUser 에 값이 들어오면 Main Activity 로 이동
         loginViewModel.getFirebaseUser().observe(this, new Observer<FirebaseUser>() {
@@ -66,10 +70,28 @@ public class LoginActivity extends AppCompatActivity {
 //                Log.d(TAG, "FirebaseUser UID: " + firebaseUser.getUid()) ;
 //                Log.d(TAG, "FirebaseUser Email: " + firebaseUser.getEmail());
 
+                String uid = firebaseUser.getUid();
+                String email = firebaseUser.getEmail();
+                //  User(String uid, String email, String password, String nickName, String photoUri, String posts, String followers, String following) {
+                User user = new User(uid, email, "", "", "", "", "" , "");
+                userInfoViewModel.setUserInfo(uid, user);
+
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         });
+        userInfoViewModel.getUserList();
+        userInfoViewModel.getUserListLiveData().observe(this, new Observer<List<User>>() {
+            @Override
+            public void onChanged(List<User> users) {
+                Log.d(TAG, "get Users");
+                for (User user: users) {
+                    Log.d(TAG, user.getUid());
+                }
+            }
+        });
+
+
 
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
