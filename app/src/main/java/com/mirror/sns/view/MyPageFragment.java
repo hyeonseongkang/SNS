@@ -1,5 +1,6 @@
 package com.mirror.sns.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,6 +79,14 @@ public class MyPageFragment extends Fragment {
         mypageBinding.postsRecyclerView.setHasFixedSize(true);
         postAdapter = new PostAdapter();
         mypageBinding.postsRecyclerView.setAdapter(postAdapter);
+
+        mypageBinding.editProfileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+                startActivity(intent);
+            }
+        });
 
         List<Sns> snsList = new ArrayList<>();
         snsList.add(new Sns("", "", ""));

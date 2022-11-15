@@ -40,7 +40,13 @@
                 android:textSize="18dp"
                 android:layout_centerHorizontal="true"/>
 
-
+            <ImageButton
+                android:id="@+id/editProfileButton"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/next"
+                android:layout_alignParentRight="true"/>
 
         </RelativeLayout>
 
