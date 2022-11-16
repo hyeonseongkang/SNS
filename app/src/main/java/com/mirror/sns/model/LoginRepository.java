@@ -47,11 +47,13 @@ public class LoginRepository {
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
     private MutableLiveData<FirebaseUser> firebaseUser;
+    private DatabaseReference usersRef;
 
     public LoginRepository(Application application) {
         this.application = application;
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = new MutableLiveData<>();
+        usersRef = FirebaseDatabase.getInstance().getReference("users");
     }
 
     public MutableLiveData<FirebaseUser> getFirebaseUser() { return firebaseUser; }
@@ -67,6 +69,8 @@ public class LoginRepository {
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             firebaseUser.setValue(user);
+                            // User(String uid, String email, String password, String nickName, String photoUri, String posts, String followers, String following)
+                            setUserInfo(user.getUid(), new User(user.getEmail(), "", "", "", "", "", "", ""));
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -124,6 +128,8 @@ public class LoginRepository {
                             // 가입 성공
                             mUser = mAuth.getCurrentUser();
                             firebaseUser.setValue(mUser);
+                            // User(String uid, String email, String password, String nickName, String photoUri, String posts, String followers, String following)
+                            setUserInfo(mUser.getUid(), new User(mUser.getEmail(), "", "", "", "", "", "", ""));
                             // String uid, String email, String password, String nickName, String photoUri
                             Log.d(TAG, "success email signIn");
                         } else {
@@ -132,6 +138,20 @@ public class LoginRepository {
                         }
                     }
                 });
+    }
+
+    public void setUserInfo(String uid, User userInfo) {
+
+        usersRef.child(uid).setValue(userInfo).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull @NotNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    // save success
+                } else {
+                    // save fail
+                }
+            }
+        });
     }
 
     public void logout() {

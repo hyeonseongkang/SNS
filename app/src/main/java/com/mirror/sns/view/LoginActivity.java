@@ -26,6 +26,7 @@ import com.mirror.sns.databinding.ActivityLoginBinding;
 import com.mirror.sns.viewmodel.LoginViewModel;
 import com.mirror.sns.viewmodel.UserManagementViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
@@ -39,15 +40,18 @@ public class LoginActivity extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
     private static final int RC_SIGN_IN = 9001;
 
-
+    private List<User> userList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         loginBinding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(loginBinding.getRoot());
 
+        userList = new ArrayList<>();
+
         loginViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(LoginViewModel.class);
         userInfoViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(UserManagementViewModel.class);
+
 
         // LoginRepository FirebaseUser 에 값이 들어오면 Main Activity 로 이동
         loginViewModel.getFirebaseUser().observe(this, new Observer<FirebaseUser>() {
@@ -59,18 +63,30 @@ public class LoginActivity extends AppCompatActivity {
 
                 String uid = firebaseUser.getUid();
                 String email = firebaseUser.getEmail();
-                //  User(String uid, String email, String password, String nickName, String photoUri, String posts, String followers, String following) {
-                User user = new User(uid, email, "", "", "", "", "" , "");
-                userInfoViewModel.setUserInfo(uid, user);
+//                boolean alreadyUser = false;
+//                for (User user: userList) {
+//                    if (user.getUid().equals(uid))
+//                        alreadyUser = true;
+//                }
+//
+//                if (!alreadyUser) {
+//                    //  User(String uid, String email, String password, String nickName, String photoUri, String posts, String followers, String following) {
+//                    User user = new User(uid, email, "", "", "", "", "" , "");
+//                    userInfoViewModel.setUserInfo(uid, user);
+//                    Log.d(TAG, "save user info");
+//                }
+
                // userInfoViewModel.getUserList();
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         });
-        userInfoViewModel.getUserList();
+
+
         userInfoViewModel.getUserListLiveData().observe(this, new Observer<List<User>>() {
             @Override
             public void onChanged(List<User> users) {
+                userList = users;
                 Log.d(TAG, "get Users");
                 for (User user: users) {
                     Log.d(TAG, user.getUid());
@@ -141,6 +157,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
+        userInfoViewModel.getUserList();
         loginViewModel.loginCheck();
     }
 }
