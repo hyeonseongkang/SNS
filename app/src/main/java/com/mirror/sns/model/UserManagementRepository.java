@@ -1,17 +1,22 @@
 package com.mirror.sns.model;
 
 import android.app.Application;
+import android.net.Uri;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.mirror.sns.classes.Post;
 import com.mirror.sns.classes.User;
 
@@ -29,16 +34,21 @@ public class UserManagementRepository {
     private MutableLiveData<User> userLiveData;
     private MutableLiveData<List<User>> userListLiveData;
 
+    private MutableLiveData<Boolean> updateValid;
+
     public UserManagementRepository(Application application) {
         this.application = application;
         usersRef = FirebaseDatabase.getInstance().getReference("users");
         userLiveData = new MutableLiveData<>();
         userListLiveData = new MutableLiveData<>();
+        updateValid = new MutableLiveData<>();
     }
 
     public MutableLiveData<User> getUserLiveData() { return userLiveData; }
 
     public MutableLiveData<List<User>> getUserListLiveData() { return userListLiveData; }
+
+    public MutableLiveData<Boolean> getUpdateValid() { return updateValid; }
 
     public void getUserInfo(String uid) {
         usersRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -89,6 +99,40 @@ public class UserManagementRepository {
                 } else {
                     // save fail
                 }
+            }
+        });
+    }
+
+    // user profile 업데이트
+    public void updateUserProfile(User user) {
+        String uid = user.getUid();
+        /*
+        1. 인자값으로 넘어온 user의 getPhotoUri를 통해 Firebase Store에 사진을 먼저 저장한다.
+        2. 사진 저장이 완료 됐다면 저장된 사진의 uri를 다운받은 뒤 해당 uri 값을 인자값으로 넘어온 user객체의 photoUri에 할당한다.
+        3. users Ref 아래 자신의 uid 아래에 2번까지 완료한 user 객체를 저장한다.
+        4. 값이 성공적으로 업데이트 됐다면 updateValid에 true를 할당하여 update가 완료됐음을 view에서 확인한다.
+         */
+        StorageReference storage = FirebaseStorage.getInstance().getReference().child("profiles/" + uid + ".jpg");
+        UploadTask uploadTask = storage.putFile(Uri.parse(user.getPhotoUri()));
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                storage.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        user.setPhotoUri(uri.toString());
+                        usersRef.child(uid).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull @NotNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    updateValid.setValue(true);
+                                } else {
+                                    updateValid.setValue(false);
+                                }
+                            }
+                        });
+                    }
+                });
             }
         });
     }

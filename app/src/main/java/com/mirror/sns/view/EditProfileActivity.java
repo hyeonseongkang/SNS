@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
@@ -31,7 +32,7 @@ import com.mirror.sns.viewmodel.UserManagementViewModel;
 public class EditProfileActivity extends AppCompatActivity {
 
     private ActivityEditProfileBinding editProfileBinding;
-
+    public static final String TAG = "EditProfileActivity";
     private UserManagementViewModel userManagementViewModel;
 
     private FirebaseAuth firebaseAuth;
@@ -40,12 +41,15 @@ public class EditProfileActivity extends AppCompatActivity {
     private Uri tempPhotoUri;
     private String nickName;
     private String email;
+    private User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         editProfileBinding = ActivityEditProfileBinding.inflate(getLayoutInflater());
         setContentView(editProfileBinding.getRoot());
+
+        overridePendingTransition(R.anim.fadein_left, R.anim.none);
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -59,7 +63,19 @@ public class EditProfileActivity extends AppCompatActivity {
         }
 
         userManagementViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(UserManagementViewModel.class);
-
+        userManagementViewModel.updateValid.observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean) {
+                    Log.d(TAG, "update success user profile");
+                    setResult(RESULT_OK);
+                    finish();
+                    overridePendingTransition(R.anim.none, R.anim.fadeout_left);
+                } else {
+                    Log.d(TAG, "update fail user profile");
+                }
+            }
+        });
         uid = firebaseAuth.getUid();
         tempPhotoUri = null;
         nickName = null;
@@ -80,6 +96,7 @@ public class EditProfileActivity extends AppCompatActivity {
                     editProfileBinding.userNickName.setText(user.getNickName());
                 }
 
+                currentUser = user;
                 email = user.getEmail();
                 editProfileBinding.userEmail.setText(user.getEmail());
                 editProfileBinding.progress.setVisibility(View.GONE);
@@ -105,6 +122,9 @@ public class EditProfileActivity extends AppCompatActivity {
                     return;
 
                 // Update
+                //   public User(String uid, String email, String password, String nickName, String photoUri, String posts, String followers, String following) {
+                userManagementViewModel.updateUserProfile(new User(uid, email, "null", nickName, tempPhotoUri.toString(), currentUser.getPosts(), currentUser.getFollowers(), currentUser.getFollowing()));
+
             }
         });
 
@@ -113,6 +133,7 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
+                overridePendingTransition(R.anim.none, R.anim.fadeout_left);
             }
         });
 

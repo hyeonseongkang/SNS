@@ -35,7 +35,7 @@ public class CreatePostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityCreatePostBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        overridePendingTransition(R.anim.fadein_left, R.anim.none);
         firebaseAuth = FirebaseAuth.getInstance();
 
         postViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(PostViewModel.class);
@@ -51,7 +51,7 @@ public class CreatePostActivity extends AppCompatActivity {
                 String userUid = firebaseAuth.getUid();
 
                 postViewModel.createPost(new Post(null, userUid, postText));
-
+                overridePendingTransition(R.anim.none, R.anim.fadeout_left);
                 // save
                 /*
                 tempPhotoUri
