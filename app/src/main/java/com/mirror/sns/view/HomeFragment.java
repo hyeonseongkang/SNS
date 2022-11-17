@@ -59,12 +59,7 @@ public class HomeFragment extends Fragment {
 
         postViewModel.getPosts();
 
-        postViewModel.getPostsLiveData().observe(getActivity(), new Observer<List<Post>>() {
-            @Override
-            public void onChanged(List<Post> posts) {
-                snsAdapter.setSnses(posts);
-            }
-        });
+
 
         homeBinding.friendRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
         homeBinding.friendRecyclerview.setHasFixedSize(true);
@@ -75,6 +70,13 @@ public class HomeFragment extends Fragment {
         homeBinding.snsRecyclerView.setHasFixedSize(true);
         snsAdapter = new SnsAdapter();
         homeBinding.snsRecyclerView.setAdapter(snsAdapter);
+
+        postViewModel.getPostsLiveData().observe(getActivity(), new Observer<List<Post>>() {
+            @Override
+            public void onChanged(List<Post> posts) {
+                snsAdapter.setSnses(posts);
+            }
+        });
 
         /*
         friend profile test

@@ -5,6 +5,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
@@ -17,10 +18,12 @@ import android.view.View;
 import com.google.firebase.auth.FirebaseAuth;
 import com.mirror.sns.R;
 import com.mirror.sns.classes.Post;
+import com.mirror.sns.classes.User;
 import com.mirror.sns.databinding.ActivityCreatePostBinding;
 import com.mirror.sns.model.PostRepository;
 import com.mirror.sns.viewmodel.LoginViewModel;
 import com.mirror.sns.viewmodel.PostViewModel;
+import com.mirror.sns.viewmodel.UserManagementViewModel;
 
 public class CreatePostActivity extends AppCompatActivity {
 
@@ -28,7 +31,10 @@ public class CreatePostActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private PostViewModel postViewModel;
+    private UserManagementViewModel userManagementViewModel;
     private Uri tempPhotoUri;
+
+    private String userPhotoUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +45,15 @@ public class CreatePostActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
 
         postViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(PostViewModel.class);
+        userManagementViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(UserManagementViewModel.class);
+
+        userManagementViewModel.getUserInfo(firebaseAuth.getUid());
+        userManagementViewModel.getUserLiveData().observe(this, new Observer<User>() {
+            @Override
+            public void onChanged(User user) {
+                userPhotoUri = user.getPhotoUri();
+            }
+        });
 
         binding.createPost.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,7 +65,7 @@ public class CreatePostActivity extends AppCompatActivity {
 
                 String userUid = firebaseAuth.getUid();
 
-                postViewModel.createPost(new Post(null, userUid, postText));
+                postViewModel.createPost(new Post(null,  userPhotoUri, String.valueOf(tempPhotoUri), userUid, postText));
                 overridePendingTransition(R.anim.none, R.anim.fadeout_left);
                 // save
                 /*

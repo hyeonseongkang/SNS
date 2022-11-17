@@ -4,11 +4,15 @@ public class Post {
     private String key;
     private String userUid;
     private String content;
+    private String userPhotoUri;
+    private String photoUri;
 
     public Post() {}
 
-    public Post(String key, String userUid, String content) {
+    public Post(String key, String userPhotoUri, String photoUri, String userUid, String content) {
         this.key = key;
+        this.userPhotoUri = userPhotoUri;
+        this.photoUri = photoUri;
         this.userUid = userUid;
         this.content = content;
     }
