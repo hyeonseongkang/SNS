@@ -43,8 +43,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:fontFamily="@font/gmm"
                 android:background="@null"
+                android:fontFamily="@font/gmm"
                 android:text="공유"
                 android:textColor="#000000"
                 android:textSize="17dp" />
@@ -118,16 +118,25 @@
 
                 </RelativeLayout>
 
-                <EditText
-                    android:id="@+id/postText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@null"
-                    android:hint="문구 입력....." />
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/photoItemRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="110dp"
+                    android:layout_marginLeft="20dp"
+                    android:overScrollMode="never"
+                    tools:itemCount="5"
+                    tools:listitem="@layout/adapter_home_photo_item" />
             </LinearLayout>
+
+            <EditText
+                android:id="@+id/postText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:background="@null"
+                android:hint="문구 입력....." />
 
             <LinearLayout
                 android:layout_width="match_parent"

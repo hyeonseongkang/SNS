@@ -7,6 +7,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -17,6 +18,7 @@ import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.mirror.sns.R;
+import com.mirror.sns.adapter.SnsPhotoItemAdapter;
 import com.mirror.sns.classes.Post;
 import com.mirror.sns.classes.User;
 import com.mirror.sns.databinding.ActivityCreatePostBinding;
@@ -24,6 +26,8 @@ import com.mirror.sns.model.PostRepository;
 import com.mirror.sns.viewmodel.LoginViewModel;
 import com.mirror.sns.viewmodel.PostViewModel;
 import com.mirror.sns.viewmodel.UserManagementViewModel;
+
+import java.util.ArrayList;
 
 public class CreatePostActivity extends AppCompatActivity {
 
@@ -34,7 +38,12 @@ public class CreatePostActivity extends AppCompatActivity {
     private UserManagementViewModel userManagementViewModel;
     private Uri tempPhotoUri;
 
+
+    // photo
+    private ArrayList<String> itemPhotos;
     private String userPhotoUri;
+
+    SnsPhotoItemAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +52,7 @@ public class CreatePostActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         overridePendingTransition(R.anim.fadein_left, R.anim.none);
         firebaseAuth = FirebaseAuth.getInstance();
-
+        itemPhotos = new ArrayList<>();
         postViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(PostViewModel.class);
         userManagementViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(UserManagementViewModel.class);
 
@@ -54,6 +63,15 @@ public class CreatePostActivity extends AppCompatActivity {
                 userPhotoUri = user.getPhotoUri();
             }
         });
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        binding.photoItemRecyclerView.setLayoutManager(layoutManager);
+        binding.photoItemRecyclerView.setHasFixedSize(true);
+
+        adapter = new SnsPhotoItemAdapter();
+        binding.photoItemRecyclerView.setAdapter(adapter);
+
 
         binding.createPost.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,8 +121,12 @@ public class CreatePostActivity extends AppCompatActivity {
                         Intent intent = result.getData();
                         tempPhotoUri = intent.getData();
 
-                       if (tempPhotoUri != null) {
+                        // 갤러리에서 사진 데이터를 가져와서 null check 후 값이 있다면 itemPhotos에 담음 후에 아이템 생성할 때 itemPhotos를 photo key로 바꿔 저장함
+                        if (tempPhotoUri != null) {
+                            itemPhotos.add(tempPhotoUri.toString());
+                            adapter.setPhotoUris(itemPhotos);
                             tempPhotoUri = null;
+                            binding.photoCount.setText(String.valueOf(itemPhotos.size()));
                         }
                     }
                 }

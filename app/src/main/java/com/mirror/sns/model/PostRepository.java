@@ -47,6 +47,8 @@ public class PostRepository {
         String key = postsRef.getKey();
         post.setKey(key);
 
+        // first save photo after save data
+
         postsRef.child(userUid).push().setValue(post).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull @NotNull Task<Void> task) {
