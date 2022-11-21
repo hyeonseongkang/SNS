@@ -72,6 +72,17 @@ public class CreatePostActivity extends AppCompatActivity {
         adapter = new SnsPhotoItemAdapter();
         binding.photoItemRecyclerView.setAdapter(adapter);
 
+        // 아이템 사진 추가 했다가 취소
+        adapter.setOnItemClickListener(new SnsPhotoItemAdapter.onItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                itemPhotos.remove(position);
+                adapter.notifyItemRemoved(position);
+                adapter.notifyItemRangeChanged(position, itemPhotos.size());
+                binding.photoCount.setText(String.valueOf(itemPhotos.size()));
+            }
+        });
+
 
         binding.createPost.setOnClickListener(new View.OnClickListener() {
             @Override
