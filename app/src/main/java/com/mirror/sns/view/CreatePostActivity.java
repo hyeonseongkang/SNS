@@ -94,7 +94,9 @@ public class CreatePostActivity extends AppCompatActivity {
 
                 String userUid = firebaseAuth.getUid();
 
-                postViewModel.createPost(new Post(null,  userPhotoUri, String.valueOf(tempPhotoUri), userUid, postText));
+                if (itemPhotos.size() == 0) return;
+
+                //postViewModel.createPost(new Post(null,  userPhotoUri, String.valueOf(tempPhotoUri), userUid, postText));
                 overridePendingTransition(R.anim.none, R.anim.fadeout_left);
                 // save
                 /*
