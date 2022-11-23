@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.mirror.sns.R;
 import com.mirror.sns.adapter.SnsPhotoItemAdapter;
 import com.mirror.sns.classes.Post;
+import com.mirror.sns.classes.Sns;
 import com.mirror.sns.classes.User;
 import com.mirror.sns.databinding.ActivityCreatePostBinding;
 import com.mirror.sns.model.PostRepository;
@@ -96,7 +97,10 @@ public class CreatePostActivity extends AppCompatActivity {
 
                 if (itemPhotos.size() == 0) return;
 
+                // Post(String key, String userUid, String content, String userPhotoUri, ArrayList<String> photoKeys, String firstPhotoUri, ArrayList<String> likes) {
                 //postViewModel.createPost(new Post(null,  userPhotoUri, String.valueOf(tempPhotoUri), userUid, postText));
+                Post post = new Post("", userUid, postText, "", itemPhotos, itemPhotos.get(0), new ArrayList<>());
+                postViewModel.createPost(post);
                 overridePendingTransition(R.anim.none, R.anim.fadeout_left);
                 // save
                 /*
