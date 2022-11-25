@@ -36,10 +36,13 @@ public class PostRepository {
     private MutableLiveData<List<Post>> postsLiveData;
     private List<Post> posts;
 
+    private MutableLiveData<Post> post;
+
     public PostRepository(Application application) {
         this.application = application;
         postsRef = FirebaseDatabase.getInstance().getReference("posts");
         postsLiveData = new MutableLiveData<>();
+        post = new MutableLiveData<>();
         posts = new ArrayList<>();
     }
 
@@ -97,6 +100,22 @@ public class PostRepository {
                 } else {
 
                 }
+            }
+        });
+    }
+
+    // key에 해당하는 post 정보 가져오기
+    public void getPost(String key) {
+        postsRef.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                Post tempPost = snapshot.getValue(Post.class);
+                post.setValue(tempPost);
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
             }
         });
     }
