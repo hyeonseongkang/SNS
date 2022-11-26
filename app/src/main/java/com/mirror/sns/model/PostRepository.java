@@ -37,6 +37,7 @@ public class PostRepository {
     private List<Post> posts;
 
     private MutableLiveData<Post> post;
+    private MutableLiveData<Boolean> like;
 
     public PostRepository(Application application) {
         this.application = application;
@@ -44,6 +45,7 @@ public class PostRepository {
         postsLiveData = new MutableLiveData<>();
         post = new MutableLiveData<>();
         posts = new ArrayList<>();
+        like = new MutableLiveData<>();
     }
 
     public MutableLiveData<List<Post>> getPostsLiveData() {
@@ -133,6 +135,48 @@ public class PostRepository {
                     }
                 }
                 postsLiveData.setValue(posts);
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    // post 좋아요
+    public void setLike(String key, String uid) {
+        // key = item
+        // uid = 좋아요 누른 사람 uid
+
+        /*
+        1. postsRef / key / likes의 값들을 모두 가져온다.
+        2. likes에는 해당 아이템의 좋아요를 누른 사람들의 uid가 저장되어있다.
+        3. 해당 아이템의 좋아요를 누른 uid 리스트에 인자값으로 넘어온 uid(현재 아이템의 좋아요를 누른사람)가 없다면 해당 아이템에 대해 처음 좋아요를 누른 사람이므로 likes ref list에 uid를 추가한다.
+        4. 만약 리스트에 uid가 있다면 좋아요를 취소한 것으로 해당 uid를 삭제한다.
+         */
+        postsRef.child(key).child("likes").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                ArrayList<String> likes = new ArrayList<>();
+                for (DataSnapshot snapshot1: snapshot.getChildren()) {
+                    if (snapshot1.getValue() != null) {
+                        Log.d(TAG, snapshot1.getValue().toString());
+                        String userUid = snapshot1.getValue(String.class);
+                        likes.add(userUid);
+                    }
+                }
+
+                // 현재 아이템 좋아요 리스트에 uid가 없다면 추가하고 uid가 있다면 삭제 -> toggle
+                if (!(likes.contains(uid))) {
+                    likes.add(uid);
+                    like.setValue(true);
+                } else if (likes.contains(uid)) {
+                    likes.remove(uid);
+                    like.setValue(false);
+                }
+
+                postsRef.child(key).child("likes").setValue(likes);
             }
 
             @Override
