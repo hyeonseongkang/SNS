@@ -185,4 +185,32 @@ public class PostRepository {
             }
         });
     }
+
+    // 좋아요 가져오기
+    public void getLike(String key, String uid) {
+        // 인자값으로 넘어온 uid가 key에 해당하는 아이템의 좋아요를 눌렀다면 화면에 빨간색 하트를 표시하기 위해 사용
+        postsRef.child(key).child("likes").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                ArrayList<String> likes = new ArrayList<>();
+                for (DataSnapshot snapshot1: snapshot.getChildren()) {
+                    if (snapshot1.getValue() != null) {
+                        String userUid = snapshot1.getValue(String.class);
+                        likes.add(userUid);
+                    }
+                }
+
+                // like list에 uid user가 있다면 true -> 빨간색 하트 표시
+                if (likes.contains(uid))
+                    like.setValue(true);
+                else
+                    like.setValue(false);
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+    }
 }
