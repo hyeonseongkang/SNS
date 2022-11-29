@@ -114,7 +114,9 @@ public class HomeFragment extends Fragment {
         snsAdapter.setOnItemClickListener(new SnsAdapter.onItemClickListener() {
             @Override
             public void onItemClick(Post sns, int position) {
-                
+                Intent intent = new Intent(getActivity(), DetailPostActivity.class);
+                intent.putExtra("key", sns.getKey());
+                startActivity(intent);
             }
         });
 

@@ -52,6 +52,8 @@ public class PostRepository {
         return postsLiveData;
     }
 
+    public MutableLiveData<Post> getPostLiveData() { return post; }
+
     public void createPost(Post post) {
         String userUid = post.getUserUid();
         String key = postsRef.getKey();
