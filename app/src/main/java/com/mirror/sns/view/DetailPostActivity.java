@@ -3,6 +3,8 @@ package com.mirror.sns.view;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,6 +24,8 @@ public class DetailPostActivity extends AppCompatActivity {
 
     private String itemkey = null;
 
+    private Post currentPost;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,9 +44,15 @@ public class DetailPostActivity extends AppCompatActivity {
         postViewModel.getPostLiveData().observe(this, new Observer<Post>() {
             @Override
             public void onChanged(Post post) {
-
+                currentPost = post;
             }
         });
         postViewModel.getPost(itemkey);
+
+        // horizontal recyclerview
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        detailPostBinding.recyclerView.setLayoutManager(linearLayoutManager);
+        detailPostBinding.recyclerView.setHasFixedSize(true);
     }
 }
