@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content">
 
                 <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/profilePhoto"
+                    android:id="@+id/userPhoto"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@drawable/basic_profile_photo" />
@@ -78,7 +78,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:layout_marginLeft="5dp"
-                    android:layout_toRightOf="@+id/sellerProfile"
+                    android:layout_toRightOf="@+id/userPhoto"
                     android:fontFamily="@font/scd5"
                     android:text="test"
                     android:textColor="#000000"
