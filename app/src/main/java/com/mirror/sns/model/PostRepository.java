@@ -53,6 +53,7 @@ public class PostRepository {
     }
 
     public MutableLiveData<Post> getPostLiveData() { return post; }
+    public MutableLiveData<Boolean> getLike() { return like; }
 
     public void createPost(Post post) {
         String userUid = post.getUserUid();

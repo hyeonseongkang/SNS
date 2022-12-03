@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
 import com.mirror.sns.R;
 import com.mirror.sns.adapter.DetailPostItemAdapter;
 import com.mirror.sns.classes.Post;
@@ -19,7 +20,7 @@ import com.mirror.sns.viewmodel.PostViewModel;
 public class DetailPostActivity extends AppCompatActivity {
 
     private static final String TAG = "DetailPostActivity";
-
+    private FirebaseAuth firebaseAuth;
     private ActivityDetailPostBinding detailPostBinding;
 
     private PostViewModel postViewModel;
@@ -39,7 +40,7 @@ public class DetailPostActivity extends AppCompatActivity {
         setContentView(detailPostBinding.getRoot());
 
         overridePendingTransition(R.anim.fadein_left, R.anim.none);
-
+        firebaseAuth = FirebaseAuth.getInstance();
 
         Intent intent = getIntent();
 
@@ -77,5 +78,18 @@ public class DetailPostActivity extends AppCompatActivity {
 
         adapter = new DetailPostItemAdapter();
         detailPostBinding.recyclerView.setAdapter(adapter);
+
+        // 현재 아이템을 누른 uid가 아이템의 좋아요를 눌렀는지 확인
+        postViewModel.getLike(itemkey, firebaseAuth.getUid());
+        postViewModel.getLike().observe(DetailPostActivity.this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                //Log.d(TAG, aBoolean.toString());
+                if (aBoolean)
+                    detailPostBinding.like.setBackgroundResource(R.drawable.red_heart);
+                else
+                    detailPostBinding.like.setBackgroundResource(R.drawable.basic_heart);
+            }
+        });
     }
 }

@@ -4,6 +4,7 @@ import android.app.Application;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.mirror.sns.classes.Post;
 import com.mirror.sns.model.PostRepository;
@@ -18,12 +19,15 @@ public class PostViewModel extends AndroidViewModel {
 
     private LiveData<Post> postLiveData;
 
+    private MutableLiveData<Boolean> like;
+
     public PostViewModel(Application application) {
         super(application);
 
         repository = new PostRepository(application);
         postsLiveData = repository.getPostsLiveData();
         postLiveData = repository.getPostLiveData();
+        like = repository.getLike();
     }
 
     public LiveData<List<Post>> getPostsLiveData() {
@@ -39,4 +43,7 @@ public class PostViewModel extends AndroidViewModel {
     public void getPosts() { repository.getPosts();}
 
     public void getPost(String key) {repository.getPost(key);}
+
+    public MutableLiveData<Boolean> getLike() { return like; }
+    public void getLike(String key, String uid) { repository.getLike(key, uid);}
 }
