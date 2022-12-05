@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
@@ -89,6 +90,21 @@ public class DetailPostActivity extends AppCompatActivity {
                     detailPostBinding.like.setBackgroundResource(R.drawable.red_heart);
                 else
                     detailPostBinding.like.setBackgroundResource(R.drawable.basic_heart);
+            }
+        });
+
+        detailPostBinding.like.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                postViewModel.setLike(itemkey, firebaseAuth.getUid());
+            }
+        });
+
+        detailPostBinding.backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(R.anim.none, R.anim.fadeout_left);
             }
         });
     }
