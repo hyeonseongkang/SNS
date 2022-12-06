@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SNS">
-        <activity android:name=".view.DetailPostActivity"></activity>
+        <activity android:name=".view.SearchFriendActivity"></activity>
+        <activity android:name=".view.DetailPostActivity" />
         <activity android:name=".view.EditProfileActivity" />
         <activity android:name=".view.SignUpActivity" />
         <activity android:name=".view.MainActivity" />
