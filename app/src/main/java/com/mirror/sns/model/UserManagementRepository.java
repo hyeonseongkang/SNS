@@ -4,6 +4,7 @@ import android.app.Application;
 import android.net.Uri;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -34,6 +35,9 @@ public class UserManagementRepository {
     private MutableLiveData<User> userLiveData;
     private MutableLiveData<List<User>> userListLiveData;
 
+    private MutableLiveData<List<User>> allFriends;
+    private MutableLiveData<Boolean> addFriendCheck;
+
     private MutableLiveData<Boolean> updateValid;
 
     public UserManagementRepository(Application application) {
@@ -42,6 +46,9 @@ public class UserManagementRepository {
         userLiveData = new MutableLiveData<>();
         userListLiveData = new MutableLiveData<>();
         updateValid = new MutableLiveData<>();
+
+        allFriends = new MutableLiveData<>();
+        addFriendCheck = new MutableLiveData<>();
     }
 
     public MutableLiveData<User> getUserLiveData() { return userLiveData; }
@@ -49,6 +56,14 @@ public class UserManagementRepository {
     public MutableLiveData<List<User>> getUserListLiveData() { return userListLiveData; }
 
     public MutableLiveData<Boolean> getUpdateValid() { return updateValid; }
+
+    public MutableLiveData<List<User>> getAllFriends() {
+        return allFriends;
+    }
+
+    public LiveData<Boolean> addFirendCheck() {
+        return addFriendCheck;
+    }
 
     public void getUserInfo(String uid) {
         usersRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -135,5 +150,18 @@ public class UserManagementRepository {
                 });
             }
         });
+    }
+
+    // 친구 추가 메서드
+    public void addFriend(List<User> usersProfile, String uid, String userNickName) {
+        for (User userProfile : usersProfile) {
+
+            // user목록에 인자 값으로 넘어오는 user가 있다면
+            if (userProfile.getNickName().equals(userNickName)) {
+
+                // 친구가 이미 되어 있는지 중복 체크
+
+            }
+        }
     }
 }
