@@ -160,7 +160,36 @@ public class UserManagementRepository {
             if (userProfile.getNickName().equals(userNickName)) {
 
                 // 친구가 이미 되어 있는지 중복 체크
+                usersRef.child(uid).child("friends").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                        boolean overlapCheck = true;
+                        for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                            User profile = snapshot1.getValue(User.class);
+                            if (profile.getNickName().equals(userNickName))
+                                overlapCheck = false;
+                        }
 
+                        // 중복이 아니라면 친구 추가
+                        if (overlapCheck) {
+                            usersRef.child(uid).child("friends").push().setValue(userProfile)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull @NotNull Task<Void> task) {
+                                            if (task.isSuccessful())
+                                                addFriendCheck.setValue(true);
+                                        }
+                                    });
+                        } else {
+                            addFriendCheck.setValue(false);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+                    }
+                });
             }
         }
     }
