@@ -138,6 +138,25 @@
                 android:background="@null"
                 android:hint="문구 입력....." />
 
+            <EditText
+                android:id="@+id/tagText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:background="@null"
+                android:hint="태그 입력....." />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/tagRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:overScrollMode="never"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="5dp"
+                tools:itemCount="5"
+                tools:listitem="@layout/adapter_tag_item" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="1dp"

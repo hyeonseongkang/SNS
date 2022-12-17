@@ -14,11 +14,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.mirror.sns.R;
 import com.mirror.sns.adapter.SnsPhotoItemAdapter;
+import com.mirror.sns.adapter.TagAdapter;
 import com.mirror.sns.classes.Post;
 import com.mirror.sns.classes.Sns;
 import com.mirror.sns.classes.User;
@@ -45,6 +49,7 @@ public class CreatePostActivity extends AppCompatActivity {
     private String userPhotoUri;
 
     SnsPhotoItemAdapter adapter;
+    TagAdapter tagAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +75,12 @@ public class CreatePostActivity extends AppCompatActivity {
         binding.photoItemRecyclerView.setLayoutManager(layoutManager);
         binding.photoItemRecyclerView.setHasFixedSize(true);
 
+        binding.tagRecyclerView.setLayoutManager(layoutManager);
+        binding.tagRecyclerView.setHasFixedSize(true);
+
+        tagAdapter = new TagAdapter();
+        binding.tagRecyclerView.setAdapter(tagAdapter);
+
         adapter = new SnsPhotoItemAdapter();
         binding.photoItemRecyclerView.setAdapter(adapter);
 
@@ -81,6 +92,18 @@ public class CreatePostActivity extends AppCompatActivity {
                 adapter.notifyItemRemoved(position);
                 adapter.notifyItemRangeChanged(position, itemPhotos.size());
                 binding.photoCount.setText(String.valueOf(itemPhotos.size()));
+            }
+        });
+
+        binding.tagText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (i == EditorInfo.IME_ACTION_DONE) {
+                    // 1. recyclerview에 tag추가
+
+                    // 2. tag text 지우기
+                }
+                return false;
             }
         });
 
@@ -118,6 +141,13 @@ public class CreatePostActivity extends AppCompatActivity {
             }
         });
 
+        binding.backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(R.anim.none, R.anim.fadeout_left);
+            }
+        });
         // 아이템 사진 추가
         binding.gallery.setOnClickListener(new View.OnClickListener() {
             @Override
