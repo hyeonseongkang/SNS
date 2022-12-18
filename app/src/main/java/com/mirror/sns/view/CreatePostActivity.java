@@ -25,6 +25,7 @@ import com.mirror.sns.adapter.SnsPhotoItemAdapter;
 import com.mirror.sns.adapter.TagAdapter;
 import com.mirror.sns.classes.Post;
 import com.mirror.sns.classes.Sns;
+import com.mirror.sns.classes.Tag;
 import com.mirror.sns.classes.User;
 import com.mirror.sns.databinding.ActivityCreatePostBinding;
 import com.mirror.sns.model.PostRepository;
@@ -48,6 +49,9 @@ public class CreatePostActivity extends AppCompatActivity {
     private ArrayList<String> itemPhotos;
     private String userPhotoUri;
 
+    // tags
+    private ArrayList<Tag> tags;
+
     SnsPhotoItemAdapter adapter;
     TagAdapter tagAdapter;
 
@@ -59,6 +63,7 @@ public class CreatePostActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.fadein_left, R.anim.none);
         firebaseAuth = FirebaseAuth.getInstance();
         itemPhotos = new ArrayList<>();
+        tags = new ArrayList<>();
         postViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(PostViewModel.class);
         userManagementViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(UserManagementViewModel.class);
 
@@ -75,7 +80,9 @@ public class CreatePostActivity extends AppCompatActivity {
         binding.photoItemRecyclerView.setLayoutManager(layoutManager);
         binding.photoItemRecyclerView.setHasFixedSize(true);
 
-        binding.tagRecyclerView.setLayoutManager(layoutManager);
+        LinearLayoutManager layoutManager1 = new LinearLayoutManager(this);
+        layoutManager1.setOrientation(LinearLayoutManager.HORIZONTAL);
+        binding.tagRecyclerView.setLayoutManager(layoutManager1);
         binding.tagRecyclerView.setHasFixedSize(true);
 
         tagAdapter = new TagAdapter();
@@ -100,8 +107,11 @@ public class CreatePostActivity extends AppCompatActivity {
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
                 if (i == EditorInfo.IME_ACTION_DONE) {
                     // 1. recyclerview에 tag추가
-
+                    String tagT = binding.tagText.getText().toString();
+                    tags.add(new Tag(tagT));
+                    tagAdapter.setTagList(tags);
                     // 2. tag text 지우기
+                    binding.tagText.setText("");
                 }
                 return false;
             }
