@@ -1,8 +1,10 @@
 package com.mirror.sns.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,7 +16,7 @@ import java.util.List;
 
 public class TagAdapter extends RecyclerView.Adapter<TagAdapter.MyViewHolder>{
 
-    List<com.mirror.sns.classes.Tag> tagList = new ArrayList<>();
+    List<Tag> tagList = new ArrayList<>();
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -26,7 +28,8 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.MyViewHolder>{
 
     @Override
     public void onBindViewHolder(TagAdapter.MyViewHolder holder, int position) {
-
+        Tag tag = tagList.get(position);
+        holder.tagText.setText(tag.getTag());
     }
 
     @Override
@@ -38,8 +41,10 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.MyViewHolder>{
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
+        TextView tagText;
         public MyViewHolder(View itemView) {
             super(itemView);
+            tagText = itemView.findViewById(R.id.tagText);
         }
     }
 }
