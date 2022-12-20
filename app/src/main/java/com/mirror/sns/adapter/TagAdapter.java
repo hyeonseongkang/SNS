@@ -1,5 +1,6 @@
 package com.mirror.sns.adapter;
 
+import android.graphics.Paint;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,7 +30,7 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.MyViewHolder>{
     @Override
     public void onBindViewHolder(TagAdapter.MyViewHolder holder, int position) {
         Tag tag = tagList.get(position);
-        holder.tagText.setText(tag.getTag());
+        holder.tagText.setText("#" + tag.getTag());
     }
 
     @Override
@@ -45,6 +46,7 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.MyViewHolder>{
         public MyViewHolder(View itemView) {
             super(itemView);
             tagText = itemView.findViewById(R.id.tagText);
+            tagText.setPaintFlags(tagText.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         }
     }
 }
