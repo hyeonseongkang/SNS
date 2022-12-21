@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,6 +19,7 @@ import java.util.List;
 public class TagAdapter extends RecyclerView.Adapter<TagAdapter.MyViewHolder>{
 
     List<Tag> tagList = new ArrayList<>();
+    private onItemClickListener listener;
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -43,10 +45,27 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.MyViewHolder>{
 
     class MyViewHolder extends RecyclerView.ViewHolder {
         TextView tagText;
+        ImageView deleteTag;
+
         public MyViewHolder(View itemView) {
             super(itemView);
             tagText = itemView.findViewById(R.id.tagText);
             tagText.setPaintFlags(tagText.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+            deleteTag.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    if (listener != null && position != RecyclerView.NO_POSITION) {
+                        listener.onItemClick(position);
+                    }
+                }
+            });
         }
     }
+    public interface onItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(onItemClickListener listener ) {this.listener= listener;}
 }
