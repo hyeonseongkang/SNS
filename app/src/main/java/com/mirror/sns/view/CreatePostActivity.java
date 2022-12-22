@@ -102,6 +102,15 @@ public class CreatePostActivity extends AppCompatActivity {
             }
         });
 
+        tagAdapter.setOnItemClickListener(new TagAdapter.onItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                tags.remove(position);
+                tagAdapter.notifyItemRemoved(position);
+                tagAdapter.notifyItemChanged(position, tags.size());
+            }
+        });
+
         binding.tagText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {

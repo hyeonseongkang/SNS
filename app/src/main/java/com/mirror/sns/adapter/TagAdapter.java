@@ -52,6 +52,7 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.MyViewHolder>{
             tagText = itemView.findViewById(R.id.tagText);
             tagText.setPaintFlags(tagText.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
+            deleteTag = itemView.findViewById(R.id.deleteTag);
             deleteTag.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
