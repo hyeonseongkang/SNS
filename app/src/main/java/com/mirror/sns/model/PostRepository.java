@@ -20,6 +20,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.mirror.sns.classes.Post;
+import com.mirror.sns.classes.Tag;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -38,11 +39,13 @@ public class PostRepository {
 
     private MutableLiveData<Post> post;
     private MutableLiveData<Boolean> like;
+    private MutableLiveData<Boolean> successCreatePost;
 
     public PostRepository(Application application) {
         this.application = application;
         postsRef = FirebaseDatabase.getInstance().getReference("posts");
         postsLiveData = new MutableLiveData<>();
+        successCreatePost = new MutableLiveData<>();
         post = new MutableLiveData<>();
         posts = new ArrayList<>();
         like = new MutableLiveData<>();
@@ -55,58 +58,43 @@ public class PostRepository {
     public MutableLiveData<Post> getPostLiveData() { return post; }
     public MutableLiveData<Boolean> getLike() { return like; }
 
+    public MutableLiveData<Boolean> getSuccessCreatePost() { return successCreatePost;}
+
     public void createPost(Post post) {
         String userUid = post.getUserUid();
-        String key = postsRef.getKey();
+        String key = postsRef.push().getKey();
         String content = post.getContent();
         String userPhotoUri = post.getUserPhotoUri();
         ArrayList<String> likes = post.getLikes();
-        ArrayList<String> photoKeys = post.getPhotoKeys();
+        String postPhoto = post.getPostPhotoUri();
+        ArrayList<Tag> tags = post.getTags();
 
-        // first save photo after save data
-
-                /*
-        1. 모든 photo를 firebase store에 저장시도
-        2. 저장 성공시 uri를 다운받아 tempPhotoKey에 저장
-        3. 마지막 Photo를 store에 저장하기를 성공했다면 item Ref / item 저장
-         */
-        ArrayList<String> tempPhotokeys = new ArrayList<>();
-        for (int i = 0; i < photoKeys.size(); i++) {
-            String photoKey = postsRef.push().getKey();
-            StorageReference storage = FirebaseStorage.getInstance().getReference().child("items/" + photoKey + ".jpg");
-            UploadTask uploadTask = storage.putFile(Uri.parse(photoKeys.get(i)));
-            int finalI = i;
-            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    storage.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            tempPhotokeys.add(uri.toString());
-
-                            if (finalI == photoKeys.size() - 1) {
-                                // public Post(String key, String userUid, String content, String userPhotoUri, ArrayList<String> photoKeys, String firstPhotoUri, ArrayList<String> likes) {
-                                Post post = new Post(key, userUid, content, userPhotoUri, tempPhotokeys, tempPhotokeys.get(0), likes);
-                                postsRef.child(key).setValue(post);
-                            }
-                        }
-                    });
-
-                }
-            });
-
-        }
-
-        postsRef.child(userUid).push().setValue(post).addOnCompleteListener(new OnCompleteListener<Void>() {
+        String photoKey = postsRef.push().getKey();
+        StorageReference storage = FirebaseStorage.getInstance().getReference().child("posts/" + photoKey + ".jpg");
+        UploadTask uploadTask = storage.putFile(Uri.parse(postPhoto));
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
-            public void onComplete(@NonNull @NotNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    Log.d(TAG, "Create Post");
-                } else {
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                storage.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        //  public Post(String key, String userUid, String content, String userPhotoUri, String postPhotoUri, ArrayList<Tag> tags, ArrayList<String> likes)
+                        Post post = new Post(key, userUid, content, userPhotoUri, uri.toString(), tags, likes);
+                        postsRef.child(userUid).child(key).setValue(post).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull @NotNull Task<Void> task) {
+                                if (task.isSuccessful()){
+                                    successCreatePost.setValue(true);
+                                }
+                            }
+                        });
+                    }
+                });
 
-                }
             }
         });
+
+
     }
 
     // key에 해당하는 post 정보 가져오기

@@ -105,28 +105,33 @@
                             android:layout_height="30dp"
                             android:src="@drawable/camera" />
 
-                        <TextView
-                            android:id="@+id/photoCount"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/cameraImage"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginTop="3dp"
-                            android:fontFamily="@font/gmm"
-                            android:text="0" />
+<!--                        <TextView-->
+<!--                            android:id="@+id/photoCount"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_below="@+id/cameraImage"-->
+<!--                            android:layout_centerHorizontal="true"-->
+<!--                            android:layout_marginTop="3dp"-->
+<!--                            android:fontFamily="@font/gmm"-->
+<!--                            android:text="0" />-->
                     </RelativeLayout>
 
                 </RelativeLayout>
 
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/photoItemRecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="110dp"
+                <RelativeLayout
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="bottom"
                     android:layout_marginLeft="20dp"
-                    android:overScrollMode="never"
-                    tools:itemCount="5"
-                    tools:listitem="@layout/adapter_home_photo_item" />
+                    android:background="@drawable/activity_create_item_photo_background">
+
+                    <ImageView
+                        android:id="@+id/postPhoto"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:scaleType="fitXY"/>
+                </RelativeLayout>
+
             </LinearLayout>
 
             <EditText

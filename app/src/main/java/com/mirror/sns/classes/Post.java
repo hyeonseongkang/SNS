@@ -7,52 +7,76 @@ public class Post {
     private String userUid;
     private String content;
     private String userPhotoUri;
-    private ArrayList<String> photoKeys;
-    private String firstPhotoUri;
+    private String postPhotoUri;
+    private ArrayList<Tag> tags;
     private ArrayList<String> likes;
+
 
     public Post() {}
 
-    public Post(String key, String userUid, String content, String userPhotoUri, ArrayList<String> photoKeys, String firstPhotoUri, ArrayList<String> likes) {
+    public Post(String key, String userUid, String content, String userPhotoUri, String postPhotoUri, ArrayList<Tag> tags, ArrayList<String> likes) {
         this.key = key;
         this.userUid = userUid;
         this.content = content;
         this.userPhotoUri = userPhotoUri;
-        this.photoKeys = photoKeys;
-        this.firstPhotoUri = firstPhotoUri;
+        this.postPhotoUri = postPhotoUri;
+        this.tags = tags;
         this.likes = likes;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
     }
 
     public String getKey() {
         return key;
     }
 
+    public void setKey(String key) {
+        this.key = key;
+    }
+
     public String getUserUid() {
         return userUid;
+    }
+
+    public void setUserUid(String userUid) {
+        this.userUid = userUid;
     }
 
     public String getContent() {
         return content;
     }
 
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     public String getUserPhotoUri() {
         return userPhotoUri;
     }
 
-    public ArrayList<String> getPhotoKeys() {
-        return photoKeys;
+    public void setUserPhotoUri(String userPhotoUri) {
+        this.userPhotoUri = userPhotoUri;
     }
 
-    public String getFirstPhotoUri() {
-        return firstPhotoUri;
+    public String getPostPhotoUri() {
+        return postPhotoUri;
+    }
+
+    public void setPostPhotoUri(String postPhotoUri) {
+        this.postPhotoUri = postPhotoUri;
+    }
+
+    public ArrayList<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(ArrayList<Tag> tags) {
+        this.tags = tags;
     }
 
     public ArrayList<String> getLikes() {
         return likes;
     }
 
+    public void setLikes(ArrayList<String> likes) {
+        this.likes = likes;
+    }
 }

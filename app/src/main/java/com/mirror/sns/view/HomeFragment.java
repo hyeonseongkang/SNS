@@ -15,6 +15,10 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.mirror.sns.R;
 import com.mirror.sns.adapter.ProfileAdapter;
 import com.mirror.sns.adapter.SnsAdapter;
 import com.mirror.sns.classes.Post;
@@ -40,6 +44,9 @@ public class HomeFragment extends Fragment {
     private LoginViewModel loginViewModel;
     private PostViewModel postViewModel;
 
+    private FirebaseAuth firebaseAuth;
+    private FirebaseUser firebaseUser;
+
     public HomeFragment() {
 
     }
@@ -54,11 +61,27 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
+
+        if (firebaseUser.getPhotoUrl() == null) {
+            Log.d(TAG, "photo Url is null");
+            Glide.with(this)
+                    .load(R.drawable.basic_profile_photo)
+                    .into(homeBinding.userProfile);
+        } else {
+            Log.d(TAG, "photo Url is not null");
+            Glide.with(this)
+                    .load(firebaseUser.getPhotoUrl())
+                    .into(homeBinding.userProfile);
+        }
+
+        homeBinding.myNickName.setText(firebaseUser.getEmail());
+
         loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
         postViewModel = new ViewModelProvider(requireActivity()).get(PostViewModel.class);
 
         postViewModel.getPosts();
-
 
 
         homeBinding.friendRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));

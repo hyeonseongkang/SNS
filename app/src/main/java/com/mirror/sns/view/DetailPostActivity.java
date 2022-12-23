@@ -58,7 +58,7 @@ public class DetailPostActivity extends AppCompatActivity {
                 detailPostBinding.content.setText(post.getContent());
                 detailPostBinding.userName.setText(post.getUserUid());
 
-                String userPhoto = post.getFirstPhotoUri();
+                String userPhoto = post.getUserPhotoUri();
 
                 // 판매자 profile 사진이 있으면 가져오고 아니면 기본 이미지
                 if (!(userPhoto.equals("null"))) {

@@ -21,10 +21,13 @@ public class PostViewModel extends AndroidViewModel {
 
     private MutableLiveData<Boolean> like;
 
+    private MutableLiveData<Boolean> successCreatePost;
+
     public PostViewModel(Application application) {
         super(application);
 
         repository = new PostRepository(application);
+        successCreatePost = repository.getSuccessCreatePost();
         postsLiveData = repository.getPostsLiveData();
         postLiveData = repository.getPostLiveData();
         like = repository.getLike();
@@ -35,6 +38,8 @@ public class PostViewModel extends AndroidViewModel {
     }
 
     public LiveData<Post> getPostLiveData() { return postLiveData; }
+
+    public MutableLiveData<Boolean> getSuccessCreatePost() { return successCreatePost;}
 
     public void createPost(Post post) {
         repository.createPost(post);

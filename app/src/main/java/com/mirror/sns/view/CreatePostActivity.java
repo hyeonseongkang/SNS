@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.mirror.sns.R;
 import com.mirror.sns.adapter.SnsPhotoItemAdapter;
@@ -37,7 +38,7 @@ import java.util.ArrayList;
 
 public class CreatePostActivity extends AppCompatActivity {
 
-    ActivityCreatePostBinding binding;
+    ActivityCreatePostBinding createPostBinding;
 
     private FirebaseAuth firebaseAuth;
     private PostViewModel postViewModel;
@@ -46,7 +47,7 @@ public class CreatePostActivity extends AppCompatActivity {
 
 
     // photo
-    private ArrayList<String> itemPhotos;
+    private String postPhoto;
     private String userPhotoUri;
 
     // tags
@@ -58,13 +59,23 @@ public class CreatePostActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityCreatePostBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        createPostBinding = ActivityCreatePostBinding.inflate(getLayoutInflater());
+        setContentView(createPostBinding.getRoot());
         overridePendingTransition(R.anim.fadein_left, R.anim.none);
         firebaseAuth = FirebaseAuth.getInstance();
-        itemPhotos = new ArrayList<>();
         tags = new ArrayList<>();
+
         postViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(PostViewModel.class);
+        postViewModel.getSuccessCreatePost().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean) {
+                    finish();
+                    overridePendingTransition(R.anim.none, R.anim.fadeout_left);
+                }
+            }
+        });
+
         userManagementViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(UserManagementViewModel.class);
 
         userManagementViewModel.getUserInfo(firebaseAuth.getUid());
@@ -75,32 +86,16 @@ public class CreatePostActivity extends AppCompatActivity {
             }
         });
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        binding.photoItemRecyclerView.setLayoutManager(layoutManager);
-        binding.photoItemRecyclerView.setHasFixedSize(true);
 
         LinearLayoutManager layoutManager1 = new LinearLayoutManager(this);
         layoutManager1.setOrientation(LinearLayoutManager.HORIZONTAL);
-        binding.tagRecyclerView.setLayoutManager(layoutManager1);
-        binding.tagRecyclerView.setHasFixedSize(true);
+        createPostBinding.tagRecyclerView.setLayoutManager(layoutManager1);
+        createPostBinding.tagRecyclerView.setHasFixedSize(true);
 
         tagAdapter = new TagAdapter();
-        binding.tagRecyclerView.setAdapter(tagAdapter);
+        createPostBinding.tagRecyclerView.setAdapter(tagAdapter);
 
-        adapter = new SnsPhotoItemAdapter();
-        binding.photoItemRecyclerView.setAdapter(adapter);
 
-        // 아이템 사진 추가 했다가 취소
-        adapter.setOnItemClickListener(new SnsPhotoItemAdapter.onItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                itemPhotos.remove(position);
-                adapter.notifyItemRemoved(position);
-                adapter.notifyItemRangeChanged(position, itemPhotos.size());
-                binding.photoCount.setText(String.valueOf(itemPhotos.size()));
-            }
-        });
 
         tagAdapter.setOnItemClickListener(new TagAdapter.onItemClickListener() {
             @Override
@@ -111,39 +106,46 @@ public class CreatePostActivity extends AppCompatActivity {
             }
         });
 
-        binding.tagText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        createPostBinding.tagText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
                 if (i == EditorInfo.IME_ACTION_DONE) {
                     // 1. recyclerview에 tag추가
-                    String tagT = binding.tagText.getText().toString();
+                    String tagT = createPostBinding.tagText.getText().toString();
                     tags.add(new Tag(tagT));
                     tagAdapter.setTagList(tags);
                     // 2. tag text 지우기
-                    binding.tagText.setText("");
+                    createPostBinding.tagText.setText("");
                 }
                 return false;
             }
         });
 
 
-        binding.createPost.setOnClickListener(new View.OnClickListener() {
+        createPostBinding.createPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String postText = binding.postText.getText().toString();
+                String postText = createPostBinding.postText.getText().toString();
 
                 if (TextUtils.isEmpty(postText))
                     return;
 
                 String userUid = firebaseAuth.getUid();
+                String userPhotoUri;
+                if (firebaseAuth.getCurrentUser().getPhotoUrl() == null) {
+                    userPhotoUri = "";
+                } else {
+                    userPhotoUri = firebaseAuth.getCurrentUser().getPhotoUrl().toString();
+                }
 
-                if (itemPhotos.size() == 0) return;
 
-                // Post(String key, String userUid, String content, String userPhotoUri, ArrayList<String> photoKeys, String firstPhotoUri, ArrayList<String> likes) {
-                //postViewModel.createPost(new Post(null,  userPhotoUri, String.valueOf(tempPhotoUri), userUid, postText));
-                Post post = new Post("", userUid, postText, "", itemPhotos, itemPhotos.get(0), new ArrayList<>());
+
+                if (postPhoto.length() <= 0) return;
+
+                //  public Post(String key, String userUid, String content, String userPhotoUri, String postPhotoUri, ArrayList<Tag> tags, ArrayList<String> likes)
+                Post post = new Post("", userUid, postText, userPhotoUri, postPhoto, tags, new ArrayList<>());
                 postViewModel.createPost(post);
-                overridePendingTransition(R.anim.none, R.anim.fadeout_left);
+
                 // save
                 /*
                 tempPhotoUri
@@ -153,22 +155,23 @@ public class CreatePostActivity extends AppCompatActivity {
             }
         });
 
-        binding.tag.setOnClickListener(new View.OnClickListener() {
+        createPostBinding.tag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // 친구 리스트 가져오기
             }
         });
 
-        binding.backButton.setOnClickListener(new View.OnClickListener() {
+        createPostBinding.backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
                 overridePendingTransition(R.anim.none, R.anim.fadeout_left);
             }
         });
+
         // 아이템 사진 추가
-        binding.gallery.setOnClickListener(new View.OnClickListener() {
+        createPostBinding.gallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_PICK);
@@ -189,10 +192,13 @@ public class CreatePostActivity extends AppCompatActivity {
 
                         // 갤러리에서 사진 데이터를 가져와서 null check 후 값이 있다면 itemPhotos에 담음 후에 아이템 생성할 때 itemPhotos를 photo key로 바꿔 저장함
                         if (tempPhotoUri != null) {
-                            itemPhotos.add(tempPhotoUri.toString());
-                            adapter.setPhotoUris(itemPhotos);
+                            postPhoto = tempPhotoUri.toString();
+
+                            Glide.with(getApplication())
+                                    .load(Uri.parse(postPhoto))
+                                    .into(createPostBinding.postPhoto);
+
                             tempPhotoUri = null;
-                            binding.photoCount.setText(String.valueOf(itemPhotos.size()));
                         }
                     }
                 }
