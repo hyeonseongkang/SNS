@@ -1,11 +1,16 @@
 package com.mirror.sns.adapter;
 
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.mirror.sns.R;
 import com.mirror.sns.classes.Post;
 import com.mirror.sns.classes.Sns;
@@ -13,9 +18,11 @@ import com.mirror.sns.classes.Sns;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class SnsAdapter extends RecyclerView.Adapter<SnsAdapter.MyViewHolder>{
 
-    List<Post> snsList = new ArrayList<>();
+    List<Post> posts = new ArrayList<>();
     private onItemClickListener listener;
 
     @Override
@@ -28,28 +35,59 @@ public class SnsAdapter extends RecyclerView.Adapter<SnsAdapter.MyViewHolder>{
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
+        Post currPost = posts.get(position);
 
+        Glide.with(holder.itemView.getContext())
+                .load(R.drawable.basic_profile_photo)
+                .into(holder.userPhoto);
+
+        if (currPost.getUserPhotoUri() != null && currPost.getUserPhotoUri().length() > 0) {
+            Glide.with(holder.itemView.getContext())
+                    .load(Uri.parse(currPost.getUserPhotoUri()))
+                    .into(holder.userPhoto);
+        } else {
+            Glide.with(holder.itemView.getContext())
+                    .load(R.drawable.basic_profile_photo)
+                    .into(holder.userPhoto);
+        }
+
+        holder.userName.setText(currPost.getUserUid());
+        holder.postContent.setText(currPost.getContent());
+
+        Glide.with(holder.itemView.getContext())
+                .load(Uri.parse(currPost.getPostPhotoUri()))
+                .into(holder.postPhoto);
     }
 
     @Override
-    public int getItemCount() { return snsList == null ? 0 : snsList.size(); }
+    public int getItemCount() { return posts == null ? 0 : posts.size(); }
 
-    public void setSnses(List<Post> snsList) {
-        this.snsList = snsList;
+    public void setSnses(List<Post> posts) {
+        this.posts = posts;
         notifyDataSetChanged();
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
+        private CircleImageView userPhoto;
+        private TextView userName, postContent;
+        private ImageView postPhoto;
+
+
         public MyViewHolder(View itemView) {
             super(itemView);
+
+            userPhoto = itemView.findViewById(R.id.userPhoto);
+            userName = itemView.findViewById(R.id.userName);
+            postContent = itemView.findViewById(R.id.postContent);
+            postPhoto = itemView.findViewById(R.id.postPhoto);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     int position = getAdapterPosition();
                     if (listener != null && position != RecyclerView.NO_POSITION) {
-                        listener.onItemClick(snsList.get(position), position);
+                        listener.onItemClick(posts.get(position), position);
                     }
                 }
             });

@@ -28,7 +28,7 @@
                 />
 
             <TextView
-                android:id="@+id/name"
+                android:id="@+id/userName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="eloears"
@@ -47,7 +47,7 @@
         </RelativeLayout>
 
         <ImageView
-            android:id="@+id/photo"
+            android:id="@+id/postPhoto"
             android:layout_width="match_parent"
             android:layout_height="350dp"
             android:src="@drawable/sample_image_01"
@@ -122,13 +122,13 @@
             </RelativeLayout>
 
             <TextView
-                android:id="@+id/content"
-                android:layout_marginTop="10dp"
-                android:layout_toRightOf="@+id/a"
+                android:id="@+id/postContent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="photosyean Good times. Great vibes."
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@+id/a"
+                android:text="photosyean Good times. Great vibes." />
         </LinearLayout>
 
         <LinearLayout

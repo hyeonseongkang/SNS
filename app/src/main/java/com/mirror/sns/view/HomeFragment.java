@@ -123,17 +123,6 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        List<Sns> snsList = new ArrayList<>();
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-
-//        snsAdapter.setSnses(snsList);
-
         snsAdapter.setOnItemClickListener(new SnsAdapter.onItemClickListener() {
             @Override
             public void onItemClick(Post sns, int position) {
