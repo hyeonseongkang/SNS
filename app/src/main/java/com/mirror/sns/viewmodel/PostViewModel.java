@@ -47,7 +47,7 @@ public class PostViewModel extends AndroidViewModel {
 
     public void getPosts() { repository.getPosts();}
 
-    public void getPost(String key) {repository.getPost(key);}
+    public void getPost(String userUid, String key) {repository.getPost(userUid, key);}
 
     public MutableLiveData<Boolean> getLike() { return like; }
 

@@ -98,8 +98,8 @@ public class PostRepository {
     }
 
     // key에 해당하는 post 정보 가져오기
-    public void getPost(String key) {
-        postsRef.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+    public void getPost(String userUid, String key) {
+        postsRef.child(userUid).child(key).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 Post tempPost = snapshot.getValue(Post.class);

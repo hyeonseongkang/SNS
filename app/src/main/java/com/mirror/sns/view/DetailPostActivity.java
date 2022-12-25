@@ -7,8 +7,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,13 +29,11 @@ public class DetailPostActivity extends AppCompatActivity {
 
     private PostViewModel postViewModel;
 
+    private String userUid = null;
     private String itemkey = null;
 
     private Post currentPost;
 
-
-    // adapter
-    DetailPostItemAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +46,8 @@ public class DetailPostActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        itemkey = intent.getStringExtra("key");
+        userUid = intent.getStringExtra("userUid");
+        itemkey = intent.getStringExtra("itemKey");
 
 
         postViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(PostViewModel.class);
@@ -55,30 +57,27 @@ public class DetailPostActivity extends AppCompatActivity {
                 // Post(String key, String userUid, String content, String userPhotoUri, ArrayList<String> photoKeys, String firstPhotoUri, ArrayList<String> likes) {
                 currentPost = post;
 
-                detailPostBinding.content.setText(post.getContent());
-                detailPostBinding.userName.setText(post.getUserUid());
+                detailPostBinding.content.setText(currentPost.getContent());
+                detailPostBinding.userName.setText(currentPost.getUserUid());
 
-                String userPhoto = post.getUserPhotoUri();
+                Glide.with(DetailPostActivity.this)
+                        .load(Uri.parse(currentPost.getPostPhotoUri()))
+                        .into(detailPostBinding.postPhoto);
 
-                // 판매자 profile 사진이 있으면 가져오고 아니면 기본 이미지
-                if (!(userPhoto.equals("null"))) {
+                if (currentPost.getUserPhotoUri() != null && currentPost.getUserPhotoUri().length() > 0) {
                     Glide.with(DetailPostActivity.this)
-                            .load(userPhoto)
+                            .load(Uri.parse(currentPost.getUserPhotoUri()))
+                            .into(detailPostBinding.userPhoto);
+                } else {
+                    Glide.with(DetailPostActivity.this)
+                            .load(R.drawable.basic_profile_photo)
                             .into(detailPostBinding.userPhoto);
                 }
 
             }
         });
-        postViewModel.getPost(itemkey);
+        postViewModel.getPost(userUid, itemkey);
 
-        // horizontal recyclerview
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
-        detailPostBinding.recyclerView.setLayoutManager(linearLayoutManager);
-        detailPostBinding.recyclerView.setHasFixedSize(true);
-
-        adapter = new DetailPostItemAdapter();
-        detailPostBinding.recyclerView.setAdapter(adapter);
 
         // 현재 아이템을 누른 uid가 아이템의 좋아요를 눌렀는지 확인
         postViewModel.getLike(itemkey, firebaseAuth.getUid());
