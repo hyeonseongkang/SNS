@@ -50,6 +50,11 @@ public class HomeFragment extends Fragment {
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
 
+    private String userName;
+    private String userPhoto;
+    private String userUid;
+    private String userEmail;
+
     public HomeFragment() {
 
     }
@@ -66,8 +71,6 @@ public class HomeFragment extends Fragment {
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
-
-
 
         if (firebaseUser.getPhotoUrl() == null) {
             Log.d(TAG, "photo Url is null");
@@ -91,6 +94,10 @@ public class HomeFragment extends Fragment {
             @Override
             public void onChanged(User user) {
                 // user data
+                userName = user.getNickName();
+                userPhoto = user.getPhotoUri();
+                userUid = user.getUid();
+                userEmail = user.getEmail();
             }
         });
         userManagementViewModel.getUserInfo(firebaseUser.getUid());

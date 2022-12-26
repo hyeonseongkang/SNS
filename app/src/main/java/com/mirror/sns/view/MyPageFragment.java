@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.mirror.sns.adapter.PostAdapter;
 import com.mirror.sns.classes.Sns;
 import com.mirror.sns.classes.User;
@@ -27,13 +28,20 @@ public class MyPageFragment extends Fragment {
 
     private static final String TAG = "MyPageFragment";
 
-
-    private FirebaseAuth firebaseAuth;
-
     private FragmentMypageBinding mypageBinding;
     private UserManagementViewModel userInfoViewModel;
 
     private PostAdapter postAdapter;
+
+    private UserManagementViewModel userManagementViewModel;
+
+    private FirebaseAuth firebaseAuth;
+    private FirebaseUser firebaseUser;
+
+    private String userName;
+    private String userPhoto;
+    private String userUid;
+    private String userEmail;
 
     public MyPageFragment() {
 
@@ -50,6 +58,7 @@ public class MyPageFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
 
         userInfoViewModel = new ViewModelProvider(requireActivity()).get(UserManagementViewModel.class);
 
