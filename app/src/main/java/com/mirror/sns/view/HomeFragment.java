@@ -24,9 +24,11 @@ import com.mirror.sns.adapter.SnsAdapter;
 import com.mirror.sns.classes.Post;
 import com.mirror.sns.classes.Profile;
 import com.mirror.sns.classes.Sns;
+import com.mirror.sns.classes.User;
 import com.mirror.sns.databinding.FragmentHomeBinding;
 import com.mirror.sns.viewmodel.LoginViewModel;
 import com.mirror.sns.viewmodel.PostViewModel;
+import com.mirror.sns.viewmodel.UserManagementViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +45,7 @@ public class HomeFragment extends Fragment {
 
     private LoginViewModel loginViewModel;
     private PostViewModel postViewModel;
+    private UserManagementViewModel userManagementViewModel;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
@@ -64,6 +67,8 @@ public class HomeFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
 
+
+
         if (firebaseUser.getPhotoUrl() == null) {
             Log.d(TAG, "photo Url is null");
             Glide.with(this)
@@ -78,8 +83,17 @@ public class HomeFragment extends Fragment {
 
         homeBinding.myNickName.setText(firebaseUser.getEmail());
 
+        userManagementViewModel = new ViewModelProvider(requireActivity()).get(UserManagementViewModel.class);
         loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
         postViewModel = new ViewModelProvider(requireActivity()).get(PostViewModel.class);
+
+        userManagementViewModel.getUserLiveData().observe(getActivity(), new Observer<User>() {
+            @Override
+            public void onChanged(User user) {
+                // user data
+            }
+        });
+        userManagementViewModel.getUserInfo(firebaseUser.getUid());
 
         postViewModel.getPosts();
 
