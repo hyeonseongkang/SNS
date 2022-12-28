@@ -84,7 +84,7 @@ public class HomeFragment extends Fragment {
                     .into(homeBinding.userProfile);
         }
 
-        homeBinding.myNickName.setText(firebaseUser.getEmail());
+
 
         userManagementViewModel = new ViewModelProvider(requireActivity()).get(UserManagementViewModel.class);
         loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
@@ -98,6 +98,8 @@ public class HomeFragment extends Fragment {
                 userPhoto = user.getPhotoUri();
                 userUid = user.getUid();
                 userEmail = user.getEmail();
+
+                homeBinding.myNickName.setText(userName);
             }
         });
         userManagementViewModel.getUserInfo(firebaseUser.getUid());

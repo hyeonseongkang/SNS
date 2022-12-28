@@ -18,14 +18,18 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.mirror.sns.R;
 import com.mirror.sns.adapter.DetailPostItemAdapter;
 import com.mirror.sns.classes.Post;
+import com.mirror.sns.classes.User;
 import com.mirror.sns.databinding.ActivityDetailPostBinding;
+import com.mirror.sns.viewmodel.LoginViewModel;
 import com.mirror.sns.viewmodel.PostViewModel;
+import com.mirror.sns.viewmodel.UserManagementViewModel;
 
 public class DetailPostActivity extends AppCompatActivity {
 
     private static final String TAG = "DetailPostActivity";
     private FirebaseAuth firebaseAuth;
     private ActivityDetailPostBinding detailPostBinding;
+    private UserManagementViewModel userManagementViewModel;
 
     private PostViewModel postViewModel;
 
@@ -33,6 +37,10 @@ public class DetailPostActivity extends AppCompatActivity {
     private String itemkey = null;
 
     private Post currentPost;
+
+    private String userName;
+    private String userPhoto;
+    private String userEmail;
 
 
     @Override
@@ -44,12 +52,25 @@ public class DetailPostActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.fadein_left, R.anim.none);
         firebaseAuth = FirebaseAuth.getInstance();
 
+        userManagementViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(UserManagementViewModel.class);
+
+        userManagementViewModel.getUserLiveData().observe(this, new Observer<User>() {
+            @Override
+            public void onChanged(User user) {
+                // user data
+                userName = user.getNickName();
+                userPhoto = user.getPhotoUri();
+                userEmail = user.getEmail();
+                detailPostBinding.userName.setText(userName);
+            }
+        });
+
         Intent intent = getIntent();
 
         userUid = intent.getStringExtra("userUid");
         itemkey = intent.getStringExtra("itemKey");
 
-
+        userManagementViewModel.getUserInfo(userUid);
         postViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(PostViewModel.class);
         postViewModel.getPostLiveData().observe(this, new Observer<Post>() {
             @Override
