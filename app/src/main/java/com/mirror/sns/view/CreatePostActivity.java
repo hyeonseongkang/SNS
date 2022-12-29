@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -87,6 +88,7 @@ public class CreatePostActivity extends AppCompatActivity {
         });
 
 
+
         LinearLayoutManager layoutManager1 = new LinearLayoutManager(this);
         layoutManager1.setOrientation(LinearLayoutManager.HORIZONTAL);
         createPostBinding.tagRecyclerView.setLayoutManager(layoutManager1);
@@ -131,19 +133,21 @@ public class CreatePostActivity extends AppCompatActivity {
                     return;
 
                 String userUid = firebaseAuth.getUid();
-                String userPhotoUri;
-                if (firebaseAuth.getCurrentUser().getPhotoUrl() == null) {
-                    userPhotoUri = "";
-                } else {
-                    userPhotoUri = firebaseAuth.getCurrentUser().getPhotoUrl().toString();
+                String tempUserPhotoUri;
+                
+                if (userPhotoUri.length() < 0 ) {
+                    tempUserPhotoUri = "";
+                }  else {
+                    tempUserPhotoUri = userPhotoUri;
                 }
+
 
 
 
                 if (postPhoto.length() <= 0) return;
 
                 //  public Post(String key, String userUid, String content, String userPhotoUri, String postPhotoUri, ArrayList<Tag> tags, ArrayList<String> likes)
-                Post post = new Post("", userUid, postText, userPhotoUri, postPhoto, tags, new ArrayList<>());
+                Post post = new Post("", userUid, postText, tempUserPhotoUri, postPhoto, tags, new ArrayList<>());
                 postViewModel.createPost(post);
 
                 // save

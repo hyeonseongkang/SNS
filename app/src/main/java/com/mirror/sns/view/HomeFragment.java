@@ -1,6 +1,7 @@
 package com.mirror.sns.view;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -72,17 +73,6 @@ public class HomeFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
 
-        if (firebaseUser.getPhotoUrl() == null) {
-            Log.d(TAG, "photo Url is null");
-            Glide.with(this)
-                    .load(R.drawable.basic_profile_photo)
-                    .into(homeBinding.userProfile);
-        } else {
-            Log.d(TAG, "photo Url is not null");
-            Glide.with(this)
-                    .load(firebaseUser.getPhotoUrl())
-                    .into(homeBinding.userProfile);
-        }
 
 
 
@@ -98,6 +88,19 @@ public class HomeFragment extends Fragment {
                 userPhoto = user.getPhotoUri();
                 userUid = user.getUid();
                 userEmail = user.getEmail();
+
+                if (userPhoto.length() <= 0 || userPhoto == null) {
+                    Log.d(TAG, "photo Url is null");
+                    Glide.with(getActivity())
+                            .load(R.drawable.basic_profile_photo)
+                            .into(homeBinding.userProfile);
+                } else {
+                    Log.d(TAG, "photo Url is not null");
+                    Glide.with(getActivity())
+                            .load(Uri.parse(userPhoto))
+                            .into(homeBinding.userProfile);
+                }
+
 
                 homeBinding.myNickName.setText(userName);
             }
