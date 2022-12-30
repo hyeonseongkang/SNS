@@ -17,7 +17,9 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.mirror.sns.R;
 import com.mirror.sns.adapter.DetailPostItemAdapter;
+import com.mirror.sns.adapter.TagAdapter;
 import com.mirror.sns.classes.Post;
+import com.mirror.sns.classes.Tag;
 import com.mirror.sns.classes.User;
 import com.mirror.sns.databinding.ActivityDetailPostBinding;
 import com.mirror.sns.viewmodel.LoginViewModel;
@@ -42,6 +44,8 @@ public class DetailPostActivity extends AppCompatActivity {
     private String userPhoto;
     private String userEmail;
 
+
+    TagAdapter tagAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +74,15 @@ public class DetailPostActivity extends AppCompatActivity {
         userUid = intent.getStringExtra("userUid");
         itemkey = intent.getStringExtra("itemKey");
 
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        detailPostBinding.tagRecyclerView.setLayoutManager(layoutManager);
+        detailPostBinding.tagRecyclerView.setHasFixedSize(true);
+
+        tagAdapter = new TagAdapter();
+        detailPostBinding.tagRecyclerView.setAdapter(tagAdapter);
+
         userManagementViewModel.getUserInfo(userUid);
         postViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(PostViewModel.class);
         postViewModel.getPostLiveData().observe(this, new Observer<Post>() {
@@ -81,6 +94,7 @@ public class DetailPostActivity extends AppCompatActivity {
                 detailPostBinding.content.setText(currentPost.getContent());
                 detailPostBinding.userName.setText(currentPost.getUserUid());
 
+                tagAdapter.setTagList(currentPost.getTags(), true);
                 Glide.with(DetailPostActivity.this)
                         .load(Uri.parse(currentPost.getPostPhotoUri()))
                         .into(detailPostBinding.postPhoto);

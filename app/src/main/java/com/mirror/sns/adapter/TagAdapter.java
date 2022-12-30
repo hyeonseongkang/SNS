@@ -20,6 +20,7 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.MyViewHolder>{
 
     List<Tag> tagList = new ArrayList<>();
     private onItemClickListener listener;
+    boolean state;
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -33,13 +34,19 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.MyViewHolder>{
     public void onBindViewHolder(TagAdapter.MyViewHolder holder, int position) {
         Tag tag = tagList.get(position);
         holder.tagText.setText("#" + tag.getTag());
+
+        holder.deleteTag.setVisibility(View.VISIBLE);
+        if (state) {
+            holder.deleteTag.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public int getItemCount() { return tagList == null ? 0 : tagList.size(); }
 
-    public void setTagList(List<Tag> tagList) {
+    public void setTagList(List<Tag> tagList, boolean state) {
         this.tagList = tagList;
+        this.state = state;
         notifyDataSetChanged();
     }
 

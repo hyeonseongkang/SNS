@@ -56,43 +56,6 @@ public class SearchFragment extends Fragment {
         tagAdapter = new TagAdapter();
         searchBinding.tagsRecyclerView.setAdapter(tagAdapter);
 
-        List<Tag> tagList = new ArrayList<>();
-
-        tagList.add(new Tag(""));
-        tagList.add(new Tag(""));
-        tagList.add(new Tag(""));
-        tagList.add(new Tag(""));
-        tagList.add(new Tag(""));
-        tagList.add(new Tag(""));
-        tagList.add(new Tag(""));
-        tagList.add(new Tag(""));
-
-        tagAdapter.setTagList(tagList);
-
-
-        List<Sns> snsList = new ArrayList<>();
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-        postAdapter.setSnses(snsList);
 
 
 

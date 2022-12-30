@@ -86,17 +86,16 @@
                 android:layout_height="1dp"
                 android:layout_alignParentBottom="true"
                 android:layout_marginTop="15dp"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="5dp"
                 android:background="#CFCECE" />
 
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="wrap_content"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/tagRecyclerView"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/scd5"
-                android:text="제목"
-                android:textColor="#000000"
-                android:textSize="20dp" />
+                android:overScrollMode="never"
+                tools:itemCount="5"
+                tools:listitem="@layout/adapter_tag_item" />
 
 
             <TextView

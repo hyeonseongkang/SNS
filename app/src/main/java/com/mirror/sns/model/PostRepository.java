@@ -56,6 +56,7 @@ public class PostRepository {
     }
 
     public MutableLiveData<Post> getPostLiveData() { return post; }
+
     public MutableLiveData<Boolean> getLike() { return like; }
 
     public MutableLiveData<Boolean> getSuccessCreatePost() { return successCreatePost;}

@@ -115,7 +115,7 @@ public class CreatePostActivity extends AppCompatActivity {
                     // 1. recyclerview에 tag추가
                     String tagT = createPostBinding.tagText.getText().toString();
                     tags.add(new Tag(tagT));
-                    tagAdapter.setTagList(tags);
+                    tagAdapter.setTagList(tags, false);
                     // 2. tag text 지우기
                     createPostBinding.tagText.setText("");
                 }
