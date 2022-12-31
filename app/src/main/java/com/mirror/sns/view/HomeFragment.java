@@ -4,9 +4,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -57,6 +60,11 @@ public class HomeFragment extends Fragment {
     private String userUid;
     private String userEmail;
 
+    private long buttonPressTime = 0;
+
+    List<Post> currentPosts = new ArrayList<>();
+
+
     public HomeFragment() {
 
     }
@@ -73,8 +81,6 @@ public class HomeFragment extends Fragment {
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
-
-
 
 
         userManagementViewModel = new ViewModelProvider(requireActivity()).get(UserManagementViewModel.class);
@@ -118,12 +124,48 @@ public class HomeFragment extends Fragment {
 
         homeBinding.snsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         homeBinding.snsRecyclerView.setHasFixedSize(true);
-        snsAdapter = new SnsAdapter();
+        snsAdapter = new SnsAdapter(new View.OnTouchListener() {
+            int position;
+            GestureDetector gestureDetector = new GestureDetector(getActivity(), new GestureDetector.SimpleOnGestureListener() {
+
+                @Override
+                public boolean onSingleTapConfirmed(MotionEvent e) {
+                    Toast.makeText(getActivity(), "SingleTap!", Toast.LENGTH_SHORT).show();
+                    Post post = currentPosts.get(position);
+                    Intent intent = new Intent(getActivity(), DetailPostActivity.class);
+                    intent.putExtra("userUid", post.getUserUid());
+                    intent.putExtra("itemKey", post.getKey());
+                    startActivity(intent);
+                    return super.onSingleTapConfirmed(e);
+                }
+
+
+                @Override
+                public boolean onDoubleTap(MotionEvent e) {
+                    Toast.makeText(getActivity(), "DoubleTap!", Toast.LENGTH_SHORT).show();
+                    return super.onDoubleTap(e);
+                }
+            });
+
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                Object obj = view.getTag();
+
+                if (obj != null) {
+                    position = (int) obj;
+                    gestureDetector.onTouchEvent(motionEvent);
+                }
+
+                return false;
+            }
+        });
         homeBinding.snsRecyclerView.setAdapter(snsAdapter);
 
         postViewModel.getPostsLiveData().observe(getActivity(), new Observer<List<Post>>() {
             @Override
             public void onChanged(List<Post> posts) {
+                currentPosts.clear();
+                currentPosts = posts;
                 snsAdapter.setSnses(posts);
             }
         });
@@ -133,13 +175,13 @@ public class HomeFragment extends Fragment {
          */
 
         List<Profile> profileList = new ArrayList<>();
-        profileList.add(new Profile("", "", "user1" ,""));
-        profileList.add(new Profile("", "", "user2" ,""));
-        profileList.add(new Profile("", "", "user3" ,""));
-        profileList.add(new Profile("", "", "user4" ,""));
-        profileList.add(new Profile("", "", "user5" ,""));
-        profileList.add(new Profile("", "", "user6" ,""));
-        profileList.add(new Profile("", "", "user7" ,""));
+        profileList.add(new Profile("", "", "user1", ""));
+        profileList.add(new Profile("", "", "user2", ""));
+        profileList.add(new Profile("", "", "user3", ""));
+        profileList.add(new Profile("", "", "user4", ""));
+        profileList.add(new Profile("", "", "user5", ""));
+        profileList.add(new Profile("", "", "user6", ""));
+        profileList.add(new Profile("", "", "user7", ""));
 
         profileAdapter.setProfiles(profileList);
 
@@ -147,16 +189,6 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemClick(Profile profile, int position) {
 
-            }
-        });
-
-        snsAdapter.setOnItemClickListener(new SnsAdapter.onItemClickListener() {
-            @Override
-            public void onItemClick(Post post, int position) {
-                Intent intent = new Intent(getActivity(), DetailPostActivity.class);
-                intent.putExtra("userUid", post.getUserUid());
-                intent.putExtra("itemKey", post.getKey());
-                startActivity(intent);
             }
         });
 

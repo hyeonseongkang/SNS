@@ -1,7 +1,9 @@
 package com.mirror.sns.adapter;
 
 import android.net.Uri;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -23,7 +25,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class SnsAdapter extends RecyclerView.Adapter<SnsAdapter.MyViewHolder>{
 
     List<Post> posts = new ArrayList<>();
-    private onItemClickListener listener;
+    static public View.OnTouchListener onTouchListener;
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -35,6 +37,9 @@ public class SnsAdapter extends RecyclerView.Adapter<SnsAdapter.MyViewHolder>{
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
+
+        holder.itemView.setTag(position);
+
         Post currPost = posts.get(position);
 
         Glide.with(holder.itemView.getContext())
@@ -62,6 +67,10 @@ public class SnsAdapter extends RecyclerView.Adapter<SnsAdapter.MyViewHolder>{
     @Override
     public int getItemCount() { return posts == null ? 0 : posts.size(); }
 
+    public SnsAdapter(View.OnTouchListener onTouchListener) {
+        this.onTouchListener = onTouchListener;
+    }
+
     public void setSnses(List<Post> posts) {
         this.posts = posts;
         notifyDataSetChanged();
@@ -82,22 +91,11 @@ public class SnsAdapter extends RecyclerView.Adapter<SnsAdapter.MyViewHolder>{
             postContent = itemView.findViewById(R.id.postContent);
             postPhoto = itemView.findViewById(R.id.postPhoto);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int position = getAdapterPosition();
-                    if (listener != null && position != RecyclerView.NO_POSITION) {
-                        listener.onItemClick(posts.get(position), position);
-                    }
-                }
-            });
+            itemView.setClickable(true);
+            itemView.setEnabled(true);
+            itemView.setOnTouchListener(onTouchListener);
+
         }
     }
-
-    public interface onItemClickListener {
-        void onItemClick(Post sns, int position);
-    }
-
-    public void setOnItemClickListener(onItemClickListener listener) { this.listener = listener; }
 
 }
