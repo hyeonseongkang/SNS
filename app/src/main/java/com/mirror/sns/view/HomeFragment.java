@@ -33,6 +33,7 @@ import com.mirror.sns.viewmodel.UserManagementViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class HomeFragment extends Fragment {
 
@@ -96,7 +97,7 @@ public class HomeFragment extends Fragment {
                             .into(homeBinding.userProfile);
                 } else {
                     Log.d(TAG, "photo Url is not null");
-                    Glide.with(getActivity())
+                    Glide.with(requireActivity())
                             .load(Uri.parse(userPhoto))
                             .into(homeBinding.userProfile);
                 }

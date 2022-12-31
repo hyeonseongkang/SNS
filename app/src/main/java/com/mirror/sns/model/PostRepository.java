@@ -147,7 +147,7 @@ public class PostRepository {
         3. 해당 아이템의 좋아요를 누른 uid 리스트에 인자값으로 넘어온 uid(현재 아이템의 좋아요를 누른사람)가 없다면 해당 아이템에 대해 처음 좋아요를 누른 사람이므로 likes ref list에 uid를 추가한다.
         4. 만약 리스트에 uid가 있다면 좋아요를 취소한 것으로 해당 uid를 삭제한다.
          */
-        postsRef.child(key).child("likes").addListenerForSingleValueEvent(new ValueEventListener() {
+        postsRef.child(uid).child(key).child("likes").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 ArrayList<String> likes = new ArrayList<>();
@@ -168,7 +168,7 @@ public class PostRepository {
                     like.setValue(false);
                 }
 
-                postsRef.child(key).child("likes").setValue(likes);
+                postsRef.child(uid).child(key).child("likes").setValue(likes);
             }
 
             @Override
@@ -181,7 +181,7 @@ public class PostRepository {
     // 좋아요 가져오기
     public void getLike(String key, String uid) {
         // 인자값으로 넘어온 uid가 key에 해당하는 아이템의 좋아요를 눌렀다면 화면에 빨간색 하트를 표시하기 위해 사용
-        postsRef.child(key).child("likes").addListenerForSingleValueEvent(new ValueEventListener() {
+        postsRef.child(uid).child(key).child("likes").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 ArrayList<String> likes = new ArrayList<>();
