@@ -1,5 +1,7 @@
 package com.mirror.sns.view;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,6 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -62,6 +65,9 @@ public class HomeFragment extends Fragment {
 
     private long buttonPressTime = 0;
 
+    Context mContext;
+    Activity mActivity;
+
     List<Post> currentPosts = new ArrayList<>();
 
 
@@ -69,6 +75,24 @@ public class HomeFragment extends Fragment {
 
     }
 
+
+    @Override
+    public void onAttach(Context context) {
+        mContext = context;
+        if (context instanceof Activity) {
+            mActivity = (Activity)context;
+        }
+        super.onAttach(context);
+    }
+
+
+    // detach에서는 변수 clearing 해주기 leak방지
+    @Override
+    public void onDetach() {
+        mActivity = null;
+        mContext = null;
+        super.onDetach();
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         homeBinding = FragmentHomeBinding.inflate(inflater, container, false);
@@ -87,7 +111,8 @@ public class HomeFragment extends Fragment {
         loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
         postViewModel = new ViewModelProvider(requireActivity()).get(PostViewModel.class);
 
-        userManagementViewModel.getUserLiveData().observe(getActivity(), new Observer<User>() {
+        userManagementViewModel.getUserInfo(firebaseUser.getUid());
+        userManagementViewModel.getUserLiveData().observe((LifecycleOwner) getContext(), new Observer<User>() {
             @Override
             public void onChanged(User user) {
                 // user data
@@ -96,23 +121,28 @@ public class HomeFragment extends Fragment {
                 userUid = user.getUid();
                 userEmail = user.getEmail();
 
-                if (userPhoto.length() <= 0 || userPhoto == null) {
-                    Log.d(TAG, "photo Url is null");
-                    Glide.with(getActivity())
-                            .load(R.drawable.basic_profile_photo)
-                            .into(homeBinding.userProfile);
-                } else {
-                    Log.d(TAG, "photo Url is not null");
-                    Glide.with(requireActivity())
-                            .load(Uri.parse(userPhoto))
-                            .into(homeBinding.userProfile);
+                homeBinding.myNickName.setText(userName);
+
+                if (mActivity != null) {
+                    if (userPhoto.length() <= 0 || userPhoto == null) {
+                        Log.d(TAG, "photo Url is null");
+                        Glide.with(mActivity)
+                                .load(R.drawable.basic_profile_photo)
+                                .into(homeBinding.userProfile);
+                    } else {
+                        Log.d(TAG, "photo Url is not null");
+                        Glide.with(mActivity)
+                                .load(Uri.parse(userPhoto))
+                                .into(homeBinding.userProfile);
+                    }
                 }
 
 
-                homeBinding.myNickName.setText(userName);
+
+
             }
         });
-        userManagementViewModel.getUserInfo(firebaseUser.getUid());
+
 
         postViewModel.getPosts();
 
@@ -143,6 +173,8 @@ public class HomeFragment extends Fragment {
                 @Override
                 public boolean onDoubleTap(MotionEvent e) {
                     Toast.makeText(getActivity(), "DoubleTap!", Toast.LENGTH_SHORT).show();
+                    Post post = currentPosts.get(position);
+                    postViewModel.setLike(post.getKey(), firebaseAuth.getUid());
                     return super.onDoubleTap(e);
                 }
             });
@@ -161,12 +193,13 @@ public class HomeFragment extends Fragment {
         });
         homeBinding.snsRecyclerView.setAdapter(snsAdapter);
 
-        postViewModel.getPostsLiveData().observe(getActivity(), new Observer<List<Post>>() {
+        postViewModel.getPostsLiveData().observe(getViewLifecycleOwner(), new Observer<List<Post>>() {
             @Override
             public void onChanged(List<Post> posts) {
                 currentPosts.clear();
                 currentPosts = posts;
                 snsAdapter.setSnses(posts);
+                Log.d(TAG, "???");
             }
         });
 
