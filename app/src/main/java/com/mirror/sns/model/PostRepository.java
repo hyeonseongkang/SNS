@@ -40,12 +40,14 @@ public class PostRepository {
     private MutableLiveData<Post> post;
     private MutableLiveData<Boolean> like;
     private MutableLiveData<Boolean> successCreatePost;
+    private MutableLiveData<List<String>> likePressUsers;
 
     public PostRepository(Application application) {
         this.application = application;
         postsRef = FirebaseDatabase.getInstance().getReference("posts");
         postsLiveData = new MutableLiveData<>();
         successCreatePost = new MutableLiveData<>();
+        likePressUsers = new MutableLiveData<>();
         post = new MutableLiveData<>();
         posts = new ArrayList<>();
         like = new MutableLiveData<>();
@@ -60,6 +62,8 @@ public class PostRepository {
     public MutableLiveData<Boolean> getLike() { return like; }
 
     public MutableLiveData<Boolean> getSuccessCreatePost() { return successCreatePost;}
+
+    public MutableLiveData<List<String>> getLikePressUsers() { return likePressUsers; }
 
     public void createPost(Post post) {
         String userUid = post.getUserUid();
@@ -197,6 +201,28 @@ public class PostRepository {
                     like.setValue(true);
                 else
                     like.setValue(false);
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void getLikePressUser(String key, String uid) {
+        postsRef.child(uid).child(key).child("likes").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                ArrayList<String> likes = new ArrayList<>();
+                for (DataSnapshot snapshot1: snapshot.getChildren()) {
+                    if (snapshot1.getValue() != null) {
+                        String userUid = snapshot1.getValue(String.class);
+                        likes.add(userUid);
+                    }
+                }
+
+                likePressUsers.setValue(likes);
             }
 
             @Override
