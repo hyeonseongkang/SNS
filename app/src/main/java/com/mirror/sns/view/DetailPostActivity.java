@@ -26,6 +26,8 @@ import com.mirror.sns.viewmodel.LoginViewModel;
 import com.mirror.sns.viewmodel.PostViewModel;
 import com.mirror.sns.viewmodel.UserManagementViewModel;
 
+import java.util.List;
+
 public class DetailPostActivity extends AppCompatActivity {
 
     private static final String TAG = "DetailPostActivity";
@@ -112,6 +114,15 @@ public class DetailPostActivity extends AppCompatActivity {
             }
         });
         postViewModel.getPost(userUid, itemkey);
+
+
+        postViewModel.getLikePressUsers().observe(this, new Observer<List<String>>() {
+            @Override
+            public void onChanged(List<String> strings) {
+                // 좋아요 누른 유저 uid 리스트
+            }
+        });
+        postViewModel.getLikePressUsers(itemkey, userUid);
 
 
         // 현재 아이템을 누른 uid가 아이템의 좋아요를 눌렀는지 확인

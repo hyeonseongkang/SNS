@@ -193,4 +193,19 @@ public class UserManagementRepository {
             }
         }
     }
+
+    public void getUserPhoto(String uid) {
+        usersRef.child(uid).child("photoUri").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                String photoUri = snapshot.getValue(String.class);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+    }
 }

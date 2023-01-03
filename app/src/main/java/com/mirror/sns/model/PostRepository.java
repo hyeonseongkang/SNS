@@ -210,7 +210,7 @@ public class PostRepository {
         });
     }
 
-    public void getLikePressUser(String key, String uid) {
+    public void getLikePressUsers(String key, String uid) {
         postsRef.child(uid).child(key).child("likes").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
@@ -230,5 +230,9 @@ public class PostRepository {
 
             }
         });
+    }
+
+    public void getUserPhoto(String uid) {
+
     }
 }
