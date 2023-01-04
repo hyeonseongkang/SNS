@@ -21,6 +21,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.mirror.sns.classes.Post;
 import com.mirror.sns.classes.Tag;
+import com.mirror.sns.classes.User;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -57,13 +58,21 @@ public class PostRepository {
         return postsLiveData;
     }
 
-    public MutableLiveData<Post> getPostLiveData() { return post; }
+    public MutableLiveData<Post> getPostLiveData() {
+        return post;
+    }
 
-    public MutableLiveData<Boolean> getLike() { return like; }
+    public MutableLiveData<Boolean> getLike() {
+        return like;
+    }
 
-    public MutableLiveData<Boolean> getSuccessCreatePost() { return successCreatePost;}
+    public MutableLiveData<Boolean> getSuccessCreatePost() {
+        return successCreatePost;
+    }
 
-    public MutableLiveData<List<String>> getLikePressUsers() { return likePressUsers; }
+    public MutableLiveData<List<String>> getLikePressUsers() {
+        return likePressUsers;
+    }
 
     public void createPost(Post post) {
         String userUid = post.getUserUid();
@@ -88,7 +97,7 @@ public class PostRepository {
                         postsRef.child(userUid).child(key).setValue(post).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull @NotNull Task<Void> task) {
-                                if (task.isSuccessful()){
+                                if (task.isSuccessful()) {
                                     successCreatePost.setValue(true);
                                 }
                             }
@@ -123,9 +132,9 @@ public class PostRepository {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 posts.clear();
-                for (DataSnapshot snapshot1: snapshot.getChildren()) {
-                    for (DataSnapshot snapshot2: snapshot1.getChildren()) {
-                        Log.d( "post snapshot2 data ", snapshot2.getValue().toString());
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                    for (DataSnapshot snapshot2 : snapshot1.getChildren()) {
+                        Log.d("post snapshot2 data ", snapshot2.getValue().toString());
                         Post post = snapshot2.getValue(Post.class);
                         posts.add(post);
                     }
@@ -140,17 +149,12 @@ public class PostRepository {
         });
     }
 
+/*
     // post 좋아요
-    public void setLike(String key, String uid) {
+    public void setLike(String uid, String key, User setUser) {
         // key = item
         // uid = 좋아요 누른 사람 uid
 
-        /*
-        1. postsRef / key / likes의 값들을 모두 가져온다.
-        2. likes에는 해당 아이템의 좋아요를 누른 사람들의 uid가 저장되어있다.
-        3. 해당 아이템의 좋아요를 누른 uid 리스트에 인자값으로 넘어온 uid(현재 아이템의 좋아요를 누른사람)가 없다면 해당 아이템에 대해 처음 좋아요를 누른 사람이므로 likes ref list에 uid를 추가한다.
-        4. 만약 리스트에 uid가 있다면 좋아요를 취소한 것으로 해당 uid를 삭제한다.
-         */
         postsRef.child(uid).child(key).child("likes").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
@@ -181,6 +185,47 @@ public class PostRepository {
             }
         });
     }
+    */
+
+    // post 좋아요
+    public void setLike(String uid, String key, User setUser) {
+
+        String likePressUser = setUser.getUid();
+
+        postsRef.child(uid).child(key).child("likes").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                ArrayList<String> likes = new ArrayList<>();
+                ArrayList<User> users = new ArrayList<>() ;
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                    if (snapshot1.getValue() != null) {
+                        Log.d(TAG, snapshot1.getValue().toString());
+                        User user = snapshot1.getValue(User.class);
+                        users.add(user);
+                       // String userUid = snapshot1.getValue(String.class);
+                        likes.add(user.getUid());
+                    }
+                }
+
+                // 현재 아이템 좋아요 리스트에 uid가 없다면 추가하고 uid가 있다면 삭제 -> toggle
+                if (!(likes.contains(likePressUser))) {
+                    users.add(setUser);
+                    like.setValue(true);
+                } else if (likes.contains(uid)) {
+                    users.remove(setUser);
+                    like.setValue(false);
+                }
+
+                postsRef.child(uid).child(key).child("likes").child(likePressUser).setValue(setUser);
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+    }
+
 
     // 좋아요 가져오기
     public void getLike(String key, String uid) {
@@ -189,7 +234,7 @@ public class PostRepository {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 ArrayList<String> likes = new ArrayList<>();
-                for (DataSnapshot snapshot1: snapshot.getChildren()) {
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                     if (snapshot1.getValue() != null) {
                         String userUid = snapshot1.getValue(String.class);
                         likes.add(userUid);
@@ -215,7 +260,7 @@ public class PostRepository {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 ArrayList<String> likes = new ArrayList<>();
-                for (DataSnapshot snapshot1: snapshot.getChildren()) {
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                     if (snapshot1.getValue() != null) {
                         String userUid = snapshot1.getValue(String.class);
                         likes.add(userUid);

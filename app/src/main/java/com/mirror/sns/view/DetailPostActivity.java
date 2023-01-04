@@ -46,6 +46,7 @@ public class DetailPostActivity extends AppCompatActivity {
     private String userPhoto;
     private String userEmail;
 
+    private User currentUser;
 
     TagAdapter tagAdapter;
 
@@ -64,6 +65,7 @@ public class DetailPostActivity extends AppCompatActivity {
             @Override
             public void onChanged(User user) {
                 // user data
+                currentUser = user;
                 userName = user.getNickName();
                 userPhoto = user.getPhotoUri();
                 userEmail = user.getEmail();
@@ -141,7 +143,7 @@ public class DetailPostActivity extends AppCompatActivity {
         detailPostBinding.like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                postViewModel.setLike(itemkey, firebaseAuth.getUid());
+                postViewModel.setLike(userUid, itemkey, currentUser);
             }
         });
 

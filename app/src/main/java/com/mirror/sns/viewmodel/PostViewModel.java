@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.mirror.sns.classes.Post;
+import com.mirror.sns.classes.User;
 import com.mirror.sns.model.PostRepository;
 
 import java.util.List;
@@ -58,7 +59,7 @@ public class PostViewModel extends AndroidViewModel {
 
     public void getLike(String key, String uid) { repository.getLike(key, uid);}
 
-    public void setLike(String key, String uid) { repository.setLike(key, uid);}
+    public void setLike(String uid, String key, User setUser) { repository.setLike(uid, key, setUser);}
 
     public void getLikePressUsers(String key,  String uid) { repository.getLikePressUsers(key, uid);}
 }

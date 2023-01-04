@@ -65,6 +65,8 @@ public class HomeFragment extends Fragment {
 
     private long buttonPressTime = 0;
 
+    private User currentUser;
+
     Context mContext;
     Activity mActivity;
 
@@ -116,6 +118,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onChanged(User user) {
                 // user data
+                currentUser = user;
                 userName = user.getNickName();
                 userPhoto = user.getPhotoUri();
                 userUid = user.getUid();
@@ -174,7 +177,7 @@ public class HomeFragment extends Fragment {
                 public boolean onDoubleTap(MotionEvent e) {
                     Toast.makeText(getActivity(), "DoubleTap!", Toast.LENGTH_SHORT).show();
                     Post post = currentPosts.get(position);
-                    postViewModel.setLike(post.getKey(), firebaseAuth.getUid());
+                    postViewModel.setLike(post.getUserUid(), post.getKey(), currentUser);
                     return super.onDoubleTap(e);
                 }
             });
