@@ -79,7 +79,7 @@ public class PostRepository {
         String key = postsRef.push().getKey();
         String content = post.getContent();
         String userPhotoUri = post.getUserPhotoUri();
-        ArrayList<String> likes = post.getLikes();
+        ArrayList<List<User>> likes = post.getLikes();
         String postPhoto = post.getPostPhotoUri();
         ArrayList<Tag> tags = post.getTags();
 
@@ -135,7 +135,15 @@ public class PostRepository {
                 for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                     for (DataSnapshot snapshot2 : snapshot1.getChildren()) {
                         Log.d("post snapshot2 data ", snapshot2.getValue().toString());
-                        Post post = snapshot2.getValue(Post.class);
+                        String content = snapshot2.child("content").getValue(String.class);
+                        String key = snapshot2.child("key").getValue(String.class);
+                        String postPhotoUri = snapshot2.child("postPhotoUri").getValue(String.class);
+                        String userPhotoUri = snapshot2.child("userPhotoUri").getValue(String.class);
+                        String userUid = snapshot2.child("userUid").getValue(String.class);
+                        //Post post = snapshot2.getValue(Post.class);
+                        // public Post(String key, String userUid, String content, String userPhotoUri, String postPhotoUri, ArrayList<Tag> tags, ArrayList<List<User>> likes) {
+                        Tag tag = snapshot2.child("tag").getValue(Tag.class);
+                        Post post = new Post(key, userUid, content, userPhotoUri, postPhotoUri, null, null);
                         posts.add(post);
                     }
                 }
@@ -234,10 +242,13 @@ public class PostRepository {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 ArrayList<String> likes = new ArrayList<>();
+                ArrayList<User> users = new ArrayList<>() ;
                 for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                     if (snapshot1.getValue() != null) {
                         String userUid = snapshot1.getValue(String.class);
-                        likes.add(userUid);
+                        User user = snapshot1.getValue(User.class);
+                        users.add(user);
+                        likes.add(user.getUid());
                     }
                 }
 

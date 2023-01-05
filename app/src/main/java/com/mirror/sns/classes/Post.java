@@ -1,6 +1,7 @@
 package com.mirror.sns.classes;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Post {
     private String key;
@@ -9,12 +10,12 @@ public class Post {
     private String userPhotoUri;
     private String postPhotoUri;
     private ArrayList<Tag> tags;
-    private ArrayList<String> likes;
+    private ArrayList<List<User>> likes;
 
 
     public Post() {}
 
-    public Post(String key, String userUid, String content, String userPhotoUri, String postPhotoUri, ArrayList<Tag> tags, ArrayList<String> likes) {
+    public Post(String key, String userUid, String content, String userPhotoUri, String postPhotoUri, ArrayList<Tag> tags, ArrayList<List<User>> likes) {
         this.key = key;
         this.userUid = userUid;
         this.content = content;
@@ -72,11 +73,11 @@ public class Post {
         this.tags = tags;
     }
 
-    public ArrayList<String> getLikes() {
+    public ArrayList<List<User>> getLikes() {
         return likes;
     }
 
-    public void setLikes(ArrayList<String> likes) {
+    public void setLikes(ArrayList<List<User>> likes) {
         this.likes = likes;
     }
 }
