@@ -10,12 +10,12 @@ public class Post {
     private String userPhotoUri;
     private String postPhotoUri;
     private ArrayList<Tag> tags;
-    private ArrayList<List<User>> likes;
+    private ArrayList<User> likes;
 
 
     public Post() {}
 
-    public Post(String key, String userUid, String content, String userPhotoUri, String postPhotoUri, ArrayList<Tag> tags, ArrayList<List<User>> likes) {
+    public Post(String key, String userUid, String content, String userPhotoUri, String postPhotoUri, ArrayList<Tag> tags, ArrayList<User> likes) {
         this.key = key;
         this.userUid = userUid;
         this.content = content;
@@ -73,11 +73,11 @@ public class Post {
         this.tags = tags;
     }
 
-    public ArrayList<List<User>> getLikes() {
+    public ArrayList<User> getLikes() {
         return likes;
     }
 
-    public void setLikes(ArrayList<List<User>> likes) {
+    public void setLikes(ArrayList<User> likes) {
         this.likes = likes;
     }
 }
