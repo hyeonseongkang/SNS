@@ -116,8 +116,27 @@ public class PostRepository {
         postsRef.child(userUid).child(key).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                Post tempPost = snapshot.getValue(Post.class);
-                post.setValue(tempPost);
+                String content = snapshot.child("content").getValue(String.class);
+                String key = snapshot.child("key").getValue(String.class);
+                String postPhotoUri = snapshot.child("postPhotoUri").getValue(String.class);
+                String userPhotoUri = snapshot.child("userPhotoUri").getValue(String.class);
+                String userUid = snapshot.child("userUid").getValue(String.class);
+
+                ArrayList<User> likePressUsers = new ArrayList<>();
+                for (DataSnapshot snapshot3: snapshot.child("likes").getChildren()) {
+                    User user = snapshot3.getValue(User.class);
+                    likePressUsers.add(user);
+                }
+
+                ArrayList<Tag> tagList = new ArrayList<>();
+                for (DataSnapshot snapshot3: snapshot.child("tag").getChildren()) {
+                    Tag tag = snapshot3.getValue(Tag.class);
+                    tagList.add(tag);
+                }
+                //Post post = snapshot2.getValue(Post.class);
+                // public Post(String key, String userUid, String content, String userPhotoUri, String postPhotoUri, ArrayList<Tag> tags, ArrayList<List<User>> likes) {
+                Post currPost = new Post(key, userUid, content, userPhotoUri, postPhotoUri, tagList, likePressUsers);
+                post.setValue(currPost);
             }
 
             @Override
@@ -256,7 +275,7 @@ public class PostRepository {
                 ArrayList<User> users = new ArrayList<>() ;
                 for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                     if (snapshot1.getValue() != null) {
-                        String userUid = snapshot1.getValue(String.class);
+                      //  String userUid = snapshot1.getValue(String.class);
                         User user = snapshot1.getValue(User.class);
                         users.add(user);
                         likes.add(user.getUid());
@@ -284,7 +303,8 @@ public class PostRepository {
                 ArrayList<String> likes = new ArrayList<>();
                 for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                     if (snapshot1.getValue() != null) {
-                        String userUid = snapshot1.getValue(String.class);
+                        // String userUid = snapshot1.getValue(String.class);
+                        String userUid = snapshot1.getKey();
                         likes.add(userUid);
                     }
                 }
