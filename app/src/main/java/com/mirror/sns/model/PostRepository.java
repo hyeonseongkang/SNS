@@ -249,12 +249,13 @@ public class PostRepository {
                 if (!(likes.contains(likePressUser))) {
                     users.add(setUser);
                     like.setValue(true);
+                    postsRef.child(uid).child(key).child("likes").child(setUser.getUid()).setValue(setUser);
                 } else if (likes.contains(uid)) {
                     users.remove(setUser);
                     like.setValue(false);
+                    postsRef.child(uid).child(key).child("likes").child(setUser.getUid()).removeValue();
                 }
 
-                postsRef.child(uid).child(key).child("likes").child(likePressUser).setValue(setUser);
             }
 
             @Override

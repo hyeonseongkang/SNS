@@ -72,8 +72,8 @@
                     android:id="@+id/like"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:background="@drawable/heart"
-                    android:layout_marginRight="20dp"/>
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/basic_heart" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:layout_width="25dp"
