@@ -68,7 +68,8 @@
                 android:orientation="horizontal"
                 android:layout_marginTop="10dp">
 
-                <androidx.appcompat.widget.AppCompatButton
+                <ImageView
+                    android:id="@+id/like"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:background="@drawable/heart"

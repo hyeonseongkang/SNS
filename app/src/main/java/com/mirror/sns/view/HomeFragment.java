@@ -193,7 +193,7 @@ public class HomeFragment extends Fragment {
 
                 return false;
             }
-        });
+        }, firebaseUser.getUid());
         homeBinding.snsRecyclerView.setAdapter(snsAdapter);
 
         postViewModel.getPostsLiveData().observe(getViewLifecycleOwner(), new Observer<List<Post>>() {

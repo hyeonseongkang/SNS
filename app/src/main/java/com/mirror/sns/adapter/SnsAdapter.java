@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.mirror.sns.R;
 import com.mirror.sns.classes.Post;
 import com.mirror.sns.classes.Sns;
+import com.mirror.sns.classes.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,8 @@ public class SnsAdapter extends RecyclerView.Adapter<SnsAdapter.MyViewHolder>{
 
     List<Post> posts = new ArrayList<>();
     static public View.OnTouchListener onTouchListener;
+
+    String userUid;
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -42,6 +45,13 @@ public class SnsAdapter extends RecyclerView.Adapter<SnsAdapter.MyViewHolder>{
 
         Post currPost = posts.get(position);
 
+        List<User> likePressUsers = currPost.getLikes();
+
+
+        Glide.with(holder.itemView.getContext())
+                .load(R.drawable.basic_heart)
+                .into(holder.like);
+
         Glide.with(holder.itemView.getContext())
                 .load(R.drawable.basic_profile_photo)
                 .into(holder.userPhoto);
@@ -56,6 +66,15 @@ public class SnsAdapter extends RecyclerView.Adapter<SnsAdapter.MyViewHolder>{
                     .into(holder.userPhoto);
         }
 
+        for (User user: likePressUsers) {
+            if (user.getUid().equals(userUid)) {
+                Glide.with(holder.itemView.getContext())
+                        .load(R.drawable.red_heart)
+                        .into(holder.like);
+                break;
+            }
+        }
+
         holder.userName.setText(currPost.getUserUid());
         holder.postContent.setText(currPost.getContent());
 
@@ -67,8 +86,9 @@ public class SnsAdapter extends RecyclerView.Adapter<SnsAdapter.MyViewHolder>{
     @Override
     public int getItemCount() { return posts == null ? 0 : posts.size(); }
 
-    public SnsAdapter(View.OnTouchListener onTouchListener) {
+    public SnsAdapter(View.OnTouchListener onTouchListener, String userUid) {
         this.onTouchListener = onTouchListener;
+        this.userUid = userUid;
     }
 
     public void setSnses(List<Post> posts) {
@@ -80,7 +100,7 @@ public class SnsAdapter extends RecyclerView.Adapter<SnsAdapter.MyViewHolder>{
 
         private CircleImageView userPhoto;
         private TextView userName, postContent;
-        private ImageView postPhoto;
+        private ImageView postPhoto, like;
 
 
         public MyViewHolder(View itemView) {
@@ -90,6 +110,7 @@ public class SnsAdapter extends RecyclerView.Adapter<SnsAdapter.MyViewHolder>{
             userName = itemView.findViewById(R.id.userName);
             postContent = itemView.findViewById(R.id.postContent);
             postPhoto = itemView.findViewById(R.id.postPhoto);
+            like = itemView.findViewById(R.id.like);
 
             itemView.setClickable(true);
             itemView.setEnabled(true);
