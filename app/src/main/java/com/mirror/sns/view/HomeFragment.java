@@ -199,10 +199,8 @@ public class HomeFragment extends Fragment {
         postViewModel.getPostsLiveData().observe(getViewLifecycleOwner(), new Observer<List<Post>>() {
             @Override
             public void onChanged(List<Post> posts) {
-                currentPosts.clear();
                 currentPosts = posts;
                 snsAdapter.setSnses(posts);
-                Log.d(TAG, "???");
             }
         });
 
