@@ -95,8 +95,28 @@ public class DetailPostActivity extends AppCompatActivity {
                 // Post(String key, String userUid, String content, String userPhotoUri, ArrayList<String> photoKeys, String firstPhotoUri, ArrayList<String> likes) {
                 currentPost = post;
 
+                List<User> users = currentPost.getLikes();
+
+
                 detailPostBinding.content.setText(currentPost.getContent());
                 detailPostBinding.userName.setText(currentPost.getUserUid());
+
+                for (int i = 0; i < users.size(); i++) {
+                    User user = users.get(i);
+                    if (i == 0) {
+                        Glide.with(DetailPostActivity.this)
+                                .load(Uri.parse(user.getPhotoUri()))
+                                .into(detailPostBinding.userPhoto1);
+                    } else if (i == 1) {
+                        Glide.with(DetailPostActivity.this)
+                                .load(Uri.parse(user.getPhotoUri()))
+                                .into(detailPostBinding.userPhoto2);
+                    } else if (i == 2) {
+                        Glide.with(DetailPostActivity.this)
+                                .load(Uri.parse(user.getPhotoUri()))
+                                .into(detailPostBinding.userPhoto2);
+                    }
+                }
 
                 tagAdapter.setTagList(currentPost.getTags(), true);
                 Glide.with(DetailPostActivity.this)
