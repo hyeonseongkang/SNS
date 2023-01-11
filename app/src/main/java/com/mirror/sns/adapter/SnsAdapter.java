@@ -47,6 +47,22 @@ public class SnsAdapter extends RecyclerView.Adapter<SnsAdapter.MyViewHolder>{
 
         List<User> likePressUsers = currPost.getLikes();
 
+        for (int i = 0; i < likePressUsers.size(); i++) {
+            if (i == 0) {
+                Glide.with(holder.itemView.getContext())
+                        .load(Uri.parse(likePressUsers.get(i).getPhotoUri()))
+                        .into(holder.userPhoto1);
+            } else if (i == 1) {
+                Glide.with(holder.itemView.getContext())
+                        .load(Uri.parse(likePressUsers.get(i).getPhotoUri()))
+                        .into(holder.userPhoto2);
+            } else if (i == 2) {
+                Glide.with(holder.itemView.getContext())
+                        .load(Uri.parse(likePressUsers.get(i).getPhotoUri()))
+                        .into(holder.userPhoto3);
+            }
+        }
+
 
         Glide.with(holder.itemView.getContext())
                 .load(R.drawable.basic_heart)
@@ -98,7 +114,7 @@ public class SnsAdapter extends RecyclerView.Adapter<SnsAdapter.MyViewHolder>{
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
-        private CircleImageView userPhoto;
+        private CircleImageView userPhoto, userPhoto1, userPhoto2, userPhoto3;
         private TextView userName, postContent;
         private ImageView postPhoto, like;
 
@@ -107,6 +123,11 @@ public class SnsAdapter extends RecyclerView.Adapter<SnsAdapter.MyViewHolder>{
             super(itemView);
 
             userPhoto = itemView.findViewById(R.id.userPhoto);
+
+            userPhoto1 = itemView.findViewById(R.id.userPhoto1);
+            userPhoto2 = itemView.findViewById(R.id.userPhoto2);
+            userPhoto3 = itemView.findViewById(R.id.userPhoto3);
+
             userName = itemView.findViewById(R.id.userName);
             postContent = itemView.findViewById(R.id.postContent);
             postPhoto = itemView.findViewById(R.id.postPhoto);

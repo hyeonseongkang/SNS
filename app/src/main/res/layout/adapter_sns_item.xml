@@ -94,19 +94,21 @@
                 android:layout_marginTop="15dp">
 
                 <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/userPhoto1"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:src="@drawable/basic_profile_photo"
                     />
 
                 <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/userPhoto2"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:src="@drawable/basic_profile_photo"
                     android:layout_marginLeft="20dp"/>
 
                 <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/a"
+                    android:id="@+id/userPhoto3"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:src="@drawable/basic_profile_photo"
@@ -114,7 +116,7 @@
 
                 <TextView
                     android:id="@+id/textView1"
-                    android:layout_toRightOf="@+id/a"
+                    android:layout_toRightOf="@+id/userPhoto3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Liked by kenzoere and others"
