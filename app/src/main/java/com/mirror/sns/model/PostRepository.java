@@ -230,6 +230,9 @@ public class PostRepository {
 
         String likePressUser = setUser.getUid();
 
+        if (uid.equals(setUser.getUid()))
+            return;
+
         postsRef.child(uid).child(key).child("likes").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {

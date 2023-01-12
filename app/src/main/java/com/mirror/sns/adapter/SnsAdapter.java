@@ -47,6 +47,19 @@ public class SnsAdapter extends RecyclerView.Adapter<SnsAdapter.MyViewHolder>{
 
         List<User> likePressUsers = currPost.getLikes();
 
+        Glide.with(holder.itemView.getContext())
+                .load(R.drawable.basic_profile_photo)
+                .into(holder.userPhoto1);
+
+        Glide.with(holder.itemView.getContext())
+                .load(R.drawable.basic_profile_photo)
+                .into(holder.userPhoto2);
+
+        Glide.with(holder.itemView.getContext())
+                .load(R.drawable.basic_profile_photo)
+                .into(holder.userPhoto3);
+
+
         for (int i = 0; i < likePressUsers.size(); i++) {
             if (i == 0) {
                 Glide.with(holder.itemView.getContext())
