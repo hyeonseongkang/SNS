@@ -16,8 +16,10 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.mirror.sns.R;
+import com.mirror.sns.adapter.CommentAdapter;
 import com.mirror.sns.adapter.DetailPostItemAdapter;
 import com.mirror.sns.adapter.TagAdapter;
+import com.mirror.sns.classes.Comment;
 import com.mirror.sns.classes.Post;
 import com.mirror.sns.classes.Tag;
 import com.mirror.sns.classes.User;
@@ -26,6 +28,7 @@ import com.mirror.sns.viewmodel.LoginViewModel;
 import com.mirror.sns.viewmodel.PostViewModel;
 import com.mirror.sns.viewmodel.UserManagementViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DetailPostActivity extends AppCompatActivity {
@@ -36,6 +39,8 @@ public class DetailPostActivity extends AppCompatActivity {
     private UserManagementViewModel userManagementViewModel;
 
     private PostViewModel postViewModel;
+
+    private CommentAdapter commentAdapter;
 
     private String userUid = null;
     private String itemkey = null;
@@ -86,6 +91,20 @@ public class DetailPostActivity extends AppCompatActivity {
 
         tagAdapter = new TagAdapter();
         detailPostBinding.tagRecyclerView.setAdapter(tagAdapter);
+
+        commentAdapter = new CommentAdapter();
+
+        detailPostBinding.commentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        detailPostBinding.commentRecyclerView.setHasFixedSize(true);
+        detailPostBinding.commentRecyclerView.setAdapter(commentAdapter);
+
+        List<Comment> comments = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            comments.add(new Comment(new User(), "", "댓글 테스트 " + i));
+        }
+        commentAdapter.setComments(comments);
+
+
 
         userManagementViewModel.getUserInfo(userUid);
         postViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(PostViewModel.class);
