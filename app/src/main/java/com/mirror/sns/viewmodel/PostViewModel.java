@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.mirror.sns.classes.Comment;
 import com.mirror.sns.classes.Post;
 import com.mirror.sns.classes.User;
 import com.mirror.sns.model.PostRepository;
@@ -26,6 +27,8 @@ public class PostViewModel extends AndroidViewModel {
 
     private MutableLiveData<List<String>> likePressUsers;
 
+    private MutableLiveData<List<Comment>> comments;
+
     public PostViewModel(Application application) {
         super(application);
 
@@ -35,6 +38,7 @@ public class PostViewModel extends AndroidViewModel {
         postsLiveData = repository.getPostsLiveData();
         postLiveData = repository.getPostLiveData();
         like = repository.getLike();
+        comments = repository.getComments();
     }
 
     public LiveData<List<Post>> getPostsLiveData() {
@@ -46,6 +50,8 @@ public class PostViewModel extends AndroidViewModel {
     public MutableLiveData<Boolean> getSuccessCreatePost() { return successCreatePost;}
 
     public MutableLiveData<List<String>> getLikePressUsers() { return likePressUsers; }
+
+    public MutableLiveData<List<Comment>> getComments() { return comments; }
 
     public void createPost(Post post) {
         repository.createPost(post);
@@ -62,4 +68,6 @@ public class PostViewModel extends AndroidViewModel {
     public void setLike(String uid, String key, User setUser) { repository.setLike(uid, key, setUser);}
 
     public void getLikePressUsers(String key,  String uid) { repository.getLikePressUsers(key, uid);}
+
+    public void setComment(String itemKey, Comment comment) { repository.setComment(itemKey, comment);}
 }

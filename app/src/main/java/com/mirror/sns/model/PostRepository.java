@@ -19,6 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.mirror.sns.classes.Comment;
 import com.mirror.sns.classes.Post;
 import com.mirror.sns.classes.Tag;
 import com.mirror.sns.classes.User;
@@ -34,6 +35,7 @@ public class PostRepository {
     private Application application;
 
     private DatabaseReference postsRef;
+    private DatabaseReference commentsRef;
 
     private MutableLiveData<List<Post>> postsLiveData;
     private List<Post> posts;
@@ -42,13 +44,16 @@ public class PostRepository {
     private MutableLiveData<Boolean> like;
     private MutableLiveData<Boolean> successCreatePost;
     private MutableLiveData<List<String>> likePressUsers;
+    private MutableLiveData<List<Comment>> comments;
 
     public PostRepository(Application application) {
         this.application = application;
         postsRef = FirebaseDatabase.getInstance().getReference("posts");
+        commentsRef = FirebaseDatabase.getInstance().getReference("comments");
         postsLiveData = new MutableLiveData<>();
         successCreatePost = new MutableLiveData<>();
         likePressUsers = new MutableLiveData<>();
+        comments = new MutableLiveData<>();
         post = new MutableLiveData<>();
         posts = new ArrayList<>();
         like = new MutableLiveData<>();
@@ -73,6 +78,8 @@ public class PostRepository {
     public MutableLiveData<List<String>> getLikePressUsers() {
         return likePressUsers;
     }
+
+    public MutableLiveData<List<Comment>> getComments() { return comments; }
 
     public void createPost(Post post) {
         String userUid = post.getUserUid();
@@ -325,5 +332,9 @@ public class PostRepository {
 
     public void getUserPhoto(String uid) {
 
+    }
+
+    public void setComment(String itemKey, Comment comment) {
+        commentsRef.child(itemKey).push().setValue(comment);
     }
 }
