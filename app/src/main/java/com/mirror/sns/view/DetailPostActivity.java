@@ -40,7 +40,7 @@ public class DetailPostActivity extends AppCompatActivity {
 
     private PostViewModel postViewModel;
 
-    private CommentAdapter commentAdapter;
+//    private CommentAdapter commentAdapter;
 
     private String userUid = null;
     private String itemkey = null;
@@ -92,19 +92,29 @@ public class DetailPostActivity extends AppCompatActivity {
         tagAdapter = new TagAdapter();
         detailPostBinding.tagRecyclerView.setAdapter(tagAdapter);
 
-        commentAdapter = new CommentAdapter();
+//        commentAdapter = new CommentAdapter();
 
-        detailPostBinding.commentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        detailPostBinding.commentRecyclerView.setHasFixedSize(true);
-        detailPostBinding.commentRecyclerView.setAdapter(commentAdapter);
+//        detailPostBinding.commentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        detailPostBinding.commentRecyclerView.setHasFixedSize(true);
+//        detailPostBinding.commentRecyclerView.setAdapter(commentAdapter);
 
-        List<Comment> comments = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            comments.add(new Comment(new User(), "", "댓글 테스트 " + i));
-        }
-        commentAdapter.setComments(comments);
+//        List<Comment> comments = new ArrayList<>();
+//        for (int i = 0; i < 10; i++) {
+//            comments.add(new Comment(new User(), "", "댓글 테스트 " + i));
+//        }
+//        commentAdapter.setComments(comments);
 
-
+        detailPostBinding.commentActivity.setEnabled(true);
+        detailPostBinding.commentActivity.setClickable(true);
+        detailPostBinding.commentActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(DetailPostActivity.this, CommentActivity.class);
+                intent.putExtra("userUid", userUid);
+                intent.putExtra("itemKey", itemkey);
+                startActivity(intent);
+            }
+        });
 
         userManagementViewModel.getUserInfo(userUid);
         postViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(PostViewModel.class);

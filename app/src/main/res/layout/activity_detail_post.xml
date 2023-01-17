@@ -10,7 +10,7 @@
     <RelativeLayout
         android:id="@+id/top"
         android:layout_width="match_parent"
-        android:layout_height="340dp">
+        android:layout_height="400dp">
 
         <ImageView
             android:id="@+id/postPhoto"
@@ -153,14 +153,24 @@
                 android:textColor="#000000"
                 android:textSize="15dp" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/commentRecyclerView"
+
+            <TextView
+                android:id="@+id/commentActivity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:overScrollMode="never"
-                tools:itemCount="5"
-                tools:listitem="@layout/adapter_comment_item"
-                android:layout_marginTop="5dp"/>
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/scd5"
+                android:text="댓글 달기..."
+                android:textSize="12dp" />
+
+<!--            <androidx.recyclerview.widget.RecyclerView-->
+<!--                android:id="@+id/commentRecyclerView"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:overScrollMode="never"-->
+<!--                tools:itemCount="5"-->
+<!--                tools:listitem="@layout/adapter_comment_item"-->
+<!--                android:layout_marginTop="5dp"/>-->
 
 
         </LinearLayout>
