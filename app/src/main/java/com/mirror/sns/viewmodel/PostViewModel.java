@@ -70,4 +70,6 @@ public class PostViewModel extends AndroidViewModel {
     public void getLikePressUsers(String key,  String uid) { repository.getLikePressUsers(key, uid);}
 
     public void setComment(String itemKey, Comment comment) { repository.setComment(itemKey, comment);}
+
+    public void getComments(String itemKey) { repository.getComments(itemKey); }
 }

@@ -337,4 +337,23 @@ public class PostRepository {
     public void setComment(String itemKey, Comment comment) {
         commentsRef.child(itemKey).push().setValue(comment);
     }
+
+    public void getComments(String itemKey) {
+        commentsRef.child(itemKey).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                List<Comment> tempComments = new ArrayList<>();
+                 for (DataSnapshot snapshot1: snapshot.getChildren()) {
+                    Comment comment = snapshot1.getValue(Comment.class);
+                    tempComments.add(comment);
+                }
+                comments.setValue(tempComments);
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+    }
 }
