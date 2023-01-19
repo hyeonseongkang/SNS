@@ -335,7 +335,9 @@ public class PostRepository {
     }
 
     public void setComment(String itemKey, Comment comment) {
-        commentsRef.child(itemKey).push().setValue(comment);
+        String key = commentsRef.push().getKey();
+        comment.setKey(key);
+        commentsRef.child(itemKey).child(key).setValue(comment);
     }
 
     public void getComments(String itemKey) {
