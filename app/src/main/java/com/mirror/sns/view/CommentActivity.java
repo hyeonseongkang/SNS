@@ -3,6 +3,7 @@ package com.mirror.sns.view;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,12 +12,16 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.mirror.sns.R;
+import com.mirror.sns.adapter.CommentAdapter;
 import com.mirror.sns.classes.Comment;
 import com.mirror.sns.classes.User;
 import com.mirror.sns.databinding.ActivityCommentBinding;
 import com.mirror.sns.databinding.ActivityDetailPostBinding;
 import com.mirror.sns.viewmodel.PostViewModel;
 import com.mirror.sns.viewmodel.UserManagementViewModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CommentActivity extends AppCompatActivity {
 
@@ -28,6 +33,8 @@ public class CommentActivity extends AppCompatActivity {
 
     String userUid;
     String itemKey;
+
+    private CommentAdapter commentAdapter;
 
     private User currentUser;
     @Override
@@ -65,6 +72,27 @@ public class CommentActivity extends AppCompatActivity {
                 postViewModel.setComment(itemKey, new Comment(currentUser, "",  comment));
             }
         });
+
+
+        commentAdapter = new CommentAdapter();
+
+        commentBinding.commentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        commentBinding.commentRecyclerView.setHasFixedSize(true);
+        commentBinding.commentRecyclerView.setAdapter(commentAdapter);
+
+        postViewModel.getComments(itemKey);
+        postViewModel.getComments().observe(this, new Observer<List<Comment>>() {
+            @Override
+            public void onChanged(List<Comment> comments) {
+                commentAdapter.setComments(comments);
+            }
+        });
+
+//        List<Comment> comments = new ArrayList<>();
+//        for (int i = 0; i < 10; i++) {
+//            comments.add(new Comment(new User(), "", "댓글 테스트 " + i));
+//        }
+//        commentAdapter.setComments(comments);
 
         commentBinding.backButton.setOnClickListener(new View.OnClickListener() {
             @Override
