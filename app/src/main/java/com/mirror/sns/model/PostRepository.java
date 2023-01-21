@@ -341,12 +341,15 @@ public class PostRepository {
     }
 
     public void getComments(String itemKey) {
-        commentsRef.child(itemKey).addListenerForSingleValueEvent(new ValueEventListener() {
+        commentsRef.child(itemKey).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 List<Comment> tempComments = new ArrayList<>();
                  for (DataSnapshot snapshot1: snapshot.getChildren()) {
-                    Comment comment = snapshot1.getValue(Comment.class);
+                     User user = snapshot1.child("user").getValue(User.class);
+                     String commentText = snapshot1.child("comment").getValue(String.class);
+                     String key = snapshot1.child("key").getValue(String.class);
+                     Comment comment = new Comment(user, key, commentText);
                     tempComments.add(comment);
                 }
                 comments.setValue(tempComments);

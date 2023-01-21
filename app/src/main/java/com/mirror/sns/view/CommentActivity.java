@@ -57,6 +57,7 @@ public class CommentActivity extends AppCompatActivity {
             @Override
             public void onChanged(User user) {
                 currentUser = user;
+
             }
         });
         commentBinding.sendComment.setEnabled(true);
@@ -70,6 +71,7 @@ public class CommentActivity extends AppCompatActivity {
                     return;
 
                 postViewModel.setComment(itemKey, new Comment(currentUser, "",  comment));
+                commentBinding.commentText.setText("");
             }
         });
 
