@@ -163,7 +163,6 @@ public class HomeFragment extends Fragment {
 
                 @Override
                 public boolean onSingleTapConfirmed(MotionEvent e) {
-                    Toast.makeText(getActivity(), "SingleTap!", Toast.LENGTH_SHORT).show();
                     Post post = currentPosts.get(position);
                     Intent intent = new Intent(getActivity(), DetailPostActivity.class);
                     intent.putExtra("userUid", post.getUserUid());
@@ -175,7 +174,6 @@ public class HomeFragment extends Fragment {
 
                 @Override
                 public boolean onDoubleTap(MotionEvent e) {
-                    Toast.makeText(getActivity(), "DoubleTap!", Toast.LENGTH_SHORT).show();
                     Post post = currentPosts.get(position);
                     postViewModel.setLike(post.getUserUid(), post.getKey(), currentUser);
                     return super.onDoubleTap(e);

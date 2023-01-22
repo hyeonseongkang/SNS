@@ -7,10 +7,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.bumptech.glide.Glide;
 import com.mirror.sns.R;
 import com.mirror.sns.adapter.CommentAdapter;
 import com.mirror.sns.classes.Comment;
@@ -58,6 +60,15 @@ public class CommentActivity extends AppCompatActivity {
             public void onChanged(User user) {
                 currentUser = user;
 
+                if (currentUser.getPhotoUri() != null && currentUser.getPhotoUri().length() > 0) {
+                    Glide.with(CommentActivity.this)
+                            .load(Uri.parse(currentUser.getPhotoUri()))
+                            .into(commentBinding.userPhoto);
+                } else {
+                    Glide.with(CommentActivity.this)
+                            .load(R.drawable.basic_profile_photo)
+                            .into(commentBinding.userPhoto);
+                }
             }
         });
         commentBinding.sendComment.setEnabled(true);

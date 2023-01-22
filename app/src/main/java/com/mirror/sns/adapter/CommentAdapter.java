@@ -34,7 +34,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
         Comment comment = comments.get(position);
 
         holder.comment.setText(comment.getComment());
-
+        holder.userName.setText(comment.getUser().getNickName());
         Glide.with(holder.itemView.getContext())
                 .load(R.drawable.basic_profile_photo)
                 .into(holder.userPhoto);
@@ -60,11 +60,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
     class MyViewHolder extends RecyclerView.ViewHolder {
 
         private CircleImageView userPhoto;
-        private TextView comment;
+        private TextView comment, userName;
 
         public MyViewHolder(View itemView) {
             super(itemView);
 
+            userName = itemView.findViewById(R.id.userName);
             userPhoto = itemView.findViewById(R.id.userPhoto);
             comment = itemView.findViewById(R.id.comment);
 

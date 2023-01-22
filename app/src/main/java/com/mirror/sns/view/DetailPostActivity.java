@@ -40,7 +40,7 @@ public class DetailPostActivity extends AppCompatActivity {
 
     private PostViewModel postViewModel;
 
-//    private CommentAdapter commentAdapter;
+    private CommentAdapter commentAdapter;
 
     private String userUid = null;
     private String itemkey = null;
@@ -65,6 +65,7 @@ public class DetailPostActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
 
         userManagementViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(UserManagementViewModel.class);
+        postViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(PostViewModel.class);
 
         userManagementViewModel.getUserLiveData().observe(this, new Observer<User>() {
             @Override
@@ -92,11 +93,20 @@ public class DetailPostActivity extends AppCompatActivity {
         tagAdapter = new TagAdapter();
         detailPostBinding.tagRecyclerView.setAdapter(tagAdapter);
 
-//        commentAdapter = new CommentAdapter();
+        commentAdapter = new CommentAdapter();
 
-//        detailPostBinding.commentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-//        detailPostBinding.commentRecyclerView.setHasFixedSize(true);
-//        detailPostBinding.commentRecyclerView.setAdapter(commentAdapter);
+        detailPostBinding.commentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        detailPostBinding.commentRecyclerView.setHasFixedSize(true);
+        detailPostBinding.commentRecyclerView.setAdapter(commentAdapter);
+        detailPostBinding.commentRecyclerView.setNestedScrollingEnabled(false);
+
+        postViewModel.getComments(itemkey);
+        postViewModel.getComments().observe(this, new Observer<List<Comment>>() {
+            @Override
+            public void onChanged(List<Comment> comments) {
+                commentAdapter.setComments(comments);
+            }
+        });
 
 //        List<Comment> comments = new ArrayList<>();
 //        for (int i = 0; i < 10; i++) {
