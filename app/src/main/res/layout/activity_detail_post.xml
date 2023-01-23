@@ -121,14 +121,12 @@
                     android:id="@+id/userPhoto1"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:src="@drawable/basic_profile_photo"
                     tools:ignore="MissingConstraints" />
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/userPhoto2"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:src="@drawable/basic_profile_photo"
                     tools:ignore="MissingConstraints"
                     android:layout_marginLeft="20dp"
                     />
@@ -137,9 +135,15 @@
                     android:id="@+id/userPhoto3"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:src="@drawable/basic_profile_photo"
                     tools:ignore="MissingConstraints"
                     android:layout_marginLeft="40dp"/>
+
+                <TextView
+                    android:id="@+id/likeText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="가장 먼저 좋아요를 눌러보세요"/>
             </RelativeLayout>
 
 

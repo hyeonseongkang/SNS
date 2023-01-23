@@ -39,6 +39,7 @@ import java.util.ArrayList;
 
 public class CreatePostActivity extends AppCompatActivity {
 
+    public static final String TAG = "CreatePostActivity";
     ActivityCreatePostBinding createPostBinding;
 
     private FirebaseAuth firebaseAuth;
@@ -141,11 +142,11 @@ public class CreatePostActivity extends AppCompatActivity {
                     tempUserPhotoUri = userPhotoUri;
                 }
 
-
-
-
                 if (postPhoto.length() <= 0) return;
 
+                for (Tag tag: tags) {
+                    Log.d(TAG, tag.getTag());
+                }
                 //  public Post(String key, String userUid, String content, String userPhotoUri, String postPhotoUri, ArrayList<Tag> tags, ArrayList<String> likes)
                 Post post = new Post("", userUid, postText, tempUserPhotoUri, postPhoto, tags, new ArrayList<>());
                 postViewModel.createPost(post);

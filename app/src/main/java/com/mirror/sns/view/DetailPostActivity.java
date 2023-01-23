@@ -41,6 +41,7 @@ public class DetailPostActivity extends AppCompatActivity {
     private PostViewModel postViewModel;
 
     private CommentAdapter commentAdapter;
+    private TagAdapter tagAdapter;
 
     private String userUid = null;
     private String itemkey = null;
@@ -52,8 +53,6 @@ public class DetailPostActivity extends AppCompatActivity {
     private String userEmail;
 
     private User currentUser;
-
-    TagAdapter tagAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,10 +134,13 @@ public class DetailPostActivity extends AppCompatActivity {
                 currentPost = post;
 
                 List<User> users = currentPost.getLikes();
-
+                List<Tag> tags = currentPost.getTags();
 
                 detailPostBinding.content.setText(currentPost.getContent());
                 detailPostBinding.userName.setText(currentPost.getUserUid());
+
+                if (users.size() > 0)
+                    detailPostBinding.likeText.setVisibility(View.GONE);
 
                 for (int i = 0; i < users.size(); i++) {
                     User user = users.get(i);
@@ -157,7 +159,8 @@ public class DetailPostActivity extends AppCompatActivity {
                     }
                 }
 
-                tagAdapter.setTagList(currentPost.getTags(), true);
+                tagAdapter.setTagList(tags, true);
+                Log.d(TAG, String.valueOf(tags.size()) + "!@!@!@!@");
                 Glide.with(DetailPostActivity.this)
                         .load(Uri.parse(currentPost.getPostPhotoUri()))
                         .into(detailPostBinding.postPhoto);

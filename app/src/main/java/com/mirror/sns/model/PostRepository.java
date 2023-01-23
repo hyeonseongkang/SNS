@@ -136,8 +136,9 @@ public class PostRepository {
                 }
 
                 ArrayList<Tag> tagList = new ArrayList<>();
-                for (DataSnapshot snapshot3: snapshot.child("tag").getChildren()) {
+                for (DataSnapshot snapshot3: snapshot.child("tags").getChildren()) {
                     Tag tag = snapshot3.getValue(Tag.class);
+                    Log.d(TAG, tag.getTag());
                     tagList.add(tag);
                 }
                 //Post post = snapshot2.getValue(Post.class);
