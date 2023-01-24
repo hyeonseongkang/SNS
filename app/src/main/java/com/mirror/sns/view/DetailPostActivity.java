@@ -40,7 +40,7 @@ public class DetailPostActivity extends AppCompatActivity {
 
     private PostViewModel postViewModel;
 
-    private CommentAdapter commentAdapter;
+    // private CommentAdapter commentAdapter;
     private TagAdapter tagAdapter;
 
     private String userUid = null;
@@ -92,6 +92,7 @@ public class DetailPostActivity extends AppCompatActivity {
         tagAdapter = new TagAdapter();
         detailPostBinding.tagRecyclerView.setAdapter(tagAdapter);
 
+        /*
         commentAdapter = new CommentAdapter();
 
         detailPostBinding.commentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -106,12 +107,7 @@ public class DetailPostActivity extends AppCompatActivity {
                 commentAdapter.setComments(comments);
             }
         });
-
-//        List<Comment> comments = new ArrayList<>();
-//        for (int i = 0; i < 10; i++) {
-//            comments.add(new Comment(new User(), "", "댓글 테스트 " + i));
-//        }
-//        commentAdapter.setComments(comments);
+         */
 
         detailPostBinding.commentActivity.setEnabled(true);
         detailPostBinding.commentActivity.setClickable(true);

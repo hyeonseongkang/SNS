@@ -72,4 +72,7 @@ public class PostViewModel extends AndroidViewModel {
     public void setComment(String itemKey, Comment comment) { repository.setComment(itemKey, comment);}
 
     public void getComments(String itemKey) { repository.getComments(itemKey); }
+
+    public void setCommentLike(String itemKey, String commentKey, String uid) { repository.setCommentLike(itemKey, commentKey, uid); }
+
 }

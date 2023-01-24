@@ -5,11 +5,13 @@ public class Comment {
     String key;
     User user;
     String comment;
+    String like;
 
-    public Comment (User user, String key, String comment) {
+    public Comment (User user, String key, String comment, String like) {
         this.user = user;
         this.key = key;
         this.comment = comment;
+        this.like = like;
     }
 
     public String getKey() {
@@ -31,4 +33,6 @@ public class Comment {
     public String getComment() {
         return comment;
     }
+
+    public String getLike() { return like; }
 }

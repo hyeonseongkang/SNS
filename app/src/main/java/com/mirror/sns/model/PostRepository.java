@@ -350,7 +350,8 @@ public class PostRepository {
                      User user = snapshot1.child("user").getValue(User.class);
                      String commentText = snapshot1.child("comment").getValue(String.class);
                      String key = snapshot1.child("key").getValue(String.class);
-                     Comment comment = new Comment(user, key, commentText);
+                     String like = snapshot1.child("like").getValue(String.class);
+                     Comment comment = new Comment(user, key, commentText, like);
                     tempComments.add(comment);
                 }
                 comments.setValue(tempComments);
@@ -362,4 +363,9 @@ public class PostRepository {
             }
         });
     }
+
+    public void setCommentLike(String itemKey, String commentKey, String uid) {
+        commentsRef.child(itemKey).child(commentKey).child("like").setValue(uid);
+    }
+
 }

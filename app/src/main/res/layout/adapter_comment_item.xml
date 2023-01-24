@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="15dp">
+    android:layout_marginBottom="25dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -44,6 +44,15 @@
                 android:layout_marginTop="2dp"/>
         </LinearLayout>
 
+
+        <ImageView
+            android:id="@+id/likeButton"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/basic_heart"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"/>
 
 
     </RelativeLayout>

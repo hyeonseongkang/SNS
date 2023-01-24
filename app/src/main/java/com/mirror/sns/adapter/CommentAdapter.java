@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,6 +21,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHolder>{
 
     List<Comment> comments = new ArrayList<>();
+    private onItemClickListener listener;
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -39,6 +41,15 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
                 .load(R.drawable.basic_profile_photo)
                 .into(holder.userPhoto);
 
+        Glide.with(holder.itemView.getContext())
+                .load(R.drawable.basic_heart)
+                .into(holder.likeButton);
+
+        if (comment.getLike().length() > 0) {
+            Glide.with(holder.itemView.getContext())
+                    .load(R.drawable.red_heart)
+                    .into(holder.likeButton);
+        }
         if (comment.getUser().getPhotoUri() != null && comment.getUser().getPhotoUri().length() > 0) {
             Glide.with(holder.itemView.getContext())
                     .load(Uri.parse(comment.getUser().getPhotoUri()))
@@ -61,6 +72,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
 
         private CircleImageView userPhoto;
         private TextView comment, userName;
+        private ImageView likeButton;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -69,8 +81,28 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
             userPhoto = itemView.findViewById(R.id.userPhoto);
             comment = itemView.findViewById(R.id.comment);
 
+            likeButton = itemView.findViewById(R.id.likeButton);
+            likeButton.setEnabled(true);
+            likeButton.setClickable(true);
+            likeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    if (listener != null && position != RecyclerView.NO_POSITION) {
+                        listener.onItemClick(position);
+                    }
+                }
+            });
+
         }
     }
 
+    public interface onItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(onItemClickListener listener) {
+        this.listener = listener;
+    }
 
 }

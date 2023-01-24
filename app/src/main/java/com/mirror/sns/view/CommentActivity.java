@@ -39,12 +39,13 @@ public class CommentActivity extends AppCompatActivity {
     private CommentAdapter commentAdapter;
 
     private User currentUser;
+    private List<Comment> currComments;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         commentBinding = ActivityCommentBinding.inflate(getLayoutInflater());
         setContentView(commentBinding.getRoot());
-
+        currComments = new ArrayList<>();
         Intent intent = getIntent();
         userUid = intent.getStringExtra("userUid");
         itemKey = intent.getStringExtra("itemKey");
@@ -81,13 +82,20 @@ public class CommentActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(comment))
                     return;
 
-                postViewModel.setComment(itemKey, new Comment(currentUser, "",  comment));
+                postViewModel.setComment(itemKey, new Comment(currentUser, "",  comment, ""));
                 commentBinding.commentText.setText("");
             }
         });
 
 
         commentAdapter = new CommentAdapter();
+        commentAdapter.setOnItemClickListener(new CommentAdapter.onItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Comment curr = currComments.get(position);
+                postViewModel.setCommentLike(itemKey, curr.getKey(), currentUser.getUid());
+            }
+        });
 
         commentBinding.commentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         commentBinding.commentRecyclerView.setHasFixedSize(true);
@@ -97,6 +105,7 @@ public class CommentActivity extends AppCompatActivity {
         postViewModel.getComments().observe(this, new Observer<List<Comment>>() {
             @Override
             public void onChanged(List<Comment> comments) {
+                currComments = comments;
                 commentAdapter.setComments(comments);
             }
         });
