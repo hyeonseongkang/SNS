@@ -29,6 +29,8 @@ public class PostViewModel extends AndroidViewModel {
 
     private MutableLiveData<List<Comment>> comments;
 
+    private MutableLiveData<Boolean> commentLikeUser;
+
     public PostViewModel(Application application) {
         super(application);
 
@@ -39,6 +41,7 @@ public class PostViewModel extends AndroidViewModel {
         postLiveData = repository.getPostLiveData();
         like = repository.getLike();
         comments = repository.getComments();
+        commentLikeUser = repository.getCommnetLikeUser();
     }
 
     public LiveData<List<Post>> getPostsLiveData() {
@@ -52,6 +55,8 @@ public class PostViewModel extends AndroidViewModel {
     public MutableLiveData<List<String>> getLikePressUsers() { return likePressUsers; }
 
     public MutableLiveData<List<Comment>> getComments() { return comments; }
+
+    public MutableLiveData<Boolean> getCommentLikeUser() { return commentLikeUser; }
 
     public void createPost(Post post) {
         repository.createPost(post);
@@ -73,6 +78,8 @@ public class PostViewModel extends AndroidViewModel {
 
     public void getComments(String itemKey) { repository.getComments(itemKey); }
 
-    public void setCommentLike(String itemKey, String commentKey, String uid) { repository.setCommentLike(itemKey, commentKey, uid); }
+    public void setCommentLikeUser(String itemKey, String commentKey, String uid) { repository.setCommentLikeUser(itemKey, commentKey, uid); }
+
+    public void getCommentLikeUser(String itemKey, String commentKey ) { repository.getCommentLikeUser(itemKey, commentKey);}
 
 }

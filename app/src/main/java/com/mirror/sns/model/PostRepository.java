@@ -45,6 +45,7 @@ public class PostRepository {
     private MutableLiveData<Boolean> successCreatePost;
     private MutableLiveData<List<String>> likePressUsers;
     private MutableLiveData<List<Comment>> comments;
+    private MutableLiveData<Boolean> commnetLikeUser;
 
     public PostRepository(Application application) {
         this.application = application;
@@ -57,6 +58,7 @@ public class PostRepository {
         post = new MutableLiveData<>();
         posts = new ArrayList<>();
         like = new MutableLiveData<>();
+        commnetLikeUser = new MutableLiveData<>();
     }
 
     public MutableLiveData<List<Post>> getPostsLiveData() {
@@ -80,6 +82,8 @@ public class PostRepository {
     }
 
     public MutableLiveData<List<Comment>> getComments() { return comments; }
+
+    public MutableLiveData<Boolean> getCommnetLikeUser() { return commnetLikeUser; }
 
     public void createPost(Post post) {
         String userUid = post.getUserUid();
@@ -364,8 +368,30 @@ public class PostRepository {
         });
     }
 
-    public void setCommentLike(String itemKey, String commentKey, String uid) {
+    public void setCommentLikeUser(String itemKey, String commentKey, String uid) {
         commentsRef.child(itemKey).child(commentKey).child("like").setValue(uid);
     }
+
+    public void getCommentLikeUser(String itemKey, String commentKey) {
+        commentsRef.child(itemKey).child(commentKey).child("like").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                String likeUser = snapshot.getValue(String.class);
+                Log.d(TAG, String.valueOf(snapshot.getValue()));
+                if (likeUser.length() > 0) {
+                    commentsRef.child(itemKey).child(commentKey).child("like").setValue("");
+                    commnetLikeUser.setValue(false);
+                } else {
+                    commnetLikeUser.setValue(true);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+    }
+
 
 }

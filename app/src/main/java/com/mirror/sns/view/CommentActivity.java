@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
@@ -40,6 +41,9 @@ public class CommentActivity extends AppCompatActivity {
 
     private User currentUser;
     private List<Comment> currComments;
+    private Comment currComment;
+    private Boolean commentLike;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,7 +97,18 @@ public class CommentActivity extends AppCompatActivity {
             @Override
             public void onItemClick(int position) {
                 Comment curr = currComments.get(position);
-                postViewModel.setCommentLike(itemKey, curr.getKey(), currentUser.getUid());
+                currComment = curr;
+                postViewModel.getCommentLikeUser(itemKey, curr.getKey());
+
+            }
+        });
+
+        postViewModel.getCommentLikeUser().observe(CommentActivity.this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean) {
+                    postViewModel.setCommentLikeUser(itemKey, currComment.getKey(), currentUser.getUid());
+                }
             }
         });
 
