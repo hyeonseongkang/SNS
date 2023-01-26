@@ -1,6 +1,7 @@
 package com.mirror.sns.view;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.mirror.sns.adapter.PostAdapter;
@@ -75,6 +77,12 @@ public class MyPageFragment extends Fragment {
                 String posts = user.getPosts();
                 String followers = user.getFollowers();
                 String following = user.getFollowing();
+
+                if (photoUri.length() > 0) {
+                    Glide.with(getActivity())
+                            .load(Uri.parse(userPhoto))
+                            .into(mypageBinding.userPhoto);
+                }
 
                 mypageBinding.userNickName.setText(nickName);
                 mypageBinding.userEmail.setText(email);
