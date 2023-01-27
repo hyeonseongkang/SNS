@@ -13,4 +13,8 @@ public class Sns {
         this.title = title;
         this.firstPhotoUri = firstPhotoUri;
     }
+
+    public String getFirstPhotoUri() {
+        return firstPhotoUri;
+    }
 }

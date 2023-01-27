@@ -18,9 +18,11 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.mirror.sns.adapter.PostAdapter;
+import com.mirror.sns.classes.Post;
 import com.mirror.sns.classes.Sns;
 import com.mirror.sns.classes.User;
 import com.mirror.sns.databinding.FragmentMypageBinding;
+import com.mirror.sns.viewmodel.PostViewModel;
 import com.mirror.sns.viewmodel.UserManagementViewModel;
 
 import java.util.ArrayList;
@@ -36,6 +38,7 @@ public class MyPageFragment extends Fragment {
     private PostAdapter postAdapter;
 
     private UserManagementViewModel userManagementViewModel;
+    private PostViewModel postViewModel;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
@@ -63,6 +66,20 @@ public class MyPageFragment extends Fragment {
         firebaseUser = firebaseAuth.getCurrentUser();
 
         userInfoViewModel = new ViewModelProvider(requireActivity()).get(UserManagementViewModel.class);
+        postViewModel = new ViewModelProvider(requireActivity()).get(PostViewModel.class);
+
+        postViewModel.getUserPosts(firebaseAuth.getUid());
+        postViewModel.getUserPosts().observe(getActivity(), new Observer<List<Post>>() {
+            @Override
+            public void onChanged(List<Post> posts) {
+                List<Sns> snsList = new ArrayList<>();
+
+                for (Post post: posts) {
+                    snsList.add(new Sns(post.getUserUid(), post.getContent(), post.getPostPhotoUri()));
+                }
+                postAdapter.setSnses(snsList);
+            }
+        });
 
         userInfoViewModel.getUserInfo(firebaseAuth.getUid());
         userInfoViewModel.getUserLiveData().observe(getActivity(), new Observer<User>() {
@@ -80,7 +97,7 @@ public class MyPageFragment extends Fragment {
 
                 if (photoUri.length() > 0) {
                     Glide.with(getActivity())
-                            .load(Uri.parse(userPhoto))
+                            .load(Uri.parse(photoUri))
                             .into(mypageBinding.userPhoto);
                 }
 
@@ -105,29 +122,6 @@ public class MyPageFragment extends Fragment {
             }
         });
 
-        List<Sns> snsList = new ArrayList<>();
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-        snsList.add(new Sns("", "", ""));
-        postAdapter.setSnses(snsList);
     }
 
 

@@ -238,7 +238,7 @@ public class PostRepository {
 
                     }
                 }
-                postsLiveData.setValue(posts);
+                userPosts.setValue(posts);
             }
 
             @Override
