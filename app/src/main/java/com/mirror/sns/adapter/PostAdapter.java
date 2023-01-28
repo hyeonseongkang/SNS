@@ -19,7 +19,7 @@ import java.util.List;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder>{
 
-    List<Sns> snsList = new ArrayList<>();
+    List<Post> posts = new ArrayList<>();
     private onItemClickListener listener;
 
     @Override
@@ -33,18 +33,18 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder>{
 
     @Override
     public void onBindViewHolder(PostAdapter.MyViewHolder holder, int position) {
-        Sns sns = snsList.get(position);
+        Post post = posts.get(position);
 
         Glide.with(holder.itemView.getContext())
-                .load(Uri.parse(sns.getFirstPhotoUri()))
+                .load(Uri.parse(post.getPostPhotoUri()))
                 .into(holder.mainPhoto);
     }
 
     @Override
-    public int getItemCount() { return snsList == null ? 0 : snsList.size(); }
+    public int getItemCount() { return posts == null ? 0 : posts.size(); }
 
-    public void setSnses(List<Sns> snsList) {
-        this.snsList = snsList;
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
         notifyDataSetChanged();
     }
 
@@ -60,7 +60,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder>{
                 public void onClick(View view) {
                     int position = getAdapterPosition();
                     if (listener != null && position != RecyclerView.NO_POSITION) {
-                        listener.onItemClick(snsList.get(position), position);
+                        listener.onItemClick(posts.get(position), position);
                     }
                 }
             });
@@ -68,7 +68,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder>{
     }
 
     public interface onItemClickListener {
-        void onItemClick(Sns sns, int position);
+        void onItemClick(Post sns, int position);
     }
 
     public void setOnItemClickListener(PostAdapter.onItemClickListener listener) { this.listener = listener; }

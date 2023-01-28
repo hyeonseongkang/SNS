@@ -72,12 +72,7 @@ public class MyPageFragment extends Fragment {
         postViewModel.getUserPosts().observe(getActivity(), new Observer<List<Post>>() {
             @Override
             public void onChanged(List<Post> posts) {
-                List<Sns> snsList = new ArrayList<>();
-
-                for (Post post: posts) {
-                    snsList.add(new Sns(post.getUserUid(), post.getContent(), post.getPostPhotoUri()));
-                }
-                postAdapter.setSnses(snsList);
+                postAdapter.setPosts(posts);
             }
         });
 
@@ -113,6 +108,16 @@ public class MyPageFragment extends Fragment {
         mypageBinding.postsRecyclerView.setHasFixedSize(true);
         postAdapter = new PostAdapter();
         mypageBinding.postsRecyclerView.setAdapter(postAdapter);
+
+        postAdapter.setOnItemClickListener(new PostAdapter.onItemClickListener() {
+            @Override
+            public void onItemClick(Post post, int position) {
+                Intent intent = new Intent(getActivity(), DetailPostActivity.class);
+                intent.putExtra("userUid", post.getUserUid());
+                intent.putExtra("itemKey", post.getKey());
+                startActivity(intent);
+            }
+        });
 
         mypageBinding.editProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
