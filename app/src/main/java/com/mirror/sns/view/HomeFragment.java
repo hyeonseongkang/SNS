@@ -224,6 +224,14 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        homeBinding.addFriend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), AddFriendActivity.class);
+                startActivity(intent);
+            }
+        });
+
         homeBinding.createPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -68,13 +68,21 @@ public class MyPageFragment extends Fragment {
         userInfoViewModel = new ViewModelProvider(requireActivity()).get(UserManagementViewModel.class);
         postViewModel = new ViewModelProvider(requireActivity()).get(PostViewModel.class);
 
+        mypageBinding.postsRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+        mypageBinding.postsRecyclerView.setHasFixedSize(true);
+        postAdapter = new PostAdapter();
+        mypageBinding.postsRecyclerView.setAdapter(postAdapter);
+
         postViewModel.getUserPosts(firebaseAuth.getUid());
-        postViewModel.getUserPosts().observe(getActivity(), new Observer<List<Post>>() {
-            @Override
-            public void onChanged(List<Post> posts) {
-                postAdapter.setPosts(posts);
-            }
-        });
+        if (getActivity()!= null) {
+            postViewModel.getUserPosts().observe(getActivity(), new Observer<List<Post>>() {
+                @Override
+                public void onChanged(List<Post> posts) {
+                    postAdapter.setPosts(posts);
+                }
+            });
+        }
+
 
         userInfoViewModel.getUserInfo(firebaseAuth.getUid());
         userInfoViewModel.getUserLiveData().observe(getActivity(), new Observer<User>() {
@@ -91,9 +99,11 @@ public class MyPageFragment extends Fragment {
                 String following = user.getFollowing();
 
                 if (photoUri.length() > 0) {
-                    Glide.with(getActivity())
-                            .load(Uri.parse(photoUri))
-                            .into(mypageBinding.userPhoto);
+                    if (getActivity() != null) {
+                        Glide.with(getActivity())
+                                .load(Uri.parse(photoUri))
+                                .into(mypageBinding.userPhoto);
+                    }
                 }
 
                 mypageBinding.userNickName.setText(nickName);
@@ -104,10 +114,7 @@ public class MyPageFragment extends Fragment {
             }
         });
 
-        mypageBinding.postsRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
-        mypageBinding.postsRecyclerView.setHasFixedSize(true);
-        postAdapter = new PostAdapter();
-        mypageBinding.postsRecyclerView.setAdapter(postAdapter);
+
 
         postAdapter.setOnItemClickListener(new PostAdapter.onItemClickListener() {
             @Override

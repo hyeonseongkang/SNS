@@ -24,6 +24,15 @@
             android:layout_marginLeft="10dp"/>
 
         <ImageButton
+            android:id="@+id/addFriend"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:background="@drawable/addfriend"
+            android:layout_marginRight="15dp"
+            android:layout_toLeftOf="@+id/createPost"
+            android:layout_centerVertical="true"/>
+
+        <ImageButton
             android:id="@+id/createPost"
             android:layout_width="25dp"
             android:layout_height="25dp"

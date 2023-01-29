@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SNS">
-        <activity android:name=".view.CommentActivity"></activity>
+        <activity android:name=".view.AddFriendActivity"></activity>
+        <activity android:name=".view.CommentActivity" />
         <activity
             android:name=".view.SearchFriendActivity"
             android:theme="@style/Transparent" />
