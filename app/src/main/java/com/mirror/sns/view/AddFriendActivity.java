@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 
 import com.mirror.sns.R;
@@ -17,6 +18,7 @@ import java.util.List;
 
 public class AddFriendActivity extends AppCompatActivity {
 
+    private static final String TAG = "AddFriendActivity";
     private ActivityAddFriendBinding addFriendBinding;
 
     private UserManagementViewModel userManagementViewModel;
@@ -38,20 +40,21 @@ public class AddFriendActivity extends AppCompatActivity {
                 currUsers = users;
             }
         });
+
+        userManagementViewModel.getFindUser().observe(this, new Observer<User>() {
+            @Override
+            public void onChanged(User user) {
+                Log.d(TAG, "찾았따." + user.getNickName());
+            }
+        });
+
         addFriendBinding.searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String inputText = addFriendBinding.input.getText().toString();
 
-                if (TextUtils.isEmpty(inputText))
-                    return;
+                userManagementViewModel.getFindUser(inputText);
 
-                for (User user: currUsers) {
-                    if (user.getNickName().equals(inputText)) {
-                        // find user
-                        break;
-                    }
-                }
             }
         });
 

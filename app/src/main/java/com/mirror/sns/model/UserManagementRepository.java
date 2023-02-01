@@ -2,6 +2,8 @@ package com.mirror.sns.model;
 
 import android.app.Application;
 import android.net.Uri;
+import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -40,6 +42,10 @@ public class UserManagementRepository {
 
     private MutableLiveData<Boolean> updateValid;
 
+    private MutableLiveData<User> findUser;
+
+    List<User> userList;
+
     public UserManagementRepository(Application application) {
         this.application = application;
         usersRef = FirebaseDatabase.getInstance().getReference("users");
@@ -49,6 +55,7 @@ public class UserManagementRepository {
 
         allFriends = new MutableLiveData<>();
         addFriendCheck = new MutableLiveData<>();
+        findUser = new MutableLiveData<>();
     }
 
     public MutableLiveData<User> getUserLiveData() { return userLiveData; }
@@ -64,6 +71,8 @@ public class UserManagementRepository {
     public LiveData<Boolean> addFirendCheck() {
         return addFriendCheck;
     }
+
+    public MutableLiveData<User> getFindUser() { return findUser; }
 
     public void getUserInfo(String uid) {
         usersRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -81,7 +90,7 @@ public class UserManagementRepository {
     }
 
     public void getUserList() {
-        List<User> userList = new ArrayList<>();
+        userList = new ArrayList<>();
         usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
@@ -207,5 +216,19 @@ public class UserManagementRepository {
 
             }
         });
+    }
+
+    public void getFindUser(String userNickName) {
+
+        if (TextUtils.isEmpty(userNickName))
+            return;
+
+        for (User user: userList) {
+            if (user.getNickName().equals(userNickName)) {
+                // find user
+                findUser.setValue(user);
+                break;
+            }
+        }
     }
 }

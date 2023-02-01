@@ -21,6 +21,7 @@ public class UserManagementViewModel extends AndroidViewModel {
     public MutableLiveData<Boolean> updateValid;
     private LiveData<List<User>> allFriends;
     private LiveData<Boolean> addFriendCheck;
+    private LiveData<User> findUser;
 
     public UserManagementViewModel(Application application) {
         super(application);
@@ -29,6 +30,7 @@ public class UserManagementViewModel extends AndroidViewModel {
         userLiveData = repository.getUserLiveData();
         userListLiveData = repository.getUserListLiveData();
         updateValid = repository.getUpdateValid();
+        findUser = repository.getFindUser();
     }
 
     public LiveData<User> getUserLiveData() { return userLiveData; }
@@ -40,6 +42,8 @@ public class UserManagementViewModel extends AndroidViewModel {
     public LiveData<List<User>> getAllFriends() { return allFriends; }
 
     public LiveData<Boolean> addFriendCheck() { return addFriendCheck; }
+
+    public LiveData<User> getFindUser() { return findUser; }
 
     public void getUserList() { repository.getUserList();}
 
@@ -54,6 +58,9 @@ public class UserManagementViewModel extends AndroidViewModel {
     public void updateUserProfile(User user) { repository.updateUserProfile(user) ;}
 
     public void addFriend(List<User> usersProfile, String uid, String userNickName) { repository.addFriend(usersProfile, uid, userNickName);}
+
+    public void getFindUser(String userNickName) { repository.getFindUser(userNickName);}
+
 
 
 }
