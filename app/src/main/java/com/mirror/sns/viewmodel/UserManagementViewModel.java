@@ -61,6 +61,8 @@ public class UserManagementViewModel extends AndroidViewModel {
 
     public void getFindUser(String userNickName) { repository.getFindUser(userNickName);}
 
+    public void friendRequest(String responseUid, String requestUid) { repository.friendRequest(responseUid, requestUid);}
+
 
 
 }

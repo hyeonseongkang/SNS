@@ -21,6 +21,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.mirror.sns.classes.Post;
+import com.mirror.sns.classes.RequestFriend;
 import com.mirror.sns.classes.User;
 
 import org.jetbrains.annotations.NotNull;
@@ -33,6 +34,7 @@ public class UserManagementRepository {
     private Application application;
 
     private DatabaseReference usersRef;
+    private DatabaseReference friendsRef;
 
     private MutableLiveData<User> userLiveData;
     private MutableLiveData<List<User>> userListLiveData;
@@ -230,5 +232,9 @@ public class UserManagementRepository {
                 break;
             }
         }
+    }
+
+    public void friendRequest(String responseUid, String requestUid) {
+        usersRef.child(requestUid).child("friends").push().setValue(new RequestFriend(responseUid, "false"));
     }
 }

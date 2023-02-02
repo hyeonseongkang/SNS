@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.mirror.sns.R;
 import com.mirror.sns.adapter.ProfileAdapter;
 import com.mirror.sns.adapter.TagAdapter;
@@ -44,6 +45,13 @@ public class AddFriendActivity extends AppCompatActivity {
         addFriendBinding.friendsRecyclerView.setHasFixedSize(true);
         profileAdapter = new ProfileAdapter();
         addFriendBinding.friendsRecyclerView.setAdapter(profileAdapter);
+
+        profileAdapter.setOnItemClickListener(new ProfileAdapter.onItemClickListener() {
+            @Override
+            public void onItemClick(Profile profile, int position) {
+                userManagementViewModel.friendRequest(profile.getUid(), FirebaseAuth.getInstance().getUid());
+            }
+        });
 
         addFriendBinding.friendsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         addFriendBinding.friendsRecyclerView.setHasFixedSize(true);
