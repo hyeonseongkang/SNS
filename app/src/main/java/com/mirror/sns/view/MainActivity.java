@@ -9,6 +9,11 @@ import android.view.MenuItem;
 import com.google.android.material.navigation.NavigationBarView;
 import com.mirror.sns.R;
 import com.mirror.sns.databinding.ActivityMainBinding;
+import com.mirror.sns.view.fragment.HomeFragment;
+import com.mirror.sns.view.fragment.LikeFragment;
+import com.mirror.sns.view.fragment.MyPageFragment;
+import com.mirror.sns.view.fragment.PostFragment;
+import com.mirror.sns.view.fragment.SearchFragment;
 
 public class MainActivity extends AppCompatActivity {
 

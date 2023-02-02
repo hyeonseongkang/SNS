@@ -1,4 +1,4 @@
-package com.mirror.sns.view;
+package com.mirror.sns.view.fragment;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -22,6 +22,8 @@ import com.mirror.sns.classes.Post;
 import com.mirror.sns.classes.Sns;
 import com.mirror.sns.classes.User;
 import com.mirror.sns.databinding.FragmentMypageBinding;
+import com.mirror.sns.view.DetailPostActivity;
+import com.mirror.sns.view.EditProfileActivity;
 import com.mirror.sns.viewmodel.PostViewModel;
 import com.mirror.sns.viewmodel.UserManagementViewModel;
 

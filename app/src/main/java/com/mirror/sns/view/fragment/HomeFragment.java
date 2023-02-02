@@ -1,4 +1,4 @@
-package com.mirror.sns.view;
+package com.mirror.sns.view.fragment;
 
 import android.app.Activity;
 import android.content.Context;
@@ -33,6 +33,9 @@ import com.mirror.sns.classes.Profile;
 import com.mirror.sns.classes.Sns;
 import com.mirror.sns.classes.User;
 import com.mirror.sns.databinding.FragmentHomeBinding;
+import com.mirror.sns.view.AddFriendActivity;
+import com.mirror.sns.view.CreatePostActivity;
+import com.mirror.sns.view.DetailPostActivity;
 import com.mirror.sns.viewmodel.LoginViewModel;
 import com.mirror.sns.viewmodel.PostViewModel;
 import com.mirror.sns.viewmodel.UserManagementViewModel;

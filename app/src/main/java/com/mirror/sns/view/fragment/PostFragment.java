@@ -1,4 +1,4 @@
-package com.mirror.sns.view;
+package com.mirror.sns.view.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
