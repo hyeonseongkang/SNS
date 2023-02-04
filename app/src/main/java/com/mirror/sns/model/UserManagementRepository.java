@@ -46,6 +46,7 @@ public class UserManagementRepository {
 
     private MutableLiveData<User> findUser;
 
+    private MutableLiveData<Boolean> requestFriend;
     List<User> userList;
 
     public UserManagementRepository(Application application) {
@@ -58,6 +59,7 @@ public class UserManagementRepository {
         allFriends = new MutableLiveData<>();
         addFriendCheck = new MutableLiveData<>();
         findUser = new MutableLiveData<>();
+        requestFriend = new MutableLiveData<>();
     }
 
     public MutableLiveData<User> getUserLiveData() { return userLiveData; }
@@ -75,6 +77,8 @@ public class UserManagementRepository {
     }
 
     public MutableLiveData<User> getFindUser() { return findUser; }
+
+    public MutableLiveData<Boolean> getRequestFriend() { return requestFriend; }
 
     public void getUserInfo(String uid) {
         usersRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -235,6 +239,24 @@ public class UserManagementRepository {
     }
 
     public void friendRequest(String responseUid, String requestUid) {
-        usersRef.child(requestUid).child("friends").push().setValue(new RequestFriend(responseUid, "false"));
+        if (responseUid.equals(requestUid)) return;
+
+        usersRef.child(requestUid).child("friends").push().setValue(new RequestFriend(responseUid, "true")).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull @NotNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    usersRef.child(responseUid).child("friends").push().setValue(new RequestFriend(requestUid, "false")).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull @NotNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                requestFriend.setValue(true);
+                            }
+                        }
+                    });
+                }
+            }
+        });
+
+
     }
 }

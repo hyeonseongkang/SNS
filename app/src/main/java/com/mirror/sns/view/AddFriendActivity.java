@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.mirror.sns.R;
@@ -63,6 +64,17 @@ public class AddFriendActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<User> users) {
                 currUsers = users;
+            }
+        });
+
+        userManagementViewModel.getRequestFriend().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean) {
+                    Toast.makeText(AddFriendActivity.this, "친구 추가 성공", Toast.LENGTH_SHORT).show();
+                    finish();
+                    overridePendingTransition(R.anim.none, R.anim.fadeout_left);
+                }
             }
         });
 
