@@ -241,22 +241,45 @@ public class UserManagementRepository {
     public void friendRequest(String responseUid, String requestUid) {
         if (responseUid.equals(requestUid)) return;
 
-        usersRef.child(requestUid).child("friends").push().setValue(new RequestFriend(responseUid, "true")).addOnCompleteListener(new OnCompleteListener<Void>() {
+        usersRef.child(requestUid).child("friends").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onComplete(@NonNull @NotNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    usersRef.child(responseUid).child("friends").push().setValue(new RequestFriend(requestUid, "false")).addOnCompleteListener(new OnCompleteListener<Void>() {
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                boolean overlapCheck = false;
+                for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
+                    RequestFriend requestFriend = dataSnapshot.getValue(RequestFriend.class);
+
+                    Log.d("USERMANAGEMENT", requestFriend.getUserUid() + " : " + responseUid);
+                    if (requestFriend.getUserUid().equals(responseUid)) {
+                        overlapCheck = true;
+                        break;
+                    }
+                }
+
+                if (overlapCheck) {
+                    getRequestFriend().setValue(false);
+                    return;
+                } else {
+                    usersRef.child(requestUid).child("friends").push().setValue(new RequestFriend(responseUid, "true")).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull @NotNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                requestFriend.setValue(true);
+                                usersRef.child(responseUid).child("friends").push().setValue(new RequestFriend(requestUid, "false")).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull @NotNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            requestFriend.setValue(true);
+                                        }
+                                    }
+                                });
                             }
                         }
                     });
                 }
             }
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
         });
-
-
     }
 }
