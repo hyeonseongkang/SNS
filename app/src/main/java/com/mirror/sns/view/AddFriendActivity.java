@@ -19,10 +19,16 @@ import com.mirror.sns.adapter.TagAdapter;
 import com.mirror.sns.classes.Profile;
 import com.mirror.sns.classes.User;
 import com.mirror.sns.databinding.ActivityAddFriendBinding;
+import com.mirror.sns.utils.RxAndroidUtils;
 import com.mirror.sns.viewmodel.UserManagementViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.Disposable;
 
 public class AddFriendActivity extends AppCompatActivity {
 
@@ -34,6 +40,8 @@ public class AddFriendActivity extends AppCompatActivity {
     private List<User> currUsers;
 
     private ProfileAdapter profileAdapter;
+
+    private Disposable editTextDisposable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,5 +117,26 @@ public class AddFriendActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.none, R.anim.fadeout_left);
             }
         });
+
+        Observable<String> editTextObservable = RxAndroidUtils.getInstance().getEditTextObservable(addFriendBinding.input);
+        editTextDisposable = editTextObservable
+                .debounce(500, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(s-> {
+                   Log.d(RxAndroidUtils.getInstance().getTag(), s);
+                   if (s.length() >= 2) {
+                       String inputText = addFriendBinding.input.getText().toString();
+                       userManagementViewModel.getFindUser(inputText);
+                   }
+                   else if (s.length() == 1) {
+                       Toast.makeText(this, "두 글자 이상 적어주세요.", Toast.LENGTH_SHORT).show();
+                   }
+                });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        editTextDisposable.dispose();
     }
 }
