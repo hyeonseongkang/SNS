@@ -21,7 +21,7 @@ public class UserManagementViewModel extends AndroidViewModel {
     public MutableLiveData<Boolean> updateValid;
     private LiveData<List<User>> allFriends;
     private LiveData<Boolean> addFriendCheck;
-    private LiveData<User> findUser;
+    private LiveData<List<User>> findUser;
     private LiveData<Boolean> requestFriend;
 
     public UserManagementViewModel(Application application) {
@@ -45,7 +45,7 @@ public class UserManagementViewModel extends AndroidViewModel {
 
     public LiveData<Boolean> addFriendCheck() { return addFriendCheck; }
 
-    public LiveData<User> getFindUser() { return findUser; }
+    public LiveData<List<User>> getFindUser() { return findUser; }
 
     public LiveData<Boolean> getRequestFriend() { return requestFriend; }
 

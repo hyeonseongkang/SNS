@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.mirror.sns.R;
+import com.mirror.sns.adapter.AddFriendAdapter;
 import com.mirror.sns.adapter.ProfileAdapter;
 import com.mirror.sns.adapter.TagAdapter;
 import com.mirror.sns.classes.Profile;
@@ -39,7 +40,7 @@ public class AddFriendActivity extends AppCompatActivity {
 
     private List<User> currUsers;
 
-    private ProfileAdapter profileAdapter;
+    private AddFriendAdapter addFriendAdapter;
 
     private Disposable editTextDisposable;
 
@@ -50,17 +51,11 @@ public class AddFriendActivity extends AppCompatActivity {
         setContentView(addFriendBinding.getRoot());
         overridePendingTransition(R.anim.fadein_left, R.anim.none);
 
-        addFriendBinding.friendsRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+        addFriendAdapter = new AddFriendAdapter();
+        addFriendBinding.friendsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         addFriendBinding.friendsRecyclerView.setHasFixedSize(true);
-        profileAdapter = new ProfileAdapter();
-        addFriendBinding.friendsRecyclerView.setAdapter(profileAdapter);
+        addFriendBinding.friendsRecyclerView.setAdapter(addFriendAdapter);
 
-        profileAdapter.setOnItemClickListener(new ProfileAdapter.onItemClickListener() {
-            @Override
-            public void onItemClick(Profile profile, int position) {
-                userManagementViewModel.friendRequest(profile.getUid(), FirebaseAuth.getInstance().getUid());
-            }
-        });
 
         addFriendBinding.friendsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         addFriendBinding.friendsRecyclerView.setHasFixedSize(true);
@@ -86,15 +81,10 @@ public class AddFriendActivity extends AppCompatActivity {
             }
         });
 
-        userManagementViewModel.getFindUser().observe(this, new Observer<User>() {
+        userManagementViewModel.getFindUser().observe(this, new Observer<List<User>>() {
             @Override
-            public void onChanged(User user) {
-                Log.d(TAG, "찾았따." + user.getNickName());
-                // public Profile(String uid, String email, String nickName, String photoUri) {
-                List<Profile> users = new ArrayList<>();
-                Profile profile = new Profile(user.getUid(), user.getEmail(), user.getNickName(), user.getPhotoUri());
-                users.add(profile);
-                profileAdapter.setProfiles(users);
+            public void onChanged(List<User> users) {
+                addFriendAdapter.setUsers(users);
             }
         });
 

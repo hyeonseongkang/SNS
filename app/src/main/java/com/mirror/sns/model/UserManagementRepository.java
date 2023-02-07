@@ -1,5 +1,6 @@
 package com.mirror.sns.model;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.net.Uri;
 import android.text.TextUtils;
@@ -31,6 +32,8 @@ import java.util.List;
 
 public class UserManagementRepository {
 
+    public static final String TAG = "UserManagementRepository";
+
     private Application application;
 
     private DatabaseReference usersRef;
@@ -44,7 +47,7 @@ public class UserManagementRepository {
 
     private MutableLiveData<Boolean> updateValid;
 
-    private MutableLiveData<User> findUser;
+    private MutableLiveData<List<User>> findUser;
 
     private MutableLiveData<Boolean> requestFriend;
     List<User> userList;
@@ -76,7 +79,7 @@ public class UserManagementRepository {
         return addFriendCheck;
     }
 
-    public MutableLiveData<User> getFindUser() { return findUser; }
+    public MutableLiveData<List<User>> getFindUser() { return findUser; }
 
     public MutableLiveData<Boolean> getRequestFriend() { return requestFriend; }
 
@@ -224,18 +227,21 @@ public class UserManagementRepository {
         });
     }
 
+    @SuppressLint("LongLogTag")
     public void getFindUser(String userNickName) {
 
         if (TextUtils.isEmpty(userNickName))
             return;
 
+        ArrayList<User> users = new ArrayList<>();
         for (User user: userList) {
             if (user.getNickName().equals(userNickName)) {
                 // find user
-                findUser.setValue(user);
-                break;
+                Log.d(TAG, user.getNickName());
+                users.add(user);
             }
         }
+        findUser.setValue(users);
     }
 
     public void friendRequest(String responseUid, String requestUid) {
