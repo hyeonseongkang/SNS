@@ -60,6 +60,12 @@ public class AddFriendActivity extends AppCompatActivity {
         addFriendBinding.friendsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         addFriendBinding.friendsRecyclerView.setHasFixedSize(true);
 
+        addFriendAdapter.setOnItemClickListener(new AddFriendAdapter.onItemClickListener() {
+            @Override
+            public void onItemClick(User user) {
+                userManagementViewModel.friendRequest(user.getUid(), FirebaseAuth.getInstance().getUid());
+            }
+        });
 
         userManagementViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(UserManagementViewModel.class);
         userManagementViewModel.getUserList();

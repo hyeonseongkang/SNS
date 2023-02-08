@@ -21,6 +21,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class AddFriendAdapter extends RecyclerView.Adapter<AddFriendAdapter.MyViewHolder>{
 
     List<User> users = new ArrayList<>();
+    private onItemClickListener listener;
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -66,6 +67,24 @@ public class AddFriendAdapter extends RecyclerView.Adapter<AddFriendAdapter.MyVi
             userPhoto = itemView.findViewById(R.id.userPhoto);
             userNickName = itemView.findViewById(R.id.userNickName);
             addFriendButton = itemView.findViewById(R.id.addFriendButton);
+
+            addFriendButton.setEnabled(true);
+            addFriendButton.setClickable(true);
+            addFriendButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    if (listener != null && position != RecyclerView.NO_POSITION) {
+                        listener.onItemClick(users.get(position));
+                    }
+                }
+            });
         }
     }
+
+    public interface onItemClickListener {
+        void onItemClick(User user);
+    }
+
+    public void setOnItemClickListener(onItemClickListener listener) { this.listener = listener; }
 }
