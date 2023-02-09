@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.mirror.sns.classes.RequestFriend;
 import com.mirror.sns.classes.User;
 import com.mirror.sns.model.UserManagementRepository;
 
@@ -23,6 +24,7 @@ public class UserManagementViewModel extends AndroidViewModel {
     private LiveData<Boolean> addFriendCheck;
     private LiveData<List<User>> findUser;
     private LiveData<Boolean> requestFriend;
+    private LiveData<List<RequestFriend>> friends;
 
     public UserManagementViewModel(Application application) {
         super(application);
@@ -33,6 +35,7 @@ public class UserManagementViewModel extends AndroidViewModel {
         updateValid = repository.getUpdateValid();
         findUser = repository.getFindUser();
         requestFriend = repository.getRequestFriend();
+        friends = repository.getFriends();
     }
 
     public LiveData<User> getUserLiveData() { return userLiveData; }
@@ -48,6 +51,8 @@ public class UserManagementViewModel extends AndroidViewModel {
     public LiveData<List<User>> getFindUser() { return findUser; }
 
     public LiveData<Boolean> getRequestFriend() { return requestFriend; }
+
+    public LiveData<List<RequestFriend>> getFriends() { return friends; }
 
     public void getUserList() { repository.getUserList();}
 
@@ -67,6 +72,8 @@ public class UserManagementViewModel extends AndroidViewModel {
 
     public void friendRequest(String responseUid, String requestUid) { repository.friendRequest(responseUid, requestUid);}
 
-
+    public void getFriends(String uid) {
+        repository.getFriends(uid);
+    }
 
 }

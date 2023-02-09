@@ -50,6 +50,8 @@ public class UserManagementRepository {
     private MutableLiveData<List<User>> findUser;
 
     private MutableLiveData<Boolean> requestFriend;
+
+    private MutableLiveData<List<RequestFriend>> friends;
     List<User> userList;
 
     public UserManagementRepository(Application application) {
@@ -63,6 +65,7 @@ public class UserManagementRepository {
         addFriendCheck = new MutableLiveData<>();
         findUser = new MutableLiveData<>();
         requestFriend = new MutableLiveData<>();
+        friends = new MutableLiveData<>();
     }
 
     public MutableLiveData<User> getUserLiveData() { return userLiveData; }
@@ -82,6 +85,8 @@ public class UserManagementRepository {
     public MutableLiveData<List<User>> getFindUser() { return findUser; }
 
     public MutableLiveData<Boolean> getRequestFriend() { return requestFriend; }
+
+    public MutableLiveData<List<RequestFriend>> getFriends() { return friends; }
 
     public void getUserInfo(String uid) {
         usersRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -242,6 +247,25 @@ public class UserManagementRepository {
             }
         }
         findUser.setValue(users);
+    }
+
+    public void getFriends(String uid) {
+        usersRef.child(uid).child("friends").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                List<RequestFriend> requestFriends = new ArrayList<>();
+                for (DataSnapshot snapshot1: snapshot.getChildren()) {
+                    RequestFriend requestFriend = snapshot1.getValue(RequestFriend.class);
+                    requestFriends.add(requestFriend);
+                }
+                friends.setValue(requestFriends);
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
     }
 
     public void friendRequest(String responseUid, String requestUid) {
