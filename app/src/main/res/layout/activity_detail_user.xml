@@ -29,24 +29,24 @@
                 android:layout_centerVertical="true"
                 android:background="@drawable/back" />
 
-            <TextView
-                android:id="@+id/userNickName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="lofti232"
-                android:layout_centerVertical="true"
-                android:fontFamily="@font/scd5"
-                android:textColor="#000000"
-                android:textSize="18dp"
-                android:layout_centerHorizontal="true"/>
+<!--            <TextView-->
 
-            <ImageButton
-                android:id="@+id/editProfileButton"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_centerVertical="true"
-                android:background="@drawable/next"
-                android:layout_alignParentRight="true"/>
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="lofti232"-->
+<!--                android:layout_centerVertical="true"-->
+<!--                android:fontFamily="@font/scd5"-->
+<!--                android:textColor="#000000"-->
+<!--                android:textSize="18dp"-->
+<!--                android:layout_centerHorizontal="true"/>-->
+
+<!--            <ImageButton-->
+<!--                android:id="@+id/addFriendButton"-->
+<!--                android:layout_width="20dp"-->
+<!--                android:layout_height="20dp"-->
+<!--                android:layout_centerVertical="true"-->
+<!--                android:background="@drawable/addfriend"-->
+<!--                android:layout_alignParentRight="true"/>-->
 
         </RelativeLayout>
 
@@ -90,11 +90,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
+                    android:gravity="center"
                     android:layout_weight="1">
 
 
                     <TextView
-                        android:id="@+id/userPosts"
+                        android:id="@+id/postCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
@@ -126,7 +127,7 @@
 
 
                     <TextView
-                        android:id="@+id/userFollowers"
+                        android:id="@+id/followerCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
@@ -158,7 +159,7 @@
 
 
                     <TextView
-                        android:id="@+id/userFollowing"
+                        android:id="@+id/followingCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
@@ -193,6 +194,7 @@
 
 
             <TextView
+                android:id="@+id/userNickName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"

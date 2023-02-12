@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -63,7 +64,12 @@ public class AddFriendActivity extends AppCompatActivity {
         addFriendAdapter.setOnItemClickListener(new AddFriendAdapter.onItemClickListener() {
             @Override
             public void onItemClick(User user) {
-                userManagementViewModel.friendRequest(user.getUid(), FirebaseAuth.getInstance().getUid());
+                Intent intent = new Intent(AddFriendActivity.this, DetailUserActivity.class);
+                intent.putExtra("userUid", user.getUid()) ;
+                startActivity(intent);
+                finish();
+                overridePendingTransition(R.anim.none, R.anim.fadeout_left);
+                //userManagementViewModel.friendRequest(user.getUid(), FirebaseAuth.getInstance().getUid());
             }
         });
 
