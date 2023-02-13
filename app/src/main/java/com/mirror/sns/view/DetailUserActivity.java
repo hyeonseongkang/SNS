@@ -9,8 +9,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
 import com.mirror.sns.R;
 import com.mirror.sns.classes.User;
 import com.mirror.sns.databinding.ActivityDetailUserBinding;
@@ -46,13 +48,30 @@ public class DetailUserActivity extends AppCompatActivity {
                 detailUserBinding.postCount.setText(user.getPosts());
                 detailUserBinding.followerCount.setText(user.getFollowers());
                 detailUserBinding.followingCount.setText(user.getFollowing());
-                detailUserBinding.userEmail.setText(user.getEmail());
 
                 if (user.getPhotoUri().length() > 0 ) {
                     Glide.with(DetailUserActivity.this)
                             .load(Uri.parse(user.getPhotoUri()))
                             .into(detailUserBinding.userPhoto);
                 }
+            }
+        });
+
+        userManagementViewModel.getRequestFriend().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean) {
+                    Toast.makeText(DetailUserActivity.this, "팔로우 성공", Toast.LENGTH_SHORT).show();
+                    finish();
+                    overridePendingTransition(R.anim.none, R.anim.fadeout_left);
+                }
+            }
+        });
+
+        detailUserBinding.followButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                userManagementViewModel.friendRequest(userUid, FirebaseAuth.getInstance().getUid());
             }
         });
 
