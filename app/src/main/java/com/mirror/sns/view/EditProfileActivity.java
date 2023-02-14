@@ -123,7 +123,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
                 // Update
                 //   public User(String uid, String email, String password, String nickName, String photoUri, String posts, String followers, String following) {
-                userManagementViewModel.updateUserProfile(new User(uid, email, "null", nickName, tempPhotoUri.toString(), currentUser.getPosts(), currentUser.getFollowers(), currentUser.getFollowing()));
+                userManagementViewModel.updateUserProfile(new User(uid, email, "null", nickName, tempPhotoUri.toString(), currentUser.getPosts(), currentUser.getFollowerUsers(), currentUser.getFollowingUsers()));
 
             }
         });

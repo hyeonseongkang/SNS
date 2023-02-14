@@ -1,14 +1,16 @@
 package com.mirror.sns.classes;
 
+import java.util.List;
+
 public class User {
     private String uid;
     private String email;
     private String password;
     private String nickName;
     private String photoUri;
-    private String posts;
-    private String followers;
-    private String following;
+    private List<Post> posts;
+    private List<FollowerUser> followerUsers;
+    private List<FollowingUser> followingUsers;
 
     public User() {}
 
@@ -23,15 +25,19 @@ public class User {
         this.password = password;
     }
 
-    public User(String uid, String email, String password, String nickName, String photoUri, String posts, String followers, String following) {
+    public User(String uid, String email, String password, String nickName, String photoUri, List<Post> posts, List<FollowerUser> followerUsers, List<FollowingUser> followingUsers) {
         this.uid = uid;
         this.email = email;
         this.password = password;
         this.nickName = nickName;
         this.photoUri = photoUri;
         this.posts = posts;
-        this.followers = followers;
-        this.following = following;
+        this.followerUsers = followerUsers;
+        this.followingUsers = followingUsers;
+    }
+
+    public String getUid() {
+        return uid;
     }
 
     public String getEmail() {
@@ -42,31 +48,27 @@ public class User {
         return password;
     }
 
-    public String getUid() {
-        return uid;
-    }
-
     public String getNickName() {
         return nickName;
+    }
+
+    public void setPhotoUri(String photoUri) {
+        this.photoUri = photoUri;
     }
 
     public String getPhotoUri() {
         return photoUri;
     }
 
-    public void setPhotoUri(String uri) {
-        this.photoUri = uri;
-    }
-
-    public String getPosts() {
+    public List<Post> getPosts() {
         return posts;
     }
 
-    public String getFollowers() {
-        return followers;
+    public List<FollowerUser> getFollowerUsers() {
+        return followerUsers;
     }
 
-    public String getFollowing() {
-        return following;
+    public List<FollowingUser> getFollowingUsers() {
+        return followingUsers;
     }
 }

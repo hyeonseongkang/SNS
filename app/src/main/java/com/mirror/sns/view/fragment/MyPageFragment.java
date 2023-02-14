@@ -18,6 +18,8 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.mirror.sns.adapter.PostAdapter;
+import com.mirror.sns.classes.FollowerUser;
+import com.mirror.sns.classes.FollowingUser;
 import com.mirror.sns.classes.Post;
 import com.mirror.sns.classes.Sns;
 import com.mirror.sns.classes.User;
@@ -96,9 +98,9 @@ public class MyPageFragment extends Fragment {
                 String password = user.getPassword();
                 String nickName = user.getNickName();
                 String photoUri = user.getPhotoUri();
-                String posts = user.getPosts();
-                String followers = user.getFollowers();
-                String following = user.getFollowing();
+                List<Post> posts = user.getPosts();
+                List<FollowerUser> followers = user.getFollowerUsers();
+                List<FollowingUser> following = user.getFollowingUsers();
 
                 if (photoUri.length() > 0) {
                     if (getActivity() != null) {
@@ -110,9 +112,13 @@ public class MyPageFragment extends Fragment {
 
                 mypageBinding.userNickName.setText(nickName);
                 mypageBinding.userEmail.setText(email);
-                mypageBinding.userPosts.setText(posts);
-                mypageBinding.userFollowers.setText(followers);
-                mypageBinding.userFollowing.setText(following);
+                String postSize = posts == null ? "0" : String.valueOf(posts.size());
+                String followersSize = followers == null ? "0" : String.valueOf(followers.size());
+                String followingSize = following == null ? "0" : String.valueOf(following.size());
+
+                mypageBinding.userPosts.setText(postSize);
+                mypageBinding.userFollowers.setText(followersSize);
+                mypageBinding.userFollowing.setText(followingSize);
             }
         });
 

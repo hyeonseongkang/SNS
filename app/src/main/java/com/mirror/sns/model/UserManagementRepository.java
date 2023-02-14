@@ -21,6 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.mirror.sns.classes.FollowerUser;
 import com.mirror.sns.classes.Post;
 import com.mirror.sns.classes.RequestFriend;
 import com.mirror.sns.classes.User;
@@ -49,7 +50,7 @@ public class UserManagementRepository {
 
     private MutableLiveData<List<User>> findUser;
 
-    private MutableLiveData<Boolean> requestFriend;
+    private MutableLiveData<Boolean> followRequest;
 
     private MutableLiveData<List<RequestFriend>> friends;
     List<User> userList;
@@ -64,7 +65,7 @@ public class UserManagementRepository {
         allFriends = new MutableLiveData<>();
         addFriendCheck = new MutableLiveData<>();
         findUser = new MutableLiveData<>();
-        requestFriend = new MutableLiveData<>();
+        followRequest = new MutableLiveData<>();
         friends = new MutableLiveData<>();
     }
 
@@ -84,11 +85,12 @@ public class UserManagementRepository {
 
     public MutableLiveData<List<User>> getFindUser() { return findUser; }
 
-    public MutableLiveData<Boolean> getRequestFriend() { return requestFriend; }
+    public MutableLiveData<Boolean> getFollowRequest() { return followRequest; }
 
     public MutableLiveData<List<RequestFriend>> getFriends() { return friends; }
 
     public void getUserInfo(String uid) {
+        Log.d(TAG, uid + "!@#!@#");
         usersRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
@@ -268,36 +270,37 @@ public class UserManagementRepository {
         });
     }
 
-    public void friendRequest(String responseUid, String requestUid) {
-        if (responseUid.equals(requestUid)) return;
+    public void follow(User responseUser, User requestUser) {
+        if (responseUser.getUid().equals(requestUser.getUid())) return;
 
-        usersRef.child(requestUid).child("friends").addListenerForSingleValueEvent(new ValueEventListener() {
+        usersRef.child(requestUser.getUid()).child("follower").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 boolean overlapCheck = false;
                 for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
                     RequestFriend requestFriend = dataSnapshot.getValue(RequestFriend.class);
 
-                    Log.d("USERMANAGEMENT", requestFriend.getUserUid() + " : " + responseUid);
-                    if (requestFriend.getUserUid().equals(responseUid)) {
+                    if (requestFriend.getUserUid().equals(responseUser.getUid())) {
                         overlapCheck = true;
                         break;
                     }
                 }
 
                 if (overlapCheck) {
-                    getRequestFriend().setValue(false);
+                    followRequest.setValue(false);
+                    // getRequestFriend().setValue(false);
                     return;
                 } else {
-                    usersRef.child(requestUid).child("friends").push().setValue(new RequestFriend(responseUid, "true")).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    String key = usersRef.push().getKey();
+                    usersRef.child(requestUser.getUid()).child("follower").child(key).setValue(new FollowerUser(key, responseUser)).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull @NotNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                usersRef.child(responseUid).child("friends").push().setValue(new RequestFriend(requestUid, "false")).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                usersRef.child(responseUser.getUid()).child("following").child(key).setValue(new FollowerUser(key, requestUser)).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull @NotNull Task<Void> task) {
                                         if (task.isSuccessful()) {
-                                            requestFriend.setValue(true);
+                                            followRequest.setValue(true);
                                         }
                                     }
                                 });
@@ -306,6 +309,7 @@ public class UserManagementRepository {
                     });
                 }
             }
+
             @Override
             public void onCancelled(@NonNull @NotNull DatabaseError error) {
 

@@ -82,16 +82,6 @@ public class AddFriendActivity extends AppCompatActivity {
             }
         });
 
-        userManagementViewModel.getRequestFriend().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                if (aBoolean) {
-                    Toast.makeText(AddFriendActivity.this, "친구 추가 성공", Toast.LENGTH_SHORT).show();
-                    finish();
-                    overridePendingTransition(R.anim.none, R.anim.fadeout_left);
-                }
-            }
-        });
 
         userManagementViewModel.getFindUser().observe(this, new Observer<List<User>>() {
             @Override

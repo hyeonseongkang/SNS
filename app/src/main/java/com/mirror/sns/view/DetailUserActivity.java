@@ -28,6 +28,9 @@ public class DetailUserActivity extends AppCompatActivity {
 
     String userUid;
 
+    private User requestUser;
+    private User responseUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,21 +46,32 @@ public class DetailUserActivity extends AppCompatActivity {
         userManagementViewModel.getUserLiveData().observe(this, new Observer<User>() {
             @Override
             public void onChanged(User user) {
-                //  followingCount postCount followerCount userPhoto userNickName userJob userIntroduction userEmail userPhoto postsRecyclerView
-                detailUserBinding.userNickName.setText(user.getNickName());
-                detailUserBinding.postCount.setText(user.getPosts());
-                detailUserBinding.followerCount.setText(user.getFollowers());
-                detailUserBinding.followingCount.setText(user.getFollowing());
 
-                if (user.getPhotoUri().length() > 0 ) {
-                    Glide.with(DetailUserActivity.this)
-                            .load(Uri.parse(user.getPhotoUri()))
-                            .into(detailUserBinding.userPhoto);
+                if (user.getUid().equals(userUid)) {
+                    responseUser = user;
+                    //  followingCount postCount followerCount userPhoto userNickName userJob userIntroduction userEmail userPhoto postsRecyclerView
+                    detailUserBinding.userNickName.setText(user.getNickName());
+                    String postSize = user.getPosts() == null ? "0" : String.valueOf(user.getPosts().size());
+                    String followerSize = user.getFollowerUsers() == null ? "0" : String.valueOf(user.getFollowerUsers().size());
+                    String followingSize = user.getFollowingUsers() == null ? "0" : String.valueOf(user.getFollowingUsers().size());
+                    detailUserBinding.postCount.setText(postSize);
+                    detailUserBinding.followerCount.setText(followerSize);
+                    detailUserBinding.followingCount.setText(followingSize);
+
+                    if (user.getPhotoUri().length() > 0 ) {
+                        Glide.with(DetailUserActivity.this)
+                                .load(Uri.parse(user.getPhotoUri()))
+                                .into(detailUserBinding.userPhoto);
+                    }
+                } else {
+                    requestUser = user;
+                    userManagementViewModel.follow(responseUser, requestUser);
                 }
+
             }
         });
 
-        userManagementViewModel.getRequestFriend().observe(this, new Observer<Boolean>() {
+        userManagementViewModel.getFollowRequest().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
                 if (aBoolean) {
@@ -71,7 +85,7 @@ public class DetailUserActivity extends AppCompatActivity {
         detailUserBinding.followButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                userManagementViewModel.friendRequest(userUid, FirebaseAuth.getInstance().getUid());
+                userManagementViewModel.getUserInfo(FirebaseAuth.getInstance().getUid());
             }
         });
 

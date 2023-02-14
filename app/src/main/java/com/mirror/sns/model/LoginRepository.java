@@ -35,6 +35,8 @@ import com.mirror.sns.view.LoginActivity;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+
 import static androidx.core.app.ActivityCompat.startActivityForResult;
 
 public class LoginRepository {
@@ -70,7 +72,7 @@ public class LoginRepository {
                             FirebaseUser user = mAuth.getCurrentUser();
                             firebaseUser.setValue(user);
                             // User(String uid, String email, String password, String nickName, String photoUri, String posts, String followers, String following)
-                            setUserInfo(user.getUid(), new User(user.getEmail(), "", "", "", "", "", "", ""));
+                            setUserInfo(user.getUid(), new User(mUser.getUid(), user.getEmail(), "", "", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -129,7 +131,7 @@ public class LoginRepository {
                             mUser = mAuth.getCurrentUser();
                             firebaseUser.setValue(mUser);
                             // User(String uid, String email, String password, String nickName, String photoUri, String posts, String followers, String following)
-                            setUserInfo(mUser.getUid(), new User(mUser.getEmail(), "", "", "", "", "", "", ""));
+                            setUserInfo(mUser.getUid(), new User(mUser.getUid(), mUser.getEmail(), "", "", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
                             // String uid, String email, String password, String nickName, String photoUri
                             Log.d(TAG, "success email signIn");
                         } else {
