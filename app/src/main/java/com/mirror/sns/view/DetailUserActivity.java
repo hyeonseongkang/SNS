@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -51,9 +52,11 @@ public class DetailUserActivity extends AppCompatActivity {
                     responseUser = user;
                     //  followingCount postCount followerCount userPhoto userNickName userJob userIntroduction userEmail userPhoto postsRecyclerView
                     detailUserBinding.userNickName.setText(user.getNickName());
+
                     String postSize = user.getPosts() == null ? "0" : String.valueOf(user.getPosts().size());
                     String followerSize = user.getFollowerUsers() == null ? "0" : String.valueOf(user.getFollowerUsers().size());
                     String followingSize = user.getFollowingUsers() == null ? "0" : String.valueOf(user.getFollowingUsers().size());
+
                     detailUserBinding.postCount.setText(postSize);
                     detailUserBinding.followerCount.setText(followerSize);
                     detailUserBinding.followingCount.setText(followingSize);

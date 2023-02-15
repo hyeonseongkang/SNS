@@ -1,5 +1,6 @@
 package com.mirror.sns.classes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class User {
@@ -8,9 +9,9 @@ public class User {
     private String password;
     private String nickName;
     private String photoUri;
-    private List<Post> posts;
-    private List<FollowerUser> followerUsers;
-    private List<FollowingUser> followingUsers;
+    private ArrayList<Post> posts;
+    private ArrayList<FollowerUser> followerUsers;
+    private ArrayList<FollowingUser> followingUsers;
 
     public User() {}
 
@@ -25,7 +26,7 @@ public class User {
         this.password = password;
     }
 
-    public User(String uid, String email, String password, String nickName, String photoUri, List<Post> posts, List<FollowerUser> followerUsers, List<FollowingUser> followingUsers) {
+    public User(String uid, String email, String password, String nickName, String photoUri, ArrayList<Post> posts, ArrayList<FollowerUser> followerUsers, ArrayList<FollowingUser> followingUsers) {
         this.uid = uid;
         this.email = email;
         this.password = password;
@@ -35,6 +36,7 @@ public class User {
         this.followerUsers = followerUsers;
         this.followingUsers = followingUsers;
     }
+
 
     public String getUid() {
         return uid;
@@ -60,15 +62,20 @@ public class User {
         return photoUri;
     }
 
-    public List<Post> getPosts() {
+    public ArrayList<Post> getPosts() {
         return posts;
     }
 
-    public List<FollowerUser> getFollowerUsers() {
+    public ArrayList<FollowerUser> getFollowerUsers() {
         return followerUsers;
     }
 
-    public List<FollowingUser> getFollowingUsers() {
+    public ArrayList<FollowingUser> getFollowingUsers() {
         return followingUsers;
+    }
+
+    public void toStringUser() {
+        System.out.println("uid: " + getUid() + "\nemail: " + getEmail() + "\npassword: " + getPassword() + "\nnickName: " + getNickName() + "\nphotoUri: " + getPhotoUri() + "\nposts.size: " + getPosts().size() + "\n" +
+                "followerUsers.size: " + getFollowerUsers().size() + "\nfollowingUsers.size: " + getFollowingUsers().size());
     }
 }

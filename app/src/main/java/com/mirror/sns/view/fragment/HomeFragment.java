@@ -116,7 +116,7 @@ public class HomeFragment extends Fragment {
         loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
         postViewModel = new ViewModelProvider(requireActivity()).get(PostViewModel.class);
 
-      //  loginViewModel.logout();
+        //loginViewModel.logout();
         userManagementViewModel.getUserInfo(firebaseUser.getUid());
         userManagementViewModel.getUserLiveData().observe((LifecycleOwner) getContext(), new Observer<User>() {
             @Override

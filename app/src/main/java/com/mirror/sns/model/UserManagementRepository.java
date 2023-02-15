@@ -22,8 +22,10 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.mirror.sns.classes.FollowerUser;
+import com.mirror.sns.classes.FollowingUser;
 import com.mirror.sns.classes.Post;
 import com.mirror.sns.classes.RequestFriend;
+import com.mirror.sns.classes.Tag;
 import com.mirror.sns.classes.User;
 
 import org.jetbrains.annotations.NotNull;
@@ -90,11 +92,34 @@ public class UserManagementRepository {
     public MutableLiveData<List<RequestFriend>> getFriends() { return friends; }
 
     public void getUserInfo(String uid) {
-        Log.d(TAG, uid + "!@#!@#");
         usersRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                User user = snapshot.getValue(User.class);
+                String uid = snapshot.child("uid").getValue(String.class);
+                String email = snapshot.child("email").getValue(String.class);
+                String password = snapshot.child("password").getValue(String.class);
+                String nickName = snapshot.child("nickName").getValue(String.class);
+                String photoUri = snapshot.child("photoUri").getValue(String.class);
+
+                ArrayList<Post> posts = new ArrayList<>();
+                for (DataSnapshot snapshot1: snapshot.child("posts").getChildren()) {
+                    Post post = snapshot1.getValue(Post.class);
+                    posts.add(post);
+                }
+
+                ArrayList<FollowingUser> followingUsers = new ArrayList<>();
+                for (DataSnapshot snapshot1: snapshot.child("following").getChildren()) {
+                    FollowingUser followingUser = snapshot1.getValue(FollowingUser.class);
+                    followingUsers.add(followingUser);
+                }
+
+                ArrayList<FollowerUser> followerUsers = new ArrayList<>();
+                for (DataSnapshot snapshot1: snapshot.child("follower").getChildren()) {
+                    FollowerUser followerUser = snapshot1.getValue(FollowerUser.class);
+                    followerUsers.add(followerUser);
+                }
+                //  public User(String uid, String email, String password, String nickName, String photoUri, ArrayList<Post> posts, ArrayList<FollowerUser> followerUsers, ArrayList<FollowingUser> followingUsers) {
+                User user = new User(uid, email, password, nickName, photoUri, posts, followerUsers, followingUsers);
                 userLiveData.setValue(user);
             }
 
@@ -278,9 +303,9 @@ public class UserManagementRepository {
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 boolean overlapCheck = false;
                 for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
-                    RequestFriend requestFriend = dataSnapshot.getValue(RequestFriend.class);
+                    FollowerUser followerUser = dataSnapshot.getValue(FollowerUser.class);
 
-                    if (requestFriend.getUserUid().equals(responseUser.getUid())) {
+                    if (followerUser.getUser().getUid().equals(responseUser.getUid())) {
                         overlapCheck = true;
                         break;
                     }
