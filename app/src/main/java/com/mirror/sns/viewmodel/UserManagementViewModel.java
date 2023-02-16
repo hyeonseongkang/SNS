@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.mirror.sns.classes.FollowingUser;
 import com.mirror.sns.classes.RequestFriend;
 import com.mirror.sns.classes.User;
 import com.mirror.sns.model.UserManagementRepository;
@@ -25,6 +26,7 @@ public class UserManagementViewModel extends AndroidViewModel {
     private LiveData<List<User>> findUser;
     private LiveData<Boolean> followRequest;
     private LiveData<List<RequestFriend>> friends;
+    private LiveData<List<FollowingUser>> followingUsers;
 
     public UserManagementViewModel(Application application) {
         super(application);
@@ -36,6 +38,7 @@ public class UserManagementViewModel extends AndroidViewModel {
         findUser = repository.getFindUser();
         followRequest = repository.getFollowRequest();
         friends = repository.getFriends();
+        followingUsers = repository.getFollowingUsers();
     }
 
     public LiveData<User> getUserLiveData() { return userLiveData; }
@@ -53,6 +56,8 @@ public class UserManagementViewModel extends AndroidViewModel {
     public LiveData<Boolean> getFollowRequest() { return followRequest; }
 
     public LiveData<List<RequestFriend>> getFriends() { return friends; }
+
+    public LiveData<List<FollowingUser>> getFollowingUsers() { return followingUsers; }
 
     public void getUserList() { repository.getUserList();}
 
@@ -76,6 +81,10 @@ public class UserManagementViewModel extends AndroidViewModel {
 
     public void follow(User responseUser, User requestUser) {
         repository.follow(responseUser, requestUser);
+    }
+
+    public void getFollowingUers(String uid) {
+        repository.getFollowingUsers(uid);
     }
 
 }

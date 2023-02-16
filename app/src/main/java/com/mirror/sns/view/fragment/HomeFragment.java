@@ -28,6 +28,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.mirror.sns.R;
 import com.mirror.sns.adapter.ProfileAdapter;
 import com.mirror.sns.adapter.SnsAdapter;
+import com.mirror.sns.classes.FollowingUser;
 import com.mirror.sns.classes.Post;
 import com.mirror.sns.classes.Profile;
 import com.mirror.sns.classes.Sns;
@@ -150,6 +151,13 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        userManagementViewModel.getFollowingUers(firebaseUser.getUid());
+        userManagementViewModel.getFollowingUsers().observe(this, new Observer<List<FollowingUser>>() {
+            @Override
+            public void onChanged(List<FollowingUser> followingUsers) {
+
+            }
+        });
 
         postViewModel.getPosts();
 

@@ -55,6 +55,8 @@ public class UserManagementRepository {
     private MutableLiveData<Boolean> followRequest;
 
     private MutableLiveData<List<RequestFriend>> friends;
+
+    private MutableLiveData<List<FollowingUser>> followingUsers;
     List<User> userList;
 
     public UserManagementRepository(Application application) {
@@ -69,6 +71,8 @@ public class UserManagementRepository {
         findUser = new MutableLiveData<>();
         followRequest = new MutableLiveData<>();
         friends = new MutableLiveData<>();
+
+        followingUsers = new MutableLiveData<>();
     }
 
     public MutableLiveData<User> getUserLiveData() { return userLiveData; }
@@ -90,6 +94,8 @@ public class UserManagementRepository {
     public MutableLiveData<Boolean> getFollowRequest() { return followRequest; }
 
     public MutableLiveData<List<RequestFriend>> getFriends() { return friends; }
+
+    public MutableLiveData<List<FollowingUser>> getFollowingUsers() { return followingUsers; }
 
     public void getUserInfo(String uid) {
         usersRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -341,4 +347,24 @@ public class UserManagementRepository {
             }
         });
     }
+
+    public void getFollowingUsers(String uid) {
+        usersRef.child(uid).child("following").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                ArrayList<FollowingUser> tempFollowingUsers = new ArrayList<>();
+                for (DataSnapshot snapshot1: snapshot.getChildren()) {
+                    FollowingUser followingUser = snapshot1.getValue(FollowingUser.class);
+                    tempFollowingUsers.add(followingUser);
+                }
+                followingUsers.setValue(tempFollowingUsers);
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+    }
+
 }
