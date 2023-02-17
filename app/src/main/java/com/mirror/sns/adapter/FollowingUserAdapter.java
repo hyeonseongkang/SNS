@@ -4,23 +4,24 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.mirror.sns.R;
+import com.mirror.sns.classes.FollowingUser;
 import com.mirror.sns.classes.Profile;
+import com.mirror.sns.classes.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.MyViewHolder> {
+public class FollowingUserAdapter extends RecyclerView.Adapter<FollowingUserAdapter.MyViewHolder> {
 
-    public List<Profile> profiles = new ArrayList<>();
+    public List<FollowingUser> followingUsers = new ArrayList<>();
     private onItemClickListener listener;
 
     @Override
@@ -33,13 +34,13 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.MyViewHo
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        Profile profile = profiles.get(position);
+        FollowingUser followingUser = followingUsers.get(position);
 
-        holder.userNickName.setText(profile.getNickName());
+        holder.userNickName.setText(followingUser.getUser().getNickName());
 
-        if (profile.getPhotoUri().length() > 0) {
+        if (followingUser.getUser().getPhotoUri().length() > 0) {
             Glide.with(holder.itemView)
-                    .load(Uri.parse(profile.getPhotoUri()))
+                    .load(Uri.parse(followingUser.getUser().getPhotoUri()))
                     .into(holder.userPhoto);
         }
 
@@ -47,10 +48,10 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.MyViewHo
     }
 
     @Override
-    public int getItemCount() { return profiles == null ? 0 : profiles.size(); }
+    public int getItemCount() { return followingUsers == null ? 0 : followingUsers.size(); }
 
-    public void setProfiles(List<Profile> profiles) {
-        this.profiles = profiles;
+    public void setFollowingUsers(List<FollowingUser> followingUsers) {
+        this.followingUsers = followingUsers;
         notifyDataSetChanged();
     }
 
@@ -70,7 +71,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.MyViewHo
                 public void onClick(View view) {
                     int position = getAdapterPosition();
                     if (listener != null && position != RecyclerView.NO_POSITION) {
-                        listener.onItemClick(profiles.get(position), position);
+                        listener.onItemClick(followingUsers.get(position), position);
                     }
                 }
             });
@@ -78,7 +79,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.MyViewHo
     }
 
     public interface onItemClickListener {
-        void onItemClick(Profile profile, int position);
+        void onItemClick(FollowingUser followingUser, int position);
     }
 
     public void setOnItemClickListener(onItemClickListener listener) { this.listener = listener;}

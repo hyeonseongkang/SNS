@@ -57,6 +57,7 @@ public class UserManagementRepository {
     private MutableLiveData<List<RequestFriend>> friends;
 
     private MutableLiveData<List<FollowingUser>> followingUsers;
+    private MutableLiveData<List<FollowerUser>> followerUsers;
     List<User> userList;
 
     public UserManagementRepository(Application application) {
@@ -73,6 +74,7 @@ public class UserManagementRepository {
         friends = new MutableLiveData<>();
 
         followingUsers = new MutableLiveData<>();
+        followerUsers = new MutableLiveData<>();
     }
 
     public MutableLiveData<User> getUserLiveData() { return userLiveData; }
@@ -96,6 +98,8 @@ public class UserManagementRepository {
     public MutableLiveData<List<RequestFriend>> getFriends() { return friends; }
 
     public MutableLiveData<List<FollowingUser>> getFollowingUsers() { return followingUsers; }
+
+    public MutableLiveData<List<FollowerUser>> getFollowerUsers() { return followerUsers; }
 
     public void getUserInfo(String uid) {
         usersRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -304,7 +308,7 @@ public class UserManagementRepository {
     public void follow(User responseUser, User requestUser) {
         if (responseUser.getUid().equals(requestUser.getUid())) return;
 
-        usersRef.child(requestUser.getUid()).child("follower").addListenerForSingleValueEvent(new ValueEventListener() {
+        usersRef.child(responseUser.getUid()).child("follower").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 boolean overlapCheck = false;
@@ -323,11 +327,11 @@ public class UserManagementRepository {
                     return;
                 } else {
                     String key = usersRef.push().getKey();
-                    usersRef.child(requestUser.getUid()).child("follower").child(key).setValue(new FollowerUser(key, responseUser)).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    usersRef.child(responseUser.getUid()).child("follower").child(key).setValue(new FollowerUser(key, requestUser)).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull @NotNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                usersRef.child(responseUser.getUid()).child("following").child(key).setValue(new FollowerUser(key, requestUser)).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                usersRef.child(requestUser.getUid()).child("following").child(key).setValue(new FollowerUser(key, responseUser)).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull @NotNull Task<Void> task) {
                                         if (task.isSuccessful()) {
@@ -358,6 +362,25 @@ public class UserManagementRepository {
                     tempFollowingUsers.add(followingUser);
                 }
                 followingUsers.setValue(tempFollowingUsers);
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void getFollowerUsers(String uid) {
+        usersRef.child(uid).child("follower").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                ArrayList<FollowerUser> tempFollowerUsers = new ArrayList<>();
+                for (DataSnapshot snapshot1: snapshot.getChildren()) {
+                    FollowerUser followerUser = snapshot1.getValue(FollowerUser.class);
+                    tempFollowerUsers.add(followerUser);
+                }
+                followerUsers.setValue(tempFollowerUsers);
             }
 
             @Override

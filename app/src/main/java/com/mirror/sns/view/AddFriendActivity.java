@@ -4,27 +4,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.mirror.sns.R;
 import com.mirror.sns.adapter.AddFriendAdapter;
-import com.mirror.sns.adapter.ProfileAdapter;
-import com.mirror.sns.adapter.TagAdapter;
-import com.mirror.sns.classes.Profile;
 import com.mirror.sns.classes.User;
 import com.mirror.sns.databinding.ActivityAddFriendBinding;
 import com.mirror.sns.utils.RxAndroidUtils;
 import com.mirror.sns.viewmodel.UserManagementViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 

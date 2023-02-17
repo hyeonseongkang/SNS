@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,24 +25,23 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.mirror.sns.R;
-import com.mirror.sns.adapter.ProfileAdapter;
+import com.mirror.sns.adapter.FollowingUserAdapter;
 import com.mirror.sns.adapter.SnsAdapter;
 import com.mirror.sns.classes.FollowingUser;
 import com.mirror.sns.classes.Post;
 import com.mirror.sns.classes.Profile;
-import com.mirror.sns.classes.Sns;
 import com.mirror.sns.classes.User;
 import com.mirror.sns.databinding.FragmentHomeBinding;
 import com.mirror.sns.view.AddFriendActivity;
 import com.mirror.sns.view.CreatePostActivity;
 import com.mirror.sns.view.DetailPostActivity;
+import com.mirror.sns.view.DetailUserActivity;
 import com.mirror.sns.viewmodel.LoginViewModel;
 import com.mirror.sns.viewmodel.PostViewModel;
 import com.mirror.sns.viewmodel.UserManagementViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class HomeFragment extends Fragment {
 
@@ -52,7 +50,7 @@ public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding homeBinding;
 
-    private ProfileAdapter profileAdapter;
+    private FollowingUserAdapter followingUserAdapter;
     private SnsAdapter snsAdapter;
 
     private LoginViewModel loginViewModel;
@@ -151,11 +149,11 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        userManagementViewModel.getFollowingUers(firebaseUser.getUid());
-        userManagementViewModel.getFollowingUsers().observe(this, new Observer<List<FollowingUser>>() {
+        userManagementViewModel.getFollowingUsers(firebaseUser.getUid());
+        userManagementViewModel.getFollowingUsers().observe(getActivity(), new Observer<List<FollowingUser>>() {
             @Override
             public void onChanged(List<FollowingUser> followingUsers) {
-
+                followingUserAdapter.setFollowingUsers(followingUsers);
             }
         });
 
@@ -164,8 +162,8 @@ public class HomeFragment extends Fragment {
 
         homeBinding.friendRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
         homeBinding.friendRecyclerview.setHasFixedSize(true);
-        profileAdapter = new ProfileAdapter();
-        homeBinding.friendRecyclerview.setAdapter(profileAdapter);
+        followingUserAdapter = new FollowingUserAdapter();
+        homeBinding.friendRecyclerview.setAdapter(followingUserAdapter);
 
         homeBinding.snsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         homeBinding.snsRecyclerView.setHasFixedSize(true);
@@ -214,25 +212,13 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        /*
-        friend profile test
-         */
 
-        List<Profile> profileList = new ArrayList<>();
-        profileList.add(new Profile("", "", "user1", ""));
-        profileList.add(new Profile("", "", "user2", ""));
-        profileList.add(new Profile("", "", "user3", ""));
-        profileList.add(new Profile("", "", "user4", ""));
-        profileList.add(new Profile("", "", "user5", ""));
-        profileList.add(new Profile("", "", "user6", ""));
-        profileList.add(new Profile("", "", "user7", ""));
-
-        profileAdapter.setProfiles(profileList);
-
-        profileAdapter.setOnItemClickListener(new ProfileAdapter.onItemClickListener() {
+        followingUserAdapter.setOnItemClickListener(new FollowingUserAdapter.onItemClickListener() {
             @Override
-            public void onItemClick(Profile profile, int position) {
-
+            public void onItemClick(FollowingUser followingUser, int position) {
+                Intent intent = new Intent(getActivity(), DetailUserActivity.class);
+                intent.putExtra("userUid", followingUser.getUser().getUid());
+                startActivity(intent);
             }
         });
 
