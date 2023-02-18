@@ -90,6 +90,16 @@ public class DetailUserActivity extends AppCompatActivity {
         postAdapter = new PostAdapter();
         detailUserBinding.postsRecyclerView.setAdapter(postAdapter);
 
+        postAdapter.setOnItemClickListener(new PostAdapter.onItemClickListener() {
+            @Override
+            public void onItemClick(Post post, int position) {
+                Intent intent = new Intent(DetailUserActivity.this, DetailPostActivity.class);
+                intent.putExtra("userUid", post.getUserUid());
+                intent.putExtra("itemKey", post.getKey());
+                startActivity(intent);
+            }
+        });
+
         postViewModel.getUserPosts(userUid);
         postViewModel.getUserPosts().observe(this, new Observer<List<Post>>() {
             @Override
