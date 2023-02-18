@@ -47,7 +47,6 @@ public class HomeFragment extends Fragment {
 
     private static final String TAG = "HomeFragment";
 
-
     private FragmentHomeBinding homeBinding;
 
     private FollowingUserAdapter followingUserAdapter;
@@ -166,8 +165,6 @@ public class HomeFragment extends Fragment {
         });
 
         postViewModel.getPosts();
-
-
 
 
         homeBinding.snsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

@@ -426,7 +426,7 @@ public class UserManagementRepository {
     }
 
     public void getFollowingUsers(String uid) {
-        usersRef.child(uid).child("following").addListenerForSingleValueEvent(new ValueEventListener() {
+        usersRef.child(uid).child("following").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 ArrayList<FollowingUser> tempFollowingUsers = new ArrayList<>();
