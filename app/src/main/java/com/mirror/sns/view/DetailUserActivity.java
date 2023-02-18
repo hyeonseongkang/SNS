@@ -43,6 +43,8 @@ public class DetailUserActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
 
+    private Boolean follow = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,7 +83,11 @@ public class DetailUserActivity extends AppCompatActivity {
                     }
                 } else {
                     requestUser = user;
-                    userManagementViewModel.follow(responseUser, requestUser);
+                    if (follow) {
+                        userManagementViewModel.follow(responseUser, requestUser);
+                    } else {
+                        userManagementViewModel.unFollow(responseUser, requestUser);
+                    }
                 }
 
             }
@@ -134,8 +140,20 @@ public class DetailUserActivity extends AppCompatActivity {
             @Override
             public void onChanged(Boolean aBoolean) {
                 if (aBoolean) {
-                    finish();
-                    overridePendingTransition(R.anim.none, R.anim.fadeout_left);
+                    userManagementViewModel.getUserInfo(userUid);
+                    detailUserBinding.followButton.setVisibility(View.GONE);
+                    detailUserBinding.unFollowButton.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        userManagementViewModel.getUnFollowRequest().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean) {
+                    userManagementViewModel.getUserInfo(userUid);
+                    detailUserBinding.unFollowButton.setVisibility(View.GONE);
+                    detailUserBinding.followButton.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -143,6 +161,15 @@ public class DetailUserActivity extends AppCompatActivity {
         detailUserBinding.followButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                follow = true;
+                userManagementViewModel.getUserInfo(FirebaseAuth.getInstance().getUid());
+            }
+        });
+
+        detailUserBinding.unFollowButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                follow = false;
                 userManagementViewModel.getUserInfo(FirebaseAuth.getInstance().getUid());
             }
         });

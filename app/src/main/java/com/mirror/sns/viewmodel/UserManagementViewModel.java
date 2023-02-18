@@ -22,12 +22,20 @@ public class UserManagementViewModel extends AndroidViewModel {
     private LiveData<List<User>> userListLiveData;
 
     public MutableLiveData<Boolean> updateValid;
+
     private LiveData<List<User>> allFriends;
+
     private LiveData<Boolean> addFriendCheck;
+
     private LiveData<List<User>> findUser;
+
     private LiveData<Boolean> followRequest;
+    private LiveData<Boolean> unFollowRequest;
+
     private LiveData<List<RequestFriend>> friends;
+
     private LiveData<List<FollowingUser>> followingUsers;
+
     private LiveData<List<FollowerUser>> followerUsers;
 
     private LiveData<Boolean> followCheck;
@@ -41,6 +49,7 @@ public class UserManagementViewModel extends AndroidViewModel {
         updateValid = repository.getUpdateValid();
         findUser = repository.getFindUser();
         followRequest = repository.getFollowRequest();
+        unFollowRequest = repository.getUnFollowRequest();
         friends = repository.getFriends();
         followingUsers = repository.getFollowingUsers();
         followerUsers = repository.getFollowerUsers();
@@ -60,6 +69,8 @@ public class UserManagementViewModel extends AndroidViewModel {
     public LiveData<List<User>> getFindUser() { return findUser; }
 
     public LiveData<Boolean> getFollowRequest() { return followRequest; }
+
+    public LiveData<Boolean> getUnFollowRequest() { return unFollowRequest; }
 
     public LiveData<List<RequestFriend>> getFriends() { return friends; }
 
@@ -91,6 +102,10 @@ public class UserManagementViewModel extends AndroidViewModel {
 
     public void follow(User responseUser, User requestUser) {
         repository.follow(responseUser, requestUser);
+    }
+
+    public void unFollow(User responseUser, User requestUser) {
+        repository.unFollow(responseUser, requestUser);
     }
 
     public void getFollowingUsers(String uid) {

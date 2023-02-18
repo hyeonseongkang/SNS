@@ -53,6 +53,7 @@ public class UserManagementRepository {
     private MutableLiveData<List<User>> findUser;
 
     private MutableLiveData<Boolean> followRequest;
+    private MutableLiveData<Boolean> unFollowRequest;
 
     private MutableLiveData<List<RequestFriend>> friends;
 
@@ -73,6 +74,7 @@ public class UserManagementRepository {
         addFriendCheck = new MutableLiveData<>();
         findUser = new MutableLiveData<>();
         followRequest = new MutableLiveData<>();
+        unFollowRequest = new MutableLiveData<>();
         friends = new MutableLiveData<>();
 
         followingUsers = new MutableLiveData<>();
@@ -98,6 +100,8 @@ public class UserManagementRepository {
     public MutableLiveData<List<User>> getFindUser() { return findUser; }
 
     public MutableLiveData<Boolean> getFollowRequest() { return followRequest; }
+
+    public MutableLiveData<Boolean> getUnFollowRequest() { return unFollowRequest; }
 
     public MutableLiveData<List<RequestFriend>> getFriends() { return friends; }
 
@@ -378,6 +382,39 @@ public class UserManagementRepository {
                             }
                         }
                     });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void unFollow(User responseUser, User requestUser) {
+        if (responseUser.getUid().equals(requestUser.getUid())) return;
+
+        usersRef.child(responseUser.getUid()).child("follower").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                String key = null;
+                for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
+                    FollowerUser followerUser = dataSnapshot.getValue(FollowerUser.class);
+
+                    if (followerUser.getUser().getUid().equals(requestUser.getUid())) {
+                        key = followerUser.getKey();
+                        break;
+                    }
+                }
+
+                if (key == null) {
+                    unFollowRequest.setValue(false);
+                    return;
+                } else {
+                    usersRef.child(responseUser.getUid()).child("follower").child(key).removeValue();
+                    usersRef.child(requestUser.getUid()).child("following").child(key).removeValue();
+                    unFollowRequest.setValue(true);
                 }
             }
 
