@@ -58,6 +58,8 @@ public class UserManagementRepository {
 
     private MutableLiveData<List<FollowingUser>> followingUsers;
     private MutableLiveData<List<FollowerUser>> followerUsers;
+
+    private MutableLiveData<Boolean> followCheck;
     List<User> userList;
 
     public UserManagementRepository(Application application) {
@@ -75,6 +77,8 @@ public class UserManagementRepository {
 
         followingUsers = new MutableLiveData<>();
         followerUsers = new MutableLiveData<>();
+
+        followCheck = new MutableLiveData<>();
     }
 
     public MutableLiveData<User> getUserLiveData() { return userLiveData; }
@@ -100,6 +104,8 @@ public class UserManagementRepository {
     public MutableLiveData<List<FollowingUser>> getFollowingUsers() { return followingUsers; }
 
     public MutableLiveData<List<FollowerUser>> getFollowerUsers() { return followerUsers; }
+
+    public MutableLiveData<Boolean> getFollowCheck() { return followCheck; }
 
     public void getUserInfo(String uid) {
         usersRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -305,6 +311,36 @@ public class UserManagementRepository {
         });
     }
 
+    public void getFollowCheck(String responseUserUid, String requestUserUid) {
+        if (responseUserUid.equals(requestUserUid)) return;
+
+        usersRef.child(responseUserUid).child("follower").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                boolean localFollowCheck = false;
+                for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
+                    FollowerUser followerUser = dataSnapshot.getValue(FollowerUser.class);
+
+                    if (followerUser.getUser().getUid().equals(requestUserUid)) {
+                        localFollowCheck = true;
+                        break;
+                    }
+                }
+
+                if (localFollowCheck) {
+                    followCheck.setValue(true);
+                } else {
+                    followCheck.setValue(false);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+    }
+
     public void follow(User responseUser, User requestUser) {
         if (responseUser.getUid().equals(requestUser.getUid())) return;
 
@@ -315,7 +351,7 @@ public class UserManagementRepository {
                 for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
                     FollowerUser followerUser = dataSnapshot.getValue(FollowerUser.class);
 
-                    if (followerUser.getUser().getUid().equals(responseUser.getUid())) {
+                    if (followerUser.getUser().getUid().equals(requestUser.getUid())) {
                         overlapCheck = true;
                         break;
                     }

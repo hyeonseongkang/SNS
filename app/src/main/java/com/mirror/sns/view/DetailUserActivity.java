@@ -41,12 +41,17 @@ public class DetailUserActivity extends AppCompatActivity {
 
     private PostAdapter postAdapter;
 
+    private FirebaseAuth firebaseAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         detailUserBinding = ActivityDetailUserBinding.inflate(getLayoutInflater());
         setContentView(detailUserBinding.getRoot());
         overridePendingTransition(R.anim.fadein_left, R.anim.none);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+
         Intent intent = getIntent();
         userUid = intent.getStringExtra("userUid");
 
@@ -82,6 +87,22 @@ public class DetailUserActivity extends AppCompatActivity {
             }
         });
 
+        userManagementViewModel.getFollowCheck(userUid, firebaseAuth.getUid());
+        userManagementViewModel.getFollowCheck().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean) {
+                    // follow 상태
+                    detailUserBinding.followButton.setVisibility(View.GONE);
+                    detailUserBinding.unFollowButton.setVisibility(View.VISIBLE);
+                } else {
+                    // unfollow상태
+                    detailUserBinding.unFollowButton.setVisibility(View.GONE);
+                    detailUserBinding.followButton.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
         postViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(PostViewModel.class);
 
 
@@ -113,7 +134,6 @@ public class DetailUserActivity extends AppCompatActivity {
             @Override
             public void onChanged(Boolean aBoolean) {
                 if (aBoolean) {
-                    Toast.makeText(DetailUserActivity.this, "팔로우 성공", Toast.LENGTH_SHORT).show();
                     finish();
                     overridePendingTransition(R.anim.none, R.anim.fadeout_left);
                 }
