@@ -111,7 +111,6 @@ public class MyPageFragment extends Fragment {
                 }
 
                 mypageBinding.userNickName.setText(nickName);
-                mypageBinding.userEmail.setText(email);
                 String postSize = posts == null ? "0" : String.valueOf(posts.size());
                 String followersSize = followers == null ? "0" : String.valueOf(followers.size());
                 String followingSize = following == null ? "0" : String.valueOf(following.size());

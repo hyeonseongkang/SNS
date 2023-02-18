@@ -110,6 +110,7 @@ public class HomeFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
 
+        Log.d(TAG, firebaseUser.getEmail());
 
         userManagementViewModel = new ViewModelProvider(requireActivity()).get(UserManagementViewModel.class);
         loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
@@ -149,21 +150,25 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        homeBinding.friendRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
+        homeBinding.friendRecyclerview.setHasFixedSize(true);
+        followingUserAdapter = new FollowingUserAdapter();
+        homeBinding.friendRecyclerview.setAdapter(followingUserAdapter);
+
+
         userManagementViewModel.getFollowingUsers(firebaseUser.getUid());
-        userManagementViewModel.getFollowingUsers().observe(getActivity(), new Observer<List<FollowingUser>>() {
+        userManagementViewModel.getFollowingUsers().observe((LifecycleOwner) getContext(), new Observer<List<FollowingUser>>() {
             @Override
             public void onChanged(List<FollowingUser> followingUsers) {
-                followingUserAdapter.setFollowingUsers(followingUsers);
+                if (followingUsers != null)
+                    followingUserAdapter.setFollowingUsers(followingUsers);
             }
         });
 
         postViewModel.getPosts();
 
 
-        homeBinding.friendRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
-        homeBinding.friendRecyclerview.setHasFixedSize(true);
-        followingUserAdapter = new FollowingUserAdapter();
-        homeBinding.friendRecyclerview.setAdapter(followingUserAdapter);
+
 
         homeBinding.snsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         homeBinding.snsRecyclerView.setHasFixedSize(true);

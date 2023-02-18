@@ -92,22 +92,6 @@ public class DetailPostActivity extends AppCompatActivity {
         tagAdapter = new TagAdapter();
         detailPostBinding.tagRecyclerView.setAdapter(tagAdapter);
 
-        /*
-        commentAdapter = new CommentAdapter();
-
-        detailPostBinding.commentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        detailPostBinding.commentRecyclerView.setHasFixedSize(true);
-        detailPostBinding.commentRecyclerView.setAdapter(commentAdapter);
-        detailPostBinding.commentRecyclerView.setNestedScrollingEnabled(false);
-
-        postViewModel.getComments(itemkey);
-        postViewModel.getComments().observe(this, new Observer<List<Comment>>() {
-            @Override
-            public void onChanged(List<Comment> comments) {
-                commentAdapter.setComments(comments);
-            }
-        });
-         */
 
         detailPostBinding.commentActivity.setEnabled(true);
         detailPostBinding.commentActivity.setClickable(true);
@@ -156,7 +140,6 @@ public class DetailPostActivity extends AppCompatActivity {
                 }
 
                 tagAdapter.setTagList(tags, true);
-                Log.d(TAG, String.valueOf(tags.size()) + "!@!@!@!@");
                 Glide.with(DetailPostActivity.this)
                         .load(Uri.parse(currentPost.getPostPhotoUri()))
                         .into(detailPostBinding.postPhoto);

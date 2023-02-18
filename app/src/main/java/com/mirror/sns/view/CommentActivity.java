@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
 import com.mirror.sns.R;
 import com.mirror.sns.adapter.CommentAdapter;
 import com.mirror.sns.classes.Comment;
@@ -53,6 +54,8 @@ public class CommentActivity extends AppCompatActivity {
         Intent intent = getIntent();
         userUid = intent.getStringExtra("userUid");
         itemKey = intent.getStringExtra("itemKey");
+
+        userUid = FirebaseAuth.getInstance().getUid();
 
         overridePendingTransition(R.anim.fadein_left, R.anim.none);
 
