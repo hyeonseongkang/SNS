@@ -67,7 +67,7 @@ public class PostViewModel extends AndroidViewModel {
         repository.createPost(post);
     }
 
-    public void getPosts() { repository.getPosts();}
+    public void getPosts(List<String> nearUsersUid) { repository.getPosts(nearUsersUid);}
 
     public void getPost(String userUid, String key) {repository.getPost(userUid, key);}
 

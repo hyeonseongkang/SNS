@@ -162,7 +162,7 @@ public class PostRepository {
         });
     }
 
-    public void getPosts() {
+    public void getPosts(List<String> nearUsersUid) {
         postsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
@@ -190,7 +190,10 @@ public class PostRepository {
                         //Post post = snapshot2.getValue(Post.class);
                         // public Post(String key, String userUid, String content, String userPhotoUri, String postPhotoUri, ArrayList<Tag> tags, ArrayList<List<User>> likes) {
                         Post post = new Post(key, userUid, content, userPhotoUri, postPhotoUri, tagList, likePressUsers);
-                        posts.add(post);
+                        if (nearUsersUid.contains(userUid)) {
+                            posts.add(post);
+                        }
+
                     }
                 }
                 postsLiveData.setValue(posts);

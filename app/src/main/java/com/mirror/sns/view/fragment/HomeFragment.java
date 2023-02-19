@@ -3,8 +3,6 @@ package com.mirror.sns.view.fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,8 +16,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
@@ -34,7 +30,7 @@ import com.mirror.sns.R;
 import com.mirror.sns.adapter.FollowingUserAdapter;
 import com.mirror.sns.adapter.SnsAdapter;
 import com.mirror.sns.model.FollowingUser;
-import com.mirror.sns.model.Location;
+import com.mirror.sns.model.UserLocation;
 import com.mirror.sns.model.Post;
 import com.mirror.sns.model.User;
 import com.mirror.sns.databinding.FragmentHomeBinding;
@@ -79,6 +75,8 @@ public class HomeFragment extends Fragment {
 
     List<Post> currentPosts = new ArrayList<>();
 
+    private UserLocation userLocation;
+
 
     public HomeFragment() {
 
@@ -122,10 +120,18 @@ public class HomeFragment extends Fragment {
         locationViewModel.setLocation(firebaseUser.getUid());
         locationViewModel.getLocation(firebaseUser.getUid());
 
-        locationViewModel.getLocation().observe(getActivity(), new Observer<Location>() {
+        locationViewModel.getLocation().observe(getActivity(), new Observer<UserLocation>() {
             @Override
-            public void onChanged(Location location) {
+            public void onChanged(UserLocation userLocation) {
+                HomeFragment.this.userLocation = userLocation;
+                locationViewModel.getNearUsersUid(userLocation);
+            }
+        });
 
+        locationViewModel.getNearUsersUid().observe(getActivity(), new Observer<List<String>>() {
+            @Override
+            public void onChanged(List<String> nearUsersUid) {
+                postViewModel.getPosts(nearUsersUid);
             }
         });
 
@@ -180,7 +186,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        postViewModel.getPosts();
+
 
 
         homeBinding.snsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

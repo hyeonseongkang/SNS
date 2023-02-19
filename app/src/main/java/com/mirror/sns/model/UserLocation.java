@@ -1,13 +1,13 @@
 package com.mirror.sns.model;
 
-public class Location {
+public class UserLocation {
     private String uid;
     private double latitude;
     private double longitude;
 
-    public Location() {}
+    public UserLocation() {}
 
-    public Location(String uid, double latitude, double longitude) {
+    public UserLocation(String uid, double latitude, double longitude) {
         this.uid =uid;
         this.latitude =latitude;
         this.longitude = longitude;
