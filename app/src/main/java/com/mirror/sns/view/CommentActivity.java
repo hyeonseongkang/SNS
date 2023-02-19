@@ -55,14 +55,13 @@ public class CommentActivity extends AppCompatActivity {
         userUid = intent.getStringExtra("userUid");
         itemKey = intent.getStringExtra("itemKey");
 
-        userUid = FirebaseAuth.getInstance().getUid();
 
         overridePendingTransition(R.anim.fadein_left, R.anim.none);
 
         postViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(PostViewModel.class);
         userManagementViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(UserManagementViewModel.class);
 
-        userManagementViewModel.getUserInfo(userUid);
+        userManagementViewModel.getUserInfo(FirebaseAuth.getInstance().getUid());
         userManagementViewModel.getUserLiveData().observe(this, new Observer<User>() {
             @Override
             public void onChanged(User user) {
@@ -110,7 +109,7 @@ public class CommentActivity extends AppCompatActivity {
             @Override
             public void onChanged(Boolean aBoolean) {
                 if (aBoolean) {
-                    postViewModel.setCommentLikeUser(itemKey, currComment.getKey(), currentUser.getUid());
+                    postViewModel.setCommentLikeUser(itemKey, currComment.getKey(), currentUser.getUid(), userUid);
                 }
             }
         });

@@ -83,7 +83,7 @@ public class PostViewModel extends AndroidViewModel {
 
     public void getComments(String itemKey) { repository.getComments(itemKey); }
 
-    public void setCommentLikeUser(String itemKey, String commentKey, String uid) { repository.setCommentLikeUser(itemKey, commentKey, uid); }
+    public void setCommentLikeUser(String itemKey, String commentKey, String uid, String postOwnUid) { repository.setCommentLikeUser(itemKey, commentKey, uid, postOwnUid); }
 
     public void getCommentLikeUser(String itemKey, String commentKey ) { repository.getCommentLikeUser(itemKey, commentKey);}
 

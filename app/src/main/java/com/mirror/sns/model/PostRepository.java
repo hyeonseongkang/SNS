@@ -418,7 +418,8 @@ public class PostRepository {
         });
     }
 
-    public void setCommentLikeUser(String itemKey, String commentKey, String uid) {
+    public void setCommentLikeUser(String itemKey, String commentKey, String uid, String postOwnUid) {
+        if (!postOwnUid.equals(uid)) return;
         commentsRef.child(itemKey).child(commentKey).child("like").setValue(uid);
     }
 
