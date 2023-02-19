@@ -22,9 +22,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:textSize="14dp"
+        android:fontFamily="@font/scd5"
         android:text="user1"
         android:layout_marginTop="5dp"
-        android:textColor="#000000"
         android:maxLines="1"
         android:ellipsize="end"/>
 

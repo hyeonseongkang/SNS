@@ -55,6 +55,8 @@ public class CreatePostActivity extends AppCompatActivity {
     SnsPhotoItemAdapter adapter;
     TagAdapter tagAdapter;
 
+    private String userNickName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +84,7 @@ public class CreatePostActivity extends AppCompatActivity {
             @Override
             public void onChanged(User user) {
                 userPhotoUri = user.getPhotoUri();
+                userNickName = user.getNickName();
             }
         });
 
@@ -145,7 +148,7 @@ public class CreatePostActivity extends AppCompatActivity {
                     Log.d(TAG, tag.getTag());
                 }
                 //  public Post(String key, String userUid, String content, String userPhotoUri, String postPhotoUri, ArrayList<Tag> tags, ArrayList<String> likes)
-                Post post = new Post("", userUid, postText, tempUserPhotoUri, postPhoto, tags, new ArrayList<>());
+                Post post = new Post("", userUid,userNickName, postText, tempUserPhotoUri, postPhoto, tags, new ArrayList<>());
                 postViewModel.createPost(post);
 
                 // save
@@ -154,13 +157,6 @@ public class CreatePostActivity extends AppCompatActivity {
                 postText
                 // friend Tag
                  */
-            }
-        });
-
-        createPostBinding.tag.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // 친구 리스트 가져오기
             }
         });
 

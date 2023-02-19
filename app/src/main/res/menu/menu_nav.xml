@@ -12,13 +12,8 @@
         android:title="null" />
 
     <item
-        android:id="@+id/post"
-        android:icon="@drawable/plus_sns"
-        android:title="null" />
-
-    <item
-        android:id="@+id/heart"
-        android:icon="@drawable/heart"
+        android:id="@+id/chat"
+        android:icon="@drawable/chat"
         android:title="null" />
 
     <item

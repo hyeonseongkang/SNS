@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Post {
     private String key;
     private String userUid;
+    private String nickName;
     private String content;
     private String userPhotoUri;
     private String postPhotoUri;
@@ -14,9 +15,10 @@ public class Post {
 
     public Post() {}
 
-    public Post(String key, String userUid, String content, String userPhotoUri, String postPhotoUri, ArrayList<Tag> tags, ArrayList<User> likes) {
+    public Post(String key, String userUid, String nickName, String content, String userPhotoUri, String postPhotoUri, ArrayList<Tag> tags, ArrayList<User> likes) {
         this.key = key;
         this.userUid = userUid;
+        this.nickName = nickName;
         this.content = content;
         this.userPhotoUri = userPhotoUri;
         this.postPhotoUri = postPhotoUri;
@@ -38,6 +40,10 @@ public class Post {
 
     public void setUserUid(String userUid) {
         this.userUid = userUid;
+    }
+
+    public String getNickName() {
+        return nickName;
     }
 
     public String getContent() {

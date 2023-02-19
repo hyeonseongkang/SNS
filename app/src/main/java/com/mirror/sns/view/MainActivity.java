@@ -10,9 +10,8 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.mirror.sns.R;
 import com.mirror.sns.databinding.ActivityMainBinding;
 import com.mirror.sns.view.fragment.HomeFragment;
-import com.mirror.sns.view.fragment.LikeFragment;
+import com.mirror.sns.view.fragment.ChatFragment;
 import com.mirror.sns.view.fragment.MyPageFragment;
-import com.mirror.sns.view.fragment.PostFragment;
 import com.mirror.sns.view.fragment.SearchFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -45,12 +44,8 @@ public class MainActivity extends AppCompatActivity {
                     getSupportFragmentManager().beginTransaction().replace(R.id.container, new SearchFragment()).commit();
                     return true;
 
-                case R.id.post:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container, new PostFragment()).commit();
-                    return true;
-
-                case R.id.heart:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container, new LikeFragment()).commit();
+                case R.id.chat:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container, new ChatFragment()).commit();
                     return true;
                     
                 case R.id.mypage:

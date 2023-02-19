@@ -30,8 +30,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
                 android:fontFamily="@font/scd5"
+                android:layout_toRightOf="@+id/backButton"
+                android:layout_marginLeft="20dp"
+                android:layout_centerVertical="true"
                 android:text="새 게시물"
                 android:textColor="#000000"
                 android:textSize="18dp" />
@@ -103,7 +105,7 @@
                             android:id="@+id/cameraImage"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:src="@drawable/camera" />
+                            android:src="@drawable/gallery" />
 
 <!--                        <TextView-->
 <!--                            android:id="@+id/photoCount"-->
@@ -139,7 +141,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:background="@null"
                 android:hint="문구 입력....." />
 
@@ -148,7 +150,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:background="@null"
                 android:hint="태그 입력....."
                 android:imeOptions="actionDone"
@@ -164,26 +166,6 @@
                 tools:itemCount="5"
                 tools:listitem="@layout/adapter_tag_item" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="20dp"
-                android:background="#CFCECE" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:orientation="vertical">
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/tag"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:text="사람 태그하기" />
-
-            </LinearLayout>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

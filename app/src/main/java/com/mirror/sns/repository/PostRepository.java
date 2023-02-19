@@ -92,6 +92,7 @@ public class PostRepository {
     public void createPost(Post post) {
         String userUid = post.getUserUid();
         String key = postsRef.push().getKey();
+        String nickName = post.getNickName();
         String content = post.getContent();
         String userPhotoUri = post.getUserPhotoUri();
         ArrayList<User> likes = post.getLikes();
@@ -108,7 +109,7 @@ public class PostRepository {
                     @Override
                     public void onSuccess(Uri uri) {
                         //  public Post(String key, String userUid, String content, String userPhotoUri, String postPhotoUri, ArrayList<Tag> tags, ArrayList<String> likes)
-                        Post post = new Post(key, userUid, content, userPhotoUri, uri.toString(), tags, likes);
+                        Post post = new Post(key, userUid, nickName, content, userPhotoUri, uri.toString(), tags, likes);
                         postsRef.child(userUid).child(key).setValue(post).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull @NotNull Task<Void> task) {
@@ -136,6 +137,7 @@ public class PostRepository {
                 String postPhotoUri = snapshot.child("postPhotoUri").getValue(String.class);
                 String userPhotoUri = snapshot.child("userPhotoUri").getValue(String.class);
                 String userUid = snapshot.child("userUid").getValue(String.class);
+                String userNickName = snapshot.child("nickName").getValue(String.class);
 
                 ArrayList<User> likePressUsers = new ArrayList<>();
                 for (DataSnapshot snapshot3: snapshot.child("likes").getChildren()) {
@@ -151,7 +153,7 @@ public class PostRepository {
                 }
                 //Post post = snapshot2.getValue(Post.class);
                 // public Post(String key, String userUid, String content, String userPhotoUri, String postPhotoUri, ArrayList<Tag> tags, ArrayList<List<User>> likes) {
-                Post currPost = new Post(key, userUid, content, userPhotoUri, postPhotoUri, tagList, likePressUsers);
+                Post currPost = new Post(key, userUid, userNickName, content, userPhotoUri, postPhotoUri, tagList, likePressUsers);
                 post.setValue(currPost);
             }
 
@@ -175,6 +177,7 @@ public class PostRepository {
                         String postPhotoUri = snapshot2.child("postPhotoUri").getValue(String.class);
                         String userPhotoUri = snapshot2.child("userPhotoUri").getValue(String.class);
                         String userUid = snapshot2.child("userUid").getValue(String.class);
+                        String userNickName = snapshot2.child("nickName").getValue(String.class);
 
                         ArrayList<User> likePressUsers = new ArrayList<>();
                         for (DataSnapshot snapshot3: snapshot2.child("likes").getChildren()) {
@@ -189,7 +192,7 @@ public class PostRepository {
                         }
                         //Post post = snapshot2.getValue(Post.class);
                         // public Post(String key, String userUid, String content, String userPhotoUri, String postPhotoUri, ArrayList<Tag> tags, ArrayList<List<User>> likes) {
-                        Post post = new Post(key, userUid, content, userPhotoUri, postPhotoUri, tagList, likePressUsers);
+                        Post post = new Post(key, userUid, userNickName, content, userPhotoUri, postPhotoUri, tagList, likePressUsers);
                         if (nearUsersUid.contains(userUid)) {
                             posts.add(post);
                         }
@@ -219,6 +222,7 @@ public class PostRepository {
                         String postPhotoUri = snapshot2.child("postPhotoUri").getValue(String.class);
                         String userPhotoUri = snapshot2.child("userPhotoUri").getValue(String.class);
                         String userUid = snapshot2.child("userUid").getValue(String.class);
+                        String userNickName = snapshot2.child("nickName").getValue(String.class);
 
                         ArrayList<User> likePressUsers = new ArrayList<>();
                         for (DataSnapshot snapshot3: snapshot2.child("likes").getChildren()) {
@@ -233,7 +237,7 @@ public class PostRepository {
                         }
                         //Post post = snapshot2.getValue(Post.class);
                         // public Post(String key, String userUid, String content, String userPhotoUri, String postPhotoUri, ArrayList<Tag> tags, ArrayList<List<User>> likes) {
-                        Post post = new Post(key, userUid, content, userPhotoUri, postPhotoUri, tagList, likePressUsers);
+                        Post post = new Post(key, userUid, userNickName, content, userPhotoUri, postPhotoUri, tagList, likePressUsers);
                         if (userUid.equals(userId)) {
                             posts.add(post);
                         }

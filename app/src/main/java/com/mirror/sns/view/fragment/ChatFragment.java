@@ -13,14 +13,14 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.mirror.sns.databinding.FragmentChatBinding;
 import com.mirror.sns.model.User;
-import com.mirror.sns.databinding.FragmentLikeBinding;
 import com.mirror.sns.viewmodel.UserManagementViewModel;
 
-public class LikeFragment extends Fragment {
+public class ChatFragment extends Fragment {
 
 
-    private FragmentLikeBinding likeBinding;
+    private FragmentChatBinding chatBinding;
 
     private UserManagementViewModel userManagementViewModel;
 
@@ -32,12 +32,12 @@ public class LikeFragment extends Fragment {
     private String userUid;
     private String userEmail;
 
-    public LikeFragment() {}
+    public ChatFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        likeBinding = FragmentLikeBinding.inflate(inflater, container, false);
-        return likeBinding.getRoot();
+        chatBinding = FragmentChatBinding.inflate(inflater, container, false);
+        return chatBinding.getRoot();
     }
 
     @Override

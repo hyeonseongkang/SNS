@@ -131,7 +131,8 @@ public class HomeFragment extends Fragment {
         locationViewModel.getNearUsersUid().observe(getActivity(), new Observer<List<String>>() {
             @Override
             public void onChanged(List<String> nearUsersUid) {
-                postViewModel.getPosts(nearUsersUid);
+                if (nearUsersUid != null)
+                    postViewModel.getPosts(nearUsersUid);
             }
         });
 
@@ -262,12 +263,6 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        homeBinding.dm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loginViewModel.logout();
-            }
-        });
     }
 
 

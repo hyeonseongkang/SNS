@@ -100,7 +100,7 @@ public class SnsAdapter extends RecyclerView.Adapter<SnsAdapter.MyViewHolder>{
             }
         }
 
-        holder.userName.setText(currPost.getUserUid());
+        holder.userName.setText(currPost.getNickName());
         holder.postContent.setText(currPost.getContent());
 
         Glide.with(holder.itemView.getContext())
