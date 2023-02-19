@@ -13,9 +13,8 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.mirror.sns.classes.User;
+import com.mirror.sns.model.User;
 import com.mirror.sns.databinding.FragmentLikeBinding;
-import com.mirror.sns.databinding.FragmentPostBinding;
 import com.mirror.sns.viewmodel.UserManagementViewModel;
 
 public class LikeFragment extends Fragment {

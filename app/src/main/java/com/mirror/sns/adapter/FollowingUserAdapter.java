@@ -10,9 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.mirror.sns.R;
-import com.mirror.sns.classes.FollowingUser;
-import com.mirror.sns.classes.Profile;
-import com.mirror.sns.classes.User;
+import com.mirror.sns.model.FollowingUser;
 
 import java.util.ArrayList;
 import java.util.List;

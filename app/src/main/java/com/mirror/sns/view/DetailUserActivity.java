@@ -1,7 +1,6 @@
 package com.mirror.sns.view;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -9,16 +8,14 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.mirror.sns.R;
 import com.mirror.sns.adapter.PostAdapter;
-import com.mirror.sns.classes.Post;
-import com.mirror.sns.classes.User;
+import com.mirror.sns.model.Post;
+import com.mirror.sns.model.User;
 import com.mirror.sns.databinding.ActivityDetailUserBinding;
 import com.mirror.sns.viewmodel.PostViewModel;
 import com.mirror.sns.viewmodel.UserManagementViewModel;

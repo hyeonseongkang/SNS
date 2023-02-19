@@ -17,15 +17,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.mirror.sns.adapter.PostAdapter;
 import com.mirror.sns.adapter.TagAdapter;
-import com.mirror.sns.classes.Sns;
-import com.mirror.sns.classes.Tag;
-import com.mirror.sns.classes.User;
+import com.mirror.sns.model.User;
 import com.mirror.sns.databinding.FragmentSearchBinding;
 import com.mirror.sns.viewmodel.LoginViewModel;
 import com.mirror.sns.viewmodel.PostViewModel;
 import com.mirror.sns.viewmodel.UserManagementViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SearchFragment extends Fragment {

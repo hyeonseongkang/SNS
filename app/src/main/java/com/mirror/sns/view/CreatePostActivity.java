@@ -25,13 +25,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.mirror.sns.R;
 import com.mirror.sns.adapter.SnsPhotoItemAdapter;
 import com.mirror.sns.adapter.TagAdapter;
-import com.mirror.sns.classes.Post;
-import com.mirror.sns.classes.Sns;
-import com.mirror.sns.classes.Tag;
-import com.mirror.sns.classes.User;
+import com.mirror.sns.model.Post;
+import com.mirror.sns.model.Tag;
+import com.mirror.sns.model.User;
 import com.mirror.sns.databinding.ActivityCreatePostBinding;
-import com.mirror.sns.model.PostRepository;
-import com.mirror.sns.viewmodel.LoginViewModel;
 import com.mirror.sns.viewmodel.PostViewModel;
 import com.mirror.sns.viewmodel.UserManagementViewModel;
 

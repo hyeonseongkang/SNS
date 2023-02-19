@@ -6,11 +6,11 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.mirror.sns.classes.FollowerUser;
-import com.mirror.sns.classes.FollowingUser;
-import com.mirror.sns.classes.RequestFriend;
-import com.mirror.sns.classes.User;
-import com.mirror.sns.model.UserManagementRepository;
+import com.mirror.sns.model.FollowerUser;
+import com.mirror.sns.model.FollowingUser;
+import com.mirror.sns.model.RequestFriend;
+import com.mirror.sns.model.User;
+import com.mirror.sns.repository.UserManagementRepository;
 
 import java.util.List;
 

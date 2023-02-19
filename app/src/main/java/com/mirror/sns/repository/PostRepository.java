@@ -1,11 +1,10 @@
-package com.mirror.sns.model;
+package com.mirror.sns.repository;
 
 import android.app.Application;
 import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -19,10 +18,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.mirror.sns.classes.Comment;
-import com.mirror.sns.classes.Post;
-import com.mirror.sns.classes.Tag;
-import com.mirror.sns.classes.User;
+import com.mirror.sns.model.Comment;
+import com.mirror.sns.model.Post;
+import com.mirror.sns.model.Tag;
+import com.mirror.sns.model.User;
 
 import org.jetbrains.annotations.NotNull;
 

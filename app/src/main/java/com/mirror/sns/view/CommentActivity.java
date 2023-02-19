@@ -5,22 +5,19 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.mirror.sns.R;
 import com.mirror.sns.adapter.CommentAdapter;
-import com.mirror.sns.classes.Comment;
-import com.mirror.sns.classes.User;
+import com.mirror.sns.model.Comment;
+import com.mirror.sns.model.User;
 import com.mirror.sns.databinding.ActivityCommentBinding;
-import com.mirror.sns.databinding.ActivityDetailPostBinding;
 import com.mirror.sns.viewmodel.PostViewModel;
 import com.mirror.sns.viewmodel.UserManagementViewModel;
 

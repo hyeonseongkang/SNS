@@ -1,7 +1,6 @@
 package com.mirror.sns.adapter;
 
 import android.graphics.Paint;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mirror.sns.R;
-import com.mirror.sns.classes.Tag;
+import com.mirror.sns.model.Tag;
 
 import java.util.ArrayList;
 import java.util.List;

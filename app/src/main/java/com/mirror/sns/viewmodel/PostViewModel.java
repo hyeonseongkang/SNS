@@ -6,10 +6,10 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.mirror.sns.classes.Comment;
-import com.mirror.sns.classes.Post;
-import com.mirror.sns.classes.User;
-import com.mirror.sns.model.PostRepository;
+import com.mirror.sns.model.Comment;
+import com.mirror.sns.model.Post;
+import com.mirror.sns.model.User;
+import com.mirror.sns.repository.PostRepository;
 
 import java.util.List;
 

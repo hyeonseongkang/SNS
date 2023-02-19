@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.mirror.sns.R;
 import com.mirror.sns.adapter.AddFriendAdapter;
-import com.mirror.sns.classes.User;
+import com.mirror.sns.model.User;
 import com.mirror.sns.databinding.ActivityAddFriendBinding;
 import com.mirror.sns.utils.RxAndroidUtils;
 import com.mirror.sns.viewmodel.UserManagementViewModel;

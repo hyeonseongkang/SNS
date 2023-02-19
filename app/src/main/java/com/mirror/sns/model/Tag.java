@@ -1,4 +1,4 @@
-package com.mirror.sns.classes;
+package com.mirror.sns.model;
 
 public class Tag {
     private String tag;

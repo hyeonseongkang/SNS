@@ -23,10 +23,8 @@ import android.view.View;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.mirror.sns.R;
-import com.mirror.sns.classes.User;
+import com.mirror.sns.model.User;
 import com.mirror.sns.databinding.ActivityEditProfileBinding;
-import com.mirror.sns.model.UserManagementRepository;
-import com.mirror.sns.viewmodel.LoginViewModel;
 import com.mirror.sns.viewmodel.UserManagementViewModel;
 
 public class EditProfileActivity extends AppCompatActivity {

@@ -1,4 +1,4 @@
-package com.mirror.sns.classes;
+package com.mirror.sns.model;
 
 public class FollowerUser {
     private String key;

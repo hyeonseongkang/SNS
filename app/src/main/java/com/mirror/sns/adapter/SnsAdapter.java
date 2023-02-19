@@ -1,22 +1,18 @@
 package com.mirror.sns.adapter;
 
 import android.net.Uri;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.mirror.sns.R;
-import com.mirror.sns.classes.Post;
-import com.mirror.sns.classes.Sns;
-import com.mirror.sns.classes.User;
+import com.mirror.sns.model.Post;
+import com.mirror.sns.model.User;
 
 import java.util.ArrayList;
 import java.util.List;

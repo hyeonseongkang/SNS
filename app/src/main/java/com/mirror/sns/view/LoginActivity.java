@@ -21,7 +21,7 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 import com.mirror.sns.R;
-import com.mirror.sns.classes.User;
+import com.mirror.sns.model.User;
 import com.mirror.sns.databinding.ActivityLoginBinding;
 import com.mirror.sns.viewmodel.LoginViewModel;
 import com.mirror.sns.viewmodel.UserManagementViewModel;

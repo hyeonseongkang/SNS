@@ -1,7 +1,6 @@
-package com.mirror.sns.classes;
+package com.mirror.sns.model;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Post {
     private String key;

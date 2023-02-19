@@ -3,8 +3,10 @@ package com.mirror.sns.view.fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.location.Location;
+import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -15,6 +17,9 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
@@ -28,15 +33,16 @@ import com.google.firebase.auth.FirebaseUser;
 import com.mirror.sns.R;
 import com.mirror.sns.adapter.FollowingUserAdapter;
 import com.mirror.sns.adapter.SnsAdapter;
-import com.mirror.sns.classes.FollowingUser;
-import com.mirror.sns.classes.Post;
-import com.mirror.sns.classes.Profile;
-import com.mirror.sns.classes.User;
+import com.mirror.sns.model.FollowingUser;
+import com.mirror.sns.model.Location;
+import com.mirror.sns.model.Post;
+import com.mirror.sns.model.User;
 import com.mirror.sns.databinding.FragmentHomeBinding;
 import com.mirror.sns.view.AddFriendActivity;
 import com.mirror.sns.view.CreatePostActivity;
 import com.mirror.sns.view.DetailPostActivity;
 import com.mirror.sns.view.DetailUserActivity;
+import com.mirror.sns.viewmodel.LocationViewModel;
 import com.mirror.sns.viewmodel.LoginViewModel;
 import com.mirror.sns.viewmodel.PostViewModel;
 import com.mirror.sns.viewmodel.UserManagementViewModel;
@@ -56,6 +62,7 @@ public class HomeFragment extends Fragment {
     private LoginViewModel loginViewModel;
     private PostViewModel postViewModel;
     private UserManagementViewModel userManagementViewModel;
+    private LocationViewModel locationViewModel;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
@@ -64,8 +71,6 @@ public class HomeFragment extends Fragment {
     private String userPhoto;
     private String userUid;
     private String userEmail;
-
-    private long buttonPressTime = 0;
 
     private User currentUser;
 
@@ -84,7 +89,7 @@ public class HomeFragment extends Fragment {
     public void onAttach(Context context) {
         mContext = context;
         if (context instanceof Activity) {
-            mActivity = (Activity)context;
+            mActivity = (Activity) context;
         }
         super.onAttach(context);
     }
@@ -97,20 +102,32 @@ public class HomeFragment extends Fragment {
         mContext = null;
         super.onDetach();
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         homeBinding = FragmentHomeBinding.inflate(inflater, container, false);
         return homeBinding.getRoot();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.P)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
 
-        Log.d(TAG, firebaseUser.getEmail());
+        locationViewModel = new ViewModelProvider(requireActivity()).get(LocationViewModel.class);
+        locationViewModel.setLocation(firebaseUser.getUid());
+        locationViewModel.getLocation(firebaseUser.getUid());
+
+        locationViewModel.getLocation().observe(getActivity(), new Observer<Location>() {
+            @Override
+            public void onChanged(Location location) {
+
+            }
+        });
 
         userManagementViewModel = new ViewModelProvider(requireActivity()).get(UserManagementViewModel.class);
         loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
@@ -143,8 +160,6 @@ public class HomeFragment extends Fragment {
                                 .into(homeBinding.userProfile);
                     }
                 }
-
-
 
 
             }

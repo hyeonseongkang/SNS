@@ -18,18 +18,16 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.mirror.sns.adapter.PostAdapter;
-import com.mirror.sns.classes.FollowerUser;
-import com.mirror.sns.classes.FollowingUser;
-import com.mirror.sns.classes.Post;
-import com.mirror.sns.classes.Sns;
-import com.mirror.sns.classes.User;
+import com.mirror.sns.model.FollowerUser;
+import com.mirror.sns.model.FollowingUser;
+import com.mirror.sns.model.Post;
+import com.mirror.sns.model.User;
 import com.mirror.sns.databinding.FragmentMypageBinding;
 import com.mirror.sns.view.DetailPostActivity;
 import com.mirror.sns.view.EditProfileActivity;
 import com.mirror.sns.viewmodel.PostViewModel;
 import com.mirror.sns.viewmodel.UserManagementViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MyPageFragment extends Fragment {

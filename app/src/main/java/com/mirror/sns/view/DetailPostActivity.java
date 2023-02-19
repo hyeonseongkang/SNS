@@ -4,31 +4,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.mirror.sns.R;
-import com.mirror.sns.adapter.CommentAdapter;
-import com.mirror.sns.adapter.DetailPostItemAdapter;
 import com.mirror.sns.adapter.TagAdapter;
-import com.mirror.sns.classes.Comment;
-import com.mirror.sns.classes.Post;
-import com.mirror.sns.classes.Tag;
-import com.mirror.sns.classes.User;
+import com.mirror.sns.model.Post;
+import com.mirror.sns.model.Tag;
+import com.mirror.sns.model.User;
 import com.mirror.sns.databinding.ActivityDetailPostBinding;
-import com.mirror.sns.viewmodel.LoginViewModel;
 import com.mirror.sns.viewmodel.PostViewModel;
 import com.mirror.sns.viewmodel.UserManagementViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DetailPostActivity extends AppCompatActivity {

@@ -9,8 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.google.firebase.auth.FirebaseUser;
-import com.mirror.sns.R;
-import com.mirror.sns.classes.User;
+import com.mirror.sns.model.User;
 import com.mirror.sns.databinding.ActivitySignUpBinding;
 import com.mirror.sns.viewmodel.LoginViewModel;
 

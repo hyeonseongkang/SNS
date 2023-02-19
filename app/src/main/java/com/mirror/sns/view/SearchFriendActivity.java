@@ -7,13 +7,11 @@ import androidx.lifecycle.ViewModelProvider;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
 import com.mirror.sns.R;
-import com.mirror.sns.classes.User;
-import com.mirror.sns.databinding.ActivityCreatePostBinding;
+import com.mirror.sns.model.User;
 import com.mirror.sns.databinding.ActivitySearchFriendBinding;
 import com.mirror.sns.viewmodel.UserManagementViewModel;
 

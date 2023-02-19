@@ -1,4 +1,4 @@
-package com.mirror.sns.model;
+package com.mirror.sns.repository;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
@@ -21,12 +21,11 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.mirror.sns.classes.FollowerUser;
-import com.mirror.sns.classes.FollowingUser;
-import com.mirror.sns.classes.Post;
-import com.mirror.sns.classes.RequestFriend;
-import com.mirror.sns.classes.Tag;
-import com.mirror.sns.classes.User;
+import com.mirror.sns.model.FollowerUser;
+import com.mirror.sns.model.FollowingUser;
+import com.mirror.sns.model.Post;
+import com.mirror.sns.model.RequestFriend;
+import com.mirror.sns.model.User;
 
 import org.jetbrains.annotations.NotNull;
 

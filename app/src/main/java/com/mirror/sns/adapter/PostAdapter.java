@@ -10,9 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.mirror.sns.R;
-import com.mirror.sns.classes.Post;
-import com.mirror.sns.classes.Sns;
-import com.mirror.sns.classes.User;
+import com.mirror.sns.model.Post;
 
 import java.util.ArrayList;
 import java.util.List;
