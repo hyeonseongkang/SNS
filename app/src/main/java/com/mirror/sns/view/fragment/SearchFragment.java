@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,11 +20,17 @@ import com.mirror.sns.adapter.PostAdapter;
 import com.mirror.sns.adapter.TagAdapter;
 import com.mirror.sns.model.User;
 import com.mirror.sns.databinding.FragmentSearchBinding;
+import com.mirror.sns.utils.RxAndroidUtils;
 import com.mirror.sns.viewmodel.LoginViewModel;
 import com.mirror.sns.viewmodel.PostViewModel;
 import com.mirror.sns.viewmodel.UserManagementViewModel;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.Disposable;
 
 public class SearchFragment extends Fragment {
 
@@ -38,6 +45,9 @@ public class SearchFragment extends Fragment {
 
     private PostAdapter postAdapter;
     private TagAdapter tagAdapter;
+
+
+    private Disposable editTextDisposable;
 
     public SearchFragment() {
 
@@ -79,6 +89,20 @@ public class SearchFragment extends Fragment {
         searchBinding.tagsRecyclerView.setAdapter(tagAdapter);
 
 
+        Observable<String> editTextObservable = RxAndroidUtils.getInstance().getEditTextObservable(searchBinding.search);
+        editTextDisposable = editTextObservable
+                .debounce(500, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(s-> {
+                    Log.d(RxAndroidUtils.getInstance().getTag(), s);
+                    if (s.length() >= 2) {
+                        String inputText = searchBinding.search.getText().toString();
+                       // Log.d(TAG, inpuText);
+                    }
+                    else if (s.length() == 1) {
+                        Toast.makeText(getActivity(), "두 글자 이상 적어주세요.", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
 
 
