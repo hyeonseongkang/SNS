@@ -450,5 +450,50 @@ public class PostRepository {
         });
     }
 
+    public void findTag(String inputTagText) {
+        postsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                posts.clear();
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                    for (DataSnapshot snapshot2 : snapshot1.getChildren()) {
+                        Log.d("post snapshot2 data ", snapshot2.getValue().toString());
+                        String content = snapshot2.child("content").getValue(String.class);
+                        String key = snapshot2.child("key").getValue(String.class);
+                        String postPhotoUri = snapshot2.child("postPhotoUri").getValue(String.class);
+                        String userPhotoUri = snapshot2.child("userPhotoUri").getValue(String.class);
+                        String userUid = snapshot2.child("userUid").getValue(String.class);
+                        String userNickName = snapshot2.child("nickName").getValue(String.class);
+
+                        ArrayList<User> likePressUsers = new ArrayList<>();
+                        for (DataSnapshot snapshot3: snapshot2.child("likes").getChildren()) {
+                            User user = snapshot3.getValue(User.class);
+                            likePressUsers.add(user);
+                        }
+
+                        ArrayList<Tag> tagList = new ArrayList<>();
+                        for (DataSnapshot snapshot3: snapshot2.child("tag").getChildren()) {
+                            Tag tag = snapshot3.getValue(Tag.class);
+                            tagList.add(tag);
+                        }
+                        //Post post = snapshot2.getValue(Post.class);
+                        // public Post(String key, String userUid, String content, String userPhotoUri, String postPhotoUri, ArrayList<Tag> tags, ArrayList<List<User>> likes) {
+                        Post post = new Post(key, userUid, userNickName, content, userPhotoUri, postPhotoUri, tagList, likePressUsers);
+
+                        posts.add(post);
+
+
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+    }
+
 
 }

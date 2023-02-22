@@ -89,4 +89,8 @@ public class PostViewModel extends AndroidViewModel {
 
     public void getUserPosts(String userId) { repository.getUserPosts(userId);}
 
+    public void findTag(String inputTagText) {
+        repository.findTag(inputTagText);
+    }
+
 }

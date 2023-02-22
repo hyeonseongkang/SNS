@@ -98,6 +98,7 @@ public class SearchFragment extends Fragment {
                     if (s.length() >= 2) {
                         String inputText = searchBinding.search.getText().toString();
                        // Log.d(TAG, inpuText);
+                        postViewModel.findTag(inputText);
                     }
                     else if (s.length() == 1) {
                         Toast.makeText(getActivity(), "두 글자 이상 적어주세요.", Toast.LENGTH_SHORT).show();
