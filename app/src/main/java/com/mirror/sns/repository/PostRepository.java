@@ -37,6 +37,7 @@ public class PostRepository {
     private DatabaseReference commentsRef;
 
     private MutableLiveData<List<Post>> postsLiveData;
+    private MutableLiveData<List<Post>> tagPostsLiveData;
     private List<Post> posts;
 
     private MutableLiveData<Post> post;
@@ -53,6 +54,7 @@ public class PostRepository {
         postsRef = FirebaseDatabase.getInstance().getReference("posts");
         commentsRef = FirebaseDatabase.getInstance().getReference("comments");
         postsLiveData = new MutableLiveData<>();
+        tagPostsLiveData = new MutableLiveData<>();
         successCreatePost = new MutableLiveData<>();
         likePressUsers = new MutableLiveData<>();
         comments = new MutableLiveData<>();
@@ -66,6 +68,8 @@ public class PostRepository {
     public MutableLiveData<List<Post>> getPostsLiveData() {
         return postsLiveData;
     }
+
+    public MutableLiveData<List<Post>> getTagPostsLiveData() { return tagPostsLiveData; }
 
     public MutableLiveData<Post> getPostLiveData() {
         return post;
@@ -454,10 +458,10 @@ public class PostRepository {
         postsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                posts.clear();
+                ArrayList<Post> tagPosts = new ArrayList<>();
                 for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                     for (DataSnapshot snapshot2 : snapshot1.getChildren()) {
-                        Log.d("post snapshot2 data ", snapshot2.getValue().toString());
+                       // Log.d("post snapshot2 data ", snapshot2.getValue().toString());
                         String content = snapshot2.child("content").getValue(String.class);
                         String key = snapshot2.child("key").getValue(String.class);
                         String postPhotoUri = snapshot2.child("postPhotoUri").getValue(String.class);
@@ -472,19 +476,25 @@ public class PostRepository {
                         }
 
                         ArrayList<Tag> tagList = new ArrayList<>();
-                        for (DataSnapshot snapshot3: snapshot2.child("tag").getChildren()) {
+                        for (DataSnapshot snapshot3: snapshot2.child("tags").getChildren()) {
                             Tag tag = snapshot3.getValue(Tag.class);
                             tagList.add(tag);
-                        }
-                        //Post post = snapshot2.getValue(Post.class);
-                        // public Post(String key, String userUid, String content, String userPhotoUri, String postPhotoUri, ArrayList<Tag> tags, ArrayList<List<User>> likes) {
-                        Post post = new Post(key, userUid, userNickName, content, userPhotoUri, postPhotoUri, tagList, likePressUsers);
 
-                        posts.add(post);
+                            if (inputTagText.equals(tag.getTag())) {
+                                Post post = new Post(key, userUid, userNickName, content, userPhotoUri, postPhotoUri, tagList, likePressUsers);
+                                tagPosts.add(post);
+                                Log.d(TAG, tag.getTag());
+                                break;
+                            }
+                        }
+
+
 
 
                     }
                 }
+
+                tagPostsLiveData.setValue(tagPosts);
 
             }
 

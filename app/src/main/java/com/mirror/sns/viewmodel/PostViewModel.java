@@ -18,6 +18,7 @@ public class PostViewModel extends AndroidViewModel {
     private PostRepository repository;
 
     private LiveData<List<Post>> postsLiveData;
+    private LiveData<List<Post>> tagPostsLiveData;
 
     private LiveData<Post> postLiveData;
 
@@ -40,6 +41,7 @@ public class PostViewModel extends AndroidViewModel {
         successCreatePost = repository.getSuccessCreatePost();
         likePressUsers = repository.getLikePressUsers();
         postsLiveData = repository.getPostsLiveData();
+        tagPostsLiveData = repository.getTagPostsLiveData();
         postLiveData = repository.getPostLiveData();
         like = repository.getLike();
         comments = repository.getComments();
@@ -50,6 +52,8 @@ public class PostViewModel extends AndroidViewModel {
     public LiveData<List<Post>> getPostsLiveData() {
         return postsLiveData;
     }
+
+    public LiveData<List<Post>> getTagPostsLiveData() { return tagPostsLiveData; }
 
     public LiveData<Post> getPostLiveData() { return postLiveData; }
 

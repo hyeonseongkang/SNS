@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.mirror.sns.adapter.PostAdapter;
 import com.mirror.sns.adapter.TagAdapter;
+import com.mirror.sns.model.Post;
 import com.mirror.sns.model.User;
 import com.mirror.sns.databinding.FragmentSearchBinding;
 import com.mirror.sns.utils.RxAndroidUtils;
@@ -44,7 +45,6 @@ public class SearchFragment extends Fragment {
     private UserManagementViewModel userManagementViewModel;
 
     private PostAdapter postAdapter;
-    private TagAdapter tagAdapter;
 
 
     private Disposable editTextDisposable;
@@ -83,10 +83,15 @@ public class SearchFragment extends Fragment {
         postAdapter = new PostAdapter();
         searchBinding.postsRecyclerView.setAdapter(postAdapter);
 
-        searchBinding.tagsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
-        searchBinding.tagsRecyclerView.setHasFixedSize(true);
-        tagAdapter = new TagAdapter();
-        searchBinding.tagsRecyclerView.setAdapter(tagAdapter);
+        postViewModel.getTagPostsLiveData().observe(getActivity(), new Observer<List<Post>>() {
+            @Override
+            public void onChanged(List<Post> posts) {
+                for (Post post: posts) {
+                    Log.d("gdgd", post.getUserUid());
+                }
+                postAdapter.setPosts(posts);
+            }
+        });
 
 
         Observable<String> editTextObservable = RxAndroidUtils.getInstance().getEditTextObservable(searchBinding.search);
@@ -95,14 +100,8 @@ public class SearchFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s-> {
                     Log.d(RxAndroidUtils.getInstance().getTag(), s);
-                    if (s.length() >= 2) {
-                        String inputText = searchBinding.search.getText().toString();
-                       // Log.d(TAG, inpuText);
-                        postViewModel.findTag(inputText);
-                    }
-                    else if (s.length() == 1) {
-                        Toast.makeText(getActivity(), "두 글자 이상 적어주세요.", Toast.LENGTH_SHORT).show();
-                    }
+                    String inputText = searchBinding.search.getText().toString();
+                    postViewModel.findTag(inputText);
                 });
 
 
