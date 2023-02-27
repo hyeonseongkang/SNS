@@ -123,7 +123,7 @@ public class MyPageFragment extends Fragment {
 
         postAdapter.setOnItemClickListener(new PostAdapter.onItemClickListener() {
             @Override
-            public void onItemClick(Post post, int position) {
+            public void onItemClick(Post post) {
                 Intent intent = new Intent(getActivity(), DetailPostActivity.class);
                 intent.putExtra("userUid", post.getUserUid());
                 intent.putExtra("itemKey", post.getKey());

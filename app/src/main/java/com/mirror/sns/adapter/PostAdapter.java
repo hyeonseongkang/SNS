@@ -58,7 +58,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder>{
                 public void onClick(View view) {
                     int position = getAdapterPosition();
                     if (listener != null && position != RecyclerView.NO_POSITION) {
-                        listener.onItemClick(posts.get(position), position);
+                        listener.onItemClick(posts.get(position));
                     }
                 }
             });
@@ -66,7 +66,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder>{
     }
 
     public interface onItemClickListener {
-        void onItemClick(Post sns, int position);
+        void onItemClick(Post post);
     }
 
     public void setOnItemClickListener(PostAdapter.onItemClickListener listener) { this.listener = listener; }

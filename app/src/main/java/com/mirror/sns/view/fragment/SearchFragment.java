@@ -1,5 +1,6 @@
 package com.mirror.sns.view.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import com.mirror.sns.model.Post;
 import com.mirror.sns.model.User;
 import com.mirror.sns.databinding.FragmentSearchBinding;
 import com.mirror.sns.utils.RxAndroidUtils;
+import com.mirror.sns.view.DetailPostActivity;
 import com.mirror.sns.viewmodel.LoginViewModel;
 import com.mirror.sns.viewmodel.PostViewModel;
 import com.mirror.sns.viewmodel.UserManagementViewModel;
@@ -82,6 +84,16 @@ public class SearchFragment extends Fragment {
         searchBinding.postsRecyclerView.setHasFixedSize(true);
         postAdapter = new PostAdapter();
         searchBinding.postsRecyclerView.setAdapter(postAdapter);
+
+        postAdapter.setOnItemClickListener(new PostAdapter.onItemClickListener() {
+            @Override
+            public void onItemClick(Post post) {
+                Intent intent = new Intent(getActivity(), DetailPostActivity.class);
+                intent.putExtra("userUid", post.getUserUid());
+                intent.putExtra("itemKey", post.getKey());
+                startActivity(intent);
+            }
+        });
 
         postViewModel.getTagPostsLiveData().observe(getActivity(), new Observer<List<Post>>() {
             @Override
