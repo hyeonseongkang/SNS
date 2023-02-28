@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
@@ -97,7 +98,7 @@ public class DetailPostActivity extends AppCompatActivity {
             }
         });
 
-        userManagementViewModel.getUserInfo(userUid);
+        userManagementViewModel.getUserInfo(FirebaseAuth.getInstance().getUid());
         postViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(PostViewModel.class);
         postViewModel.getPostLiveData().observe(this, new Observer<Post>() {
             @Override
@@ -176,6 +177,8 @@ public class DetailPostActivity extends AppCompatActivity {
         detailPostBinding.like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Log.d(TAG, "Click Event");
                 postViewModel.setLike(userUid, itemkey, currentUser);
             }
         });

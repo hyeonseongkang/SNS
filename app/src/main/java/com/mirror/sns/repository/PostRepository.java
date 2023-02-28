@@ -302,6 +302,7 @@ public class PostRepository {
 
         String likePressUser = setUser.getUid();
 
+        Log.d(TAG, uid + " " + setUser.getUid());
         if (uid.equals(setUser.getUid()))
             return;
 
