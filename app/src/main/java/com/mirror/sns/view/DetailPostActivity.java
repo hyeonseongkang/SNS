@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,6 +20,7 @@ import com.mirror.sns.model.Post;
 import com.mirror.sns.model.Tag;
 import com.mirror.sns.model.User;
 import com.mirror.sns.databinding.ActivityDetailPostBinding;
+import com.mirror.sns.viewmodel.ChatViewModel;
 import com.mirror.sns.viewmodel.PostViewModel;
 import com.mirror.sns.viewmodel.UserManagementViewModel;
 
@@ -30,6 +32,7 @@ public class DetailPostActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private ActivityDetailPostBinding detailPostBinding;
     private UserManagementViewModel userManagementViewModel;
+    private ChatViewModel chatViewModel;
 
     private PostViewModel postViewModel;
 
@@ -58,7 +61,8 @@ public class DetailPostActivity extends AppCompatActivity {
 
         userManagementViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(UserManagementViewModel.class);
         postViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(PostViewModel.class);
-
+        chatViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ChatViewModel.class);
+        
         userManagementViewModel.getUserLiveData().observe(this, new Observer<User>() {
             @Override
             public void onChanged(User user) {
@@ -95,6 +99,26 @@ public class DetailPostActivity extends AppCompatActivity {
                 intent.putExtra("userUid", userUid);
                 intent.putExtra("itemKey", itemkey);
                 startActivity(intent);
+            }
+        });
+
+        detailPostBinding.dm.setEnabled(true);
+        detailPostBinding.dm.setClickable(true);
+        detailPostBinding.dm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                chatViewModel.setChatRoom(FirebaseAuth.getInstance().getUid(), userUid);
+            }
+        });
+        
+        chatViewModel.getResultSetChatRoom().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean) {
+                    Toast.makeText(DetailPostActivity.this, "채팅방 생성 완료!!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(DetailPostActivity.this, "이미 존재하는 채팅방!!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
