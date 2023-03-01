@@ -1,6 +1,7 @@
 package com.mirror.sns.repository;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
@@ -20,6 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChatRepository {
+
+    public static final String TAG = "ChatRepository";
 
     Application application;
 
@@ -78,6 +81,7 @@ public class ChatRepository {
                 boolean overlap = false;
                 for (DataSnapshot snapshot1: snapshot.getChildren()) {
                     ChatRoom chatRoom = snapshot1.getValue(ChatRoom.class);
+                    Log.d(TAG, chatRoom.getUser1() + " " + chatRoom.getUser2() + " " + requestUser + " " + responseUser);
                     if ((chatRoom.getUser1().equals(requestUser) || chatRoom.getUser2().equals(requestUser)) &&
                             (chatRoom.getUser1().equals(responseUser) || chatRoom.getUser2().equals(responseUser))) {
                         // 이미 존재 하는 채팅방
