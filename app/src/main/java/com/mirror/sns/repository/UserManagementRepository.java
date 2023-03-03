@@ -60,6 +60,8 @@ public class UserManagementRepository {
     private MutableLiveData<List<FollowerUser>> followerUsers;
 
     private MutableLiveData<Boolean> followCheck;
+
+    private MutableLiveData<List<User>> friendListLiveData;
     List<User> userList;
 
     public UserManagementRepository(Application application) {
@@ -80,6 +82,8 @@ public class UserManagementRepository {
         followerUsers = new MutableLiveData<>();
 
         followCheck = new MutableLiveData<>();
+
+        friendListLiveData = new MutableLiveData<>();
     }
 
     public MutableLiveData<User> getUserLiveData() { return userLiveData; }
@@ -109,6 +113,8 @@ public class UserManagementRepository {
     public MutableLiveData<List<FollowerUser>> getFollowerUsers() { return followerUsers; }
 
     public MutableLiveData<Boolean> getFollowCheck() { return followCheck; }
+
+    public MutableLiveData<List<User>> getFriendListLiveData() { return friendListLiveData; }
 
     public void getUserInfo(String uid) {
         usersRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -460,6 +466,32 @@ public class UserManagementRepository {
 
             }
         });
+    }
+
+    public void getFriendList(List<String> userUids) {
+
+        usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                List<User> users = new ArrayList<>();
+                for (DataSnapshot snapshot1: snapshot.getChildren()) {
+                    User user = snapshot1.getValue(User.class);
+
+                    if (userUids.contains(user.getUid())) {
+                        users.add(user);
+                    }
+
+                }
+                friendListLiveData.setValue(users);
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+
     }
 
 }

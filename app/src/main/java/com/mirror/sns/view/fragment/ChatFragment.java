@@ -22,6 +22,7 @@ import com.mirror.sns.model.User;
 import com.mirror.sns.viewmodel.ChatViewModel;
 import com.mirror.sns.viewmodel.UserManagementViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ChatFragment extends Fragment {
@@ -66,8 +67,28 @@ public class ChatFragment extends Fragment {
         chatViewModel.getChatRoomListLiveData().observe(getActivity(), new Observer<List<ChatRoom>>() {
             @Override
             public void onChanged(List<ChatRoom> chatRooms) {
-                Log.d(TAG, chatRooms.get(0).getUser1());
-                chatRoomAdapter.setChatRooms(chatRooms);
+              //  Log.d(TAG, chatRooms.get(0).getUser1());
+                List<String> userUids = new ArrayList<>();
+
+                for (ChatRoom chatRoom: chatRooms) {
+                    if (chatRoom.getUser1().equals(firebaseUser.getUid())) {
+                        userUids.add(chatRoom.getUser2());
+                    } else {
+                        userUids.add(chatRoom.getUser1());
+                    }
+                }
+
+                userManagementViewModel.getFriendList(userUids);
+             //   chatRoomAdapter.setChatRooms(chatRooms);
+            }
+        });
+
+        userManagementViewModel.getFriendListLiveData().observe(getActivity(), new Observer<List<User>>() {
+            @Override
+            public void onChanged(List<User> users) {
+                for (User user: users) {
+                    Log.d(TAG, "gdgd" + user.getUid());
+                }
             }
         });
 

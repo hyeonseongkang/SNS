@@ -40,6 +40,8 @@ public class UserManagementViewModel extends AndroidViewModel {
 
     private LiveData<Boolean> followCheck;
 
+    private LiveData<List<User>> friendListLiveData;
+
     public UserManagementViewModel(Application application) {
         super(application);
 
@@ -54,6 +56,8 @@ public class UserManagementViewModel extends AndroidViewModel {
         followingUsers = repository.getFollowingUsers();
         followerUsers = repository.getFollowerUsers();
         followCheck = repository.getFollowCheck();
+
+        friendListLiveData = repository.getFriendListLiveData();
     }
 
     public LiveData<User> getUserLiveData() { return userLiveData; }
@@ -80,6 +84,8 @@ public class UserManagementViewModel extends AndroidViewModel {
 
     public LiveData<Boolean> getFollowCheck() { return followCheck; }
 
+    public LiveData<List<User>> getFriendListLiveData() {return friendListLiveData; }
+
     public void getUserList() { repository.getUserList();}
 
     public void getUserInfo(String uid) {
@@ -100,6 +106,7 @@ public class UserManagementViewModel extends AndroidViewModel {
         repository.getFriends(uid);
     }
 
+
     public void follow(User responseUser, User requestUser) {
         repository.follow(responseUser, requestUser);
     }
@@ -116,5 +123,9 @@ public class UserManagementViewModel extends AndroidViewModel {
 
     public void getFollowCheck(String responseUserUid, String requestUserUid) {
         repository.getFollowCheck(responseUserUid, requestUserUid);
+    }
+
+    public void getFriendList(List<String> userUids) {
+        repository.getFriendList(userUids);
     }
 }
