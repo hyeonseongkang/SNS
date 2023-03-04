@@ -13,6 +13,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.mirror.sns.model.Chat;
 import com.mirror.sns.model.ChatRoom;
 
 import org.jetbrains.annotations.NotNull;
@@ -95,11 +96,11 @@ public class ChatRepository {
                 } else {
                     resultSetChatRoom.setValue(true);
                     String key = chatRoomRef.push().getKey();
-                    chatRoomRef.child(requestUser).child(key).setValue(new ChatRoom(requestUser, responseUser)).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    chatRoomRef.child(requestUser).child(key).setValue(new ChatRoom(requestUser, responseUser, new Chat("", "", "", ""))).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull @NotNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                chatRoomRef.child(responseUser).child(key).setValue(new ChatRoom(requestUser, responseUser));
+                                chatRoomRef.child(responseUser).child(key).setValue(new ChatRoom(requestUser, responseUser, new Chat("", "", "", "")));
                             }
                         }
                     });
