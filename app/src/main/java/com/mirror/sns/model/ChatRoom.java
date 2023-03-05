@@ -4,14 +4,14 @@ public class ChatRoom {
 
     private String user1;
     private String user2;
-    private Chat lastChat;
+    private ChatMetaData chatMetaData;
 
     public ChatRoom(){}
 
-    public ChatRoom(String user1, String user2, Chat lastChat) {
+    public ChatRoom(String user1, String user2, ChatMetaData chatMetaData) {
         this.user1 = user1;
         this.user2 = user2;
-        this.lastChat = lastChat;
+        this.chatMetaData = chatMetaData;
     }
 
     public String getUser1() {
@@ -30,11 +30,11 @@ public class ChatRoom {
         this.user2 = user2;
     }
 
-    public Chat getLastChat() {
-        return lastChat;
+    public ChatMetaData getChatMetaData() {
+        return chatMetaData;
     }
 
-    public void setLastChat(Chat lastChat) {
-        this.lastChat = lastChat;
+    public void setChatMetaData(ChatMetaData chatMetaData) {
+        this.chatMetaData = chatMetaData;
     }
 }

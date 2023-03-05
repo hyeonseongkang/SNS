@@ -39,6 +39,8 @@ public class ChatFragment extends Fragment {
 
     private ChatRoomAdapter chatRoomAdapter;
 
+    private List<ChatRoom> currChatRooms;
+
 
     public ChatFragment() {}
 
@@ -61,6 +63,7 @@ public class ChatFragment extends Fragment {
         chatBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         chatBinding.recyclerView.setHasFixedSize(true);
         chatRoomAdapter = new ChatRoomAdapter();
+        chatBinding.recyclerView.setAdapter(chatRoomAdapter);
 
         chatViewModel.getChatRoomListLiveData(firebaseUser.getUid());
 
@@ -78,6 +81,9 @@ public class ChatFragment extends Fragment {
                     }
                 }
 
+                Log.d(TAG, chatRooms.size() + " ");
+                currChatRooms = chatRooms;
+
                 userManagementViewModel.getFriendList(userUids);
              //   chatRoomAdapter.setChatRooms(chatRooms);
             }
@@ -89,6 +95,9 @@ public class ChatFragment extends Fragment {
                 for (User user: users) {
                     Log.d(TAG, "gdgd" + user.getUid());
                 }
+
+                Log.d(TAG, " " + users.size());
+                chatRoomAdapter.setChatRooms(currChatRooms, users);
             }
         });
 
