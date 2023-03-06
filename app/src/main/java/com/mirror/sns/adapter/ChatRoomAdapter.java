@@ -24,6 +24,7 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.MyView
 
     List<ChatRoom> chatRooms = new ArrayList<>();
     List<User> users = new ArrayList<>();
+    private onItemClickListener listener;
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -82,7 +83,22 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.MyView
             lastMessage = itemView.findViewById(R.id.lastMessage);
             lastMessageDate = itemView.findViewById(R.id.lastMessageDate);
             unReadChatCount = itemView.findViewById(R.id.unReadChatCount);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    if (listener != null && position != RecyclerView.NO_POSITION) {
+                        listener.onItemClick(chatRooms.get(position), users.get(position) );
+                    }
+                }
+            });
         }
     }
 
+    public interface onItemClickListener {
+        void onItemClick(ChatRoom chatRoom, User user);
+    }
+
+    public void setOnItemClickListener(onItemClickListener listener) { this.listener = listener;}
 }
