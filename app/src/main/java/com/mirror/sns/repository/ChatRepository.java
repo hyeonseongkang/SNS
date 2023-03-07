@@ -33,6 +33,8 @@ public class ChatRepository {
     private MutableLiveData<List<ChatRoom>> chatRoomListLiveData;
     private List<ChatRoom> chatRoomList;
 
+    private MutableLiveData<ChatRoom> chatRoomLiveData;
+
     private MutableLiveData<Boolean> resultSetChatRoom;
 
     public ChatRepository(Application application) {
@@ -43,6 +45,8 @@ public class ChatRepository {
         chatRoomListLiveData = new MutableLiveData<>();
         chatRoomList = new ArrayList<>();
 
+        chatRoomLiveData = new MutableLiveData<>();
+
         resultSetChatRoom = new MutableLiveData<>();
     }
 
@@ -52,6 +56,10 @@ public class ChatRepository {
 
     public MutableLiveData<Boolean> getResultSetChatRoom() {
         return resultSetChatRoom;
+    }
+
+    public MutableLiveData<ChatRoom> getChatRoomLiveData() {
+        return chatRoomLiveData;
     }
 
     public void getChatRoomList(String uid) {
@@ -97,11 +105,11 @@ public class ChatRepository {
                 } else {
                     resultSetChatRoom.setValue(true);
                     String key = chatRoomRef.push().getKey();
-                    chatRoomRef.child(requestUser).child(key).setValue(new ChatRoom(requestUser, responseUser, new ChatMetaData("", "", "", ""))).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    chatRoomRef.child(requestUser).child(key).setValue(new ChatRoom(key, requestUser, responseUser, new ChatMetaData("", "", "", ""))).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull @NotNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                chatRoomRef.child(responseUser).child(key).setValue(new ChatRoom(requestUser, responseUser, new ChatMetaData("", "", "", "")));
+                                chatRoomRef.child(responseUser).child(key).setValue(new ChatRoom(key, requestUser, responseUser, new ChatMetaData("", "", "", "")));
                             }
                         }
                     });
@@ -116,4 +124,18 @@ public class ChatRepository {
     }
 
 
+    public void getChatRoom(String chatRoomKey) {
+        chatRoomRef.child(chatRoomKey).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                ChatRoom chatRoom = snapshot.getValue(ChatRoom.class);
+                chatRoomLiveData.setValue(chatRoom);
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+    }
 }

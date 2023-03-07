@@ -18,6 +18,8 @@ public class ChatViewModel extends AndroidViewModel {
     private ChatRepository repository;
     private LiveData<List<ChatRoom>> chatRoomListLiveData;
 
+    private LiveData<ChatRoom> chatRoomLiveData;
+
     private LiveData<Boolean> resultSetChatRoom;
 
     public ChatViewModel(@NonNull @NotNull Application application) {
@@ -26,6 +28,8 @@ public class ChatViewModel extends AndroidViewModel {
         repository = new ChatRepository(application);
 
         chatRoomListLiveData = repository.getChatRoomListLiveData();
+
+        chatRoomLiveData = repository.getChatRoomLiveData();
 
         resultSetChatRoom = repository.getResultSetChatRoom();
 
@@ -39,11 +43,17 @@ public class ChatViewModel extends AndroidViewModel {
         return resultSetChatRoom;
     }
 
+    public LiveData<ChatRoom> getChatRoomLiveData() { return chatRoomLiveData; }
+
     public void getChatRoomListLiveData(String uid) {
         repository.getChatRoomList(uid);
     }
 
     public void setChatRoom(String requestUser, String responseUser) {
         repository.setChatRoom(requestUser, responseUser);
+    }
+
+    public void getChatRoom(String chatRoomKey) {
+        repository.getChatRoom(chatRoomKey);
     }
 }

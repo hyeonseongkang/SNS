@@ -1,5 +1,6 @@
 package com.mirror.sns.view.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import com.mirror.sns.adapter.ChatRoomAdapter;
 import com.mirror.sns.databinding.FragmentChatBinding;
 import com.mirror.sns.model.ChatRoom;
 import com.mirror.sns.model.User;
+import com.mirror.sns.view.ChatActivity;
 import com.mirror.sns.viewmodel.ChatViewModel;
 import com.mirror.sns.viewmodel.UserManagementViewModel;
 
@@ -69,6 +71,11 @@ public class ChatFragment extends Fragment {
         chatRoomAdapter.setOnItemClickListener(new ChatRoomAdapter.onItemClickListener() {
             @Override
             public void onItemClick(ChatRoom chatRoom, User user) {
+                Intent intent = new Intent(getActivity(), ChatActivity.class);
+                intent.putExtra("chatRoomKey", chatRoom.getKey());
+                intent.putExtra("userUid", user.getUid());
+                startActivity(intent);
+
                 Toast.makeText(getActivity(), "ClickEvent", Toast.LENGTH_SHORT).show();
             }
         });
