@@ -29,11 +29,14 @@ public class ChatRepository {
     Application application;
 
     private DatabaseReference chatRoomRef;
+    private DatabaseReference chatRef;
 
     private MutableLiveData<List<ChatRoom>> chatRoomListLiveData;
     private List<ChatRoom> chatRoomList;
 
     private MutableLiveData<ChatRoom> chatRoomLiveData;
+
+    private MutableLiveData<List<Chat>> chatListLiveData;
 
     private MutableLiveData<Boolean> resultSetChatRoom;
 
@@ -41,11 +44,14 @@ public class ChatRepository {
         this.application = application;
 
         chatRoomRef = FirebaseDatabase.getInstance().getReference("chatRoom");
+        chatRef = FirebaseDatabase.getInstance().getReference("chat");
 
         chatRoomListLiveData = new MutableLiveData<>();
         chatRoomList = new ArrayList<>();
 
         chatRoomLiveData = new MutableLiveData<>();
+
+        chatListLiveData = new MutableLiveData<>();
 
         resultSetChatRoom = new MutableLiveData<>();
     }
@@ -61,6 +67,8 @@ public class ChatRepository {
     public MutableLiveData<ChatRoom> getChatRoomLiveData() {
         return chatRoomLiveData;
     }
+
+    public MutableLiveData<List<Chat>> getChatListLiveData() { return chatListLiveData; }
 
     public void getChatRoomList(String uid) {
         chatRoomRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -130,6 +138,26 @@ public class ChatRepository {
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 ChatRoom chatRoom = snapshot.getValue(ChatRoom.class);
                 chatRoomLiveData.setValue(chatRoom);
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void getChatList(String chatRoomKey) {
+        chatRef.child(chatRoomKey).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                List<Chat> chats = new ArrayList<>();
+                for (DataSnapshot snapshot1: snapshot.getChildren()) {
+                    Chat chat = snapshot1.getValue(Chat.class);
+                    chats.add(chat);
+                }
+
+                chatListLiveData.setValue(chats);
             }
 
             @Override

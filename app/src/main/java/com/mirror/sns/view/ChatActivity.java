@@ -9,8 +9,11 @@ import android.os.Bundle;
 
 import com.mirror.sns.R;
 import com.mirror.sns.databinding.ActivityChatBinding;
+import com.mirror.sns.model.Chat;
 import com.mirror.sns.model.ChatRoom;
 import com.mirror.sns.viewmodel.ChatViewModel;
+
+import java.util.List;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -36,6 +39,14 @@ public class ChatActivity extends AppCompatActivity {
         chatViewModel.getChatRoomLiveData().observe(this, new Observer<ChatRoom>() {
             @Override
             public void onChanged(ChatRoom chatRoom) {
+
+            }
+        });
+
+        chatViewModel.getChatList(chatRoomKey);
+        chatViewModel.getChatListLiveData().observe(this, new Observer<List<Chat>>() {
+            @Override
+            public void onChanged(List<Chat> chats) {
 
             }
         });

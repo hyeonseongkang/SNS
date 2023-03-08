@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.mirror.sns.model.Chat;
 import com.mirror.sns.model.ChatRoom;
 import com.mirror.sns.repository.ChatRepository;
 
@@ -20,6 +21,8 @@ public class ChatViewModel extends AndroidViewModel {
 
     private LiveData<ChatRoom> chatRoomLiveData;
 
+    private LiveData<List<Chat>> chatListLiveData;
+
     private LiveData<Boolean> resultSetChatRoom;
 
     public ChatViewModel(@NonNull @NotNull Application application) {
@@ -30,6 +33,8 @@ public class ChatViewModel extends AndroidViewModel {
         chatRoomListLiveData = repository.getChatRoomListLiveData();
 
         chatRoomLiveData = repository.getChatRoomLiveData();
+
+        chatListLiveData = repository.getChatListLiveData();
 
         resultSetChatRoom = repository.getResultSetChatRoom();
 
@@ -45,6 +50,8 @@ public class ChatViewModel extends AndroidViewModel {
 
     public LiveData<ChatRoom> getChatRoomLiveData() { return chatRoomLiveData; }
 
+    public LiveData<List<Chat>> getChatListLiveData() { return chatListLiveData; }
+
     public void getChatRoomListLiveData(String uid) {
         repository.getChatRoomList(uid);
     }
@@ -56,4 +63,7 @@ public class ChatViewModel extends AndroidViewModel {
     public void getChatRoom(String chatRoomKey) {
         repository.getChatRoom(chatRoomKey);
     }
+
+    public void getChatList(String chatRoomKey) { repository.getChatList(chatRoomKey);}
+
 }
