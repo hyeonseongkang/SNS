@@ -1,9 +1,11 @@
 package com.mirror.sns.repository;
 
 import android.app.Application;
+import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -19,6 +21,8 @@ import com.mirror.sns.model.ChatRoom;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -165,5 +169,19 @@ public class ChatRepository {
 
             }
         });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void sendChat(String chatRoomKey, Chat chat) {
+
+        if (chat.getChat().isEmpty())
+            return;
+
+        LocalDate now = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        String formatedNow = now.format(formatter);
+
+        chat.setTime(formatedNow);
+        chatRef.child(chatRoomKey).push().setValue(chat);
     }
 }

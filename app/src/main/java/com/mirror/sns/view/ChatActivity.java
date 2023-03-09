@@ -1,12 +1,16 @@
 package com.mirror.sns.view;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.mirror.sns.R;
 import com.mirror.sns.databinding.ActivityChatBinding;
 import com.mirror.sns.model.Chat;
@@ -48,6 +52,14 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<Chat> chats) {
 
+            }
+        });
+
+        chatBinding.sendMessageButton.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onClick(View view) {
+                chatViewModel.sendChat(chatRoomKey, new Chat(FirebaseAuth.getInstance().getUid(), "", chatBinding.message.getText().toString(), ""));
             }
         });
 

@@ -1,8 +1,10 @@
 package com.mirror.sns.viewmodel;
 
 import android.app.Application;
+import android.os.Build;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
@@ -65,5 +67,10 @@ public class ChatViewModel extends AndroidViewModel {
     }
 
     public void getChatList(String chatRoomKey) { repository.getChatList(chatRoomKey);}
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void sendChat(String chatRoomKey, Chat chat) {
+        repository.sendChat(chatRoomKey, chat);
+    }
 
 }
