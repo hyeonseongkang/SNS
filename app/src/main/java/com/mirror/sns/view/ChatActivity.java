@@ -47,6 +47,17 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+        chatViewModel.getResultSetChat().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean) {
+                    chatBinding.message.setText("");
+                } else {
+
+                }
+            }
+        });
+
         chatViewModel.getChatList(chatRoomKey);
         chatViewModel.getChatListLiveData().observe(this, new Observer<List<Chat>>() {
             @Override

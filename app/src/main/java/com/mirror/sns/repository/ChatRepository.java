@@ -3,6 +3,7 @@ package com.mirror.sns.repository;
 import android.app.Application;
 import android.os.Build;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -43,6 +44,7 @@ public class ChatRepository {
     private MutableLiveData<List<Chat>> chatListLiveData;
 
     private MutableLiveData<Boolean> resultSetChatRoom;
+    private MutableLiveData<Boolean> resultSetChat;
 
     public ChatRepository(Application application) {
         this.application = application;
@@ -58,6 +60,7 @@ public class ChatRepository {
         chatListLiveData = new MutableLiveData<>();
 
         resultSetChatRoom = new MutableLiveData<>();
+        resultSetChat = new MutableLiveData<>();
     }
 
     public MutableLiveData<List<ChatRoom>> getChatRoomListLiveData() {
@@ -73,6 +76,8 @@ public class ChatRepository {
     }
 
     public MutableLiveData<List<Chat>> getChatListLiveData() { return chatListLiveData; }
+
+    public MutableLiveData<Boolean> getResultSetChat() { return resultSetChat; }
 
     public void getChatRoomList(String uid) {
         chatRoomRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -137,6 +142,7 @@ public class ChatRepository {
 
 
     public void getChatRoom(String chatRoomKey) {
+        Log.d(TAG,chatRoomKey + " 1212");
         chatRoomRef.child(chatRoomKey).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
@@ -182,6 +188,15 @@ public class ChatRepository {
         String formatedNow = now.format(formatter);
 
         chat.setTime(formatedNow);
-        chatRef.child(chatRoomKey).push().setValue(chat);
+        chatRef.child(chatRoomKey).push().setValue(chat).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull @NotNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    resultSetChat.setValue(true);
+                } else {
+                    resultSetChat.setValue(false);
+                }
+            }
+        });
     }
 }

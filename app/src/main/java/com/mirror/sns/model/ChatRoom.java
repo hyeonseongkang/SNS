@@ -10,6 +10,7 @@ public class ChatRoom {
     public ChatRoom(){}
 
     public ChatRoom(String key, String user1, String user2, ChatMetaData chatMetaData) {
+        this.key = key;
         this.user1 = user1;
         this.user2 = user2;
         this.chatMetaData = chatMetaData;
