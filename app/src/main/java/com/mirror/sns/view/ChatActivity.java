@@ -15,7 +15,9 @@ import com.mirror.sns.R;
 import com.mirror.sns.databinding.ActivityChatBinding;
 import com.mirror.sns.model.Chat;
 import com.mirror.sns.model.ChatRoom;
+import com.mirror.sns.model.User;
 import com.mirror.sns.viewmodel.ChatViewModel;
+import com.mirror.sns.viewmodel.UserManagementViewModel;
 
 import java.util.List;
 
@@ -23,10 +25,13 @@ public class ChatActivity extends AppCompatActivity {
 
     private ActivityChatBinding chatBinding;
 
+    private UserManagementViewModel userManagementViewModel;
     private ChatViewModel chatViewModel;
 
     private String userUid; // 상대방 UID
     private String chatRoomKey;
+
+    private User currUser; // me
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +43,14 @@ public class ChatActivity extends AppCompatActivity {
         userUid = intent.getStringExtra("userUid");
         chatRoomKey = intent.getStringExtra("chatRoomKey");
 
+        userManagementViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(UserManagementViewModel.class);
+        userManagementViewModel.getUserInfo(FirebaseAuth.getInstance().getUid());
+        userManagementViewModel.getUserLiveData().observe(this, new Observer<User>() {
+            @Override
+            public void onChanged(User user) {
+                currUser = user;
+            }
+        });
         chatViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ChatViewModel.class);
         chatViewModel.getChatRoom(chatRoomKey);
         chatViewModel.getChatRoomLiveData().observe(this, new Observer<ChatRoom>() {
@@ -70,7 +83,7 @@ public class ChatActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View view) {
-                chatViewModel.sendChat(chatRoomKey, new Chat(FirebaseAuth.getInstance().getUid(), "", chatBinding.message.getText().toString(), ""));
+                chatViewModel.sendChat(chatRoomKey, new Chat(FirebaseAuth.getInstance().getUid(), currUser.getNickName(), chatBinding.message.getText().toString(), ""));
             }
         });
 
