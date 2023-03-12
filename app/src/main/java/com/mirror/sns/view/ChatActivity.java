@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,6 +23,8 @@ import com.mirror.sns.viewmodel.UserManagementViewModel;
 import java.util.List;
 
 public class ChatActivity extends AppCompatActivity {
+
+    private static final String TAG = "ChatActivity";
 
     private ActivityChatBinding chatBinding;
 
@@ -75,7 +78,9 @@ public class ChatActivity extends AppCompatActivity {
         chatViewModel.getChatListLiveData().observe(this, new Observer<List<Chat>>() {
             @Override
             public void onChanged(List<Chat> chats) {
-
+                for (Chat chat: chats) {
+                    Log.d(TAG, chat.getChat());
+                }
             }
         });
 
