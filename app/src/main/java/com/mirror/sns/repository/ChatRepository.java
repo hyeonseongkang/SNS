@@ -200,4 +200,23 @@ public class ChatRepository {
         });
     }
 
+    public void setChatMetaData(String chatRoomKey, Chat chat, String requestUid, String responseUid) {
+        chatRoomRef.child(requestUid)
+                .child(chatRoomKey)
+                .child("chatMetaData")
+                .setValue(new ChatMetaData(chat.getNickName(), chat.getChat(), chat.getTime(), "")).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull @NotNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    chatRoomRef.child(responseUid)
+                            .child(chatRoomKey)
+                            .child("chatMetaData")
+                            .setValue(new ChatMetaData(chat.getNickName(), chat.getChat(), chat.getTime(), ""));
+                }
+            }
+        });
+        //  (lastUserName, lastMessage, lastMessageDate, unReadChatCount)
+    }
+
+
 }

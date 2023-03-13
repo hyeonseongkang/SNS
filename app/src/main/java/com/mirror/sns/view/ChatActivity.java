@@ -4,6 +4,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.os.Build;
@@ -13,6 +14,7 @@ import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.mirror.sns.R;
+import com.mirror.sns.adapter.ChatAdapter;
 import com.mirror.sns.databinding.ActivityChatBinding;
 import com.mirror.sns.model.Chat;
 import com.mirror.sns.model.ChatRoom;
@@ -30,6 +32,8 @@ public class ChatActivity extends AppCompatActivity {
 
     private UserManagementViewModel userManagementViewModel;
     private ChatViewModel chatViewModel;
+
+    private ChatAdapter chatAdapter;
 
     private String userUid; // 상대방 UID
     private String chatRoomKey;
@@ -81,8 +85,16 @@ public class ChatActivity extends AppCompatActivity {
                 for (Chat chat: chats) {
                     Log.d(TAG, chat.getChat());
                 }
+
+                chatAdapter.setChats(chats, FirebaseAuth.getInstance().getUid());
             }
         });
+
+        chatAdapter = new ChatAdapter();
+        chatBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        chatBinding.recyclerView.setHasFixedSize(true);
+        chatBinding.recyclerView.setAdapter(chatAdapter);
+
 
         chatBinding.sendMessageButton.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)

@@ -79,4 +79,7 @@ public class ChatViewModel extends AndroidViewModel {
         repository.sendChat(chatRoomKey, chat);
     }
 
+    public void setChatMetaData(String chatRoomKey, Chat chat, String requestUid, String responseUid) {
+        repository.setChatMetaData(chatRoomKey, chat, requestUid, responseUid);
+    }
 }
