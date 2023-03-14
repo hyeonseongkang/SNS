@@ -67,13 +67,14 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        chatViewModel.getResultSetChat().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                if (aBoolean) {
-                    chatBinding.message.setText("");
-                } else {
 
+
+        chatViewModel.getResultSetChat().observe(this, new Observer<Chat>() {
+            @Override
+            public void onChanged(Chat chat) {
+                if (chat != null) {
+                    chatBinding.message.setText("");
+                    chatViewModel.setChatMetaData(chatRoomKey, chat, FirebaseAuth.getInstance().getUid(), userUid);
                 }
             }
         });

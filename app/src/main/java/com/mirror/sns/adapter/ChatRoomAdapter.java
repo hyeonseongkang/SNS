@@ -47,6 +47,9 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomAdapter.MyView
 
         holder.userNickName.setText(user.getNickName());
 
+        holder.lastMessage.setText(chatMetaData.getLastMessageDate());
+        holder.lastMessageDate.setText(chatMetaData.getLastMessageDate());
+
         if (chatMetaData != null) {
             holder.lastMessage.setText(chatRoom.getChatMetaData().getLastMessage());
             holder.lastMessageDate.setText(chatRoom.getChatMetaData().getLastMessageDate());

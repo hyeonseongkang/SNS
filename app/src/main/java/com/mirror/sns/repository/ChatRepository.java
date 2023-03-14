@@ -44,7 +44,7 @@ public class ChatRepository {
     private MutableLiveData<List<Chat>> chatListLiveData;
 
     private MutableLiveData<Boolean> resultSetChatRoom;
-    private MutableLiveData<Boolean> resultSetChat;
+    private MutableLiveData<Chat> resultSetChat;
 
     public ChatRepository(Application application) {
         this.application = application;
@@ -77,7 +77,7 @@ public class ChatRepository {
 
     public MutableLiveData<List<Chat>> getChatListLiveData() { return chatListLiveData; }
 
-    public MutableLiveData<Boolean> getResultSetChat() { return resultSetChat; }
+    public MutableLiveData<Chat> getResultSetChat() { return resultSetChat; }
 
     public void getChatRoomList(String uid) {
         chatRoomRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -192,9 +192,9 @@ public class ChatRepository {
             @Override
             public void onComplete(@NonNull @NotNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    resultSetChat.setValue(true);
+                    resultSetChat.setValue(chat);
                 } else {
-                    resultSetChat.setValue(false);
+                    resultSetChat.setValue(null);
                 }
             }
         });

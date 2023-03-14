@@ -27,7 +27,7 @@ public class ChatViewModel extends AndroidViewModel {
 
     private LiveData<Boolean> resultSetChatRoom;
 
-    private LiveData<Boolean> resultSetChat;
+    private LiveData<Chat> resultSetChat;
 
     public ChatViewModel(@NonNull @NotNull Application application) {
         super(application);
@@ -58,7 +58,7 @@ public class ChatViewModel extends AndroidViewModel {
 
     public LiveData<List<Chat>> getChatListLiveData() { return chatListLiveData; }
 
-    public LiveData<Boolean> getResultSetChat() { return resultSetChat; }
+    public LiveData<Chat> getResultSetChat() { return resultSetChat; }
 
     public void getChatRoomListLiveData(String uid) {
         repository.getChatRoomList(uid);
