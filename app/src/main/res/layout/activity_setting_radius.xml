@@ -38,7 +38,7 @@
                 android:textSize="18dp" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/createPost"
+                android:id="@+id/applyRadius"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -80,17 +80,30 @@
                 android:background="@drawable/minus"
                 android:layout_gravity="center" />
 
-            <TextView
-                android:id="@+id/radius"
-                android:layout_width="100dp"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:gravity="center"
-                android:text="0.5km"
-                android:textColor="#000000"
-                android:textSize="30dp"
-                android:fontFamily="@font/scd5"
                 android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"/>
+                android:layout_marginRight="20dp">
+
+                <TextView
+                    android:id="@+id/radius"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0.5"
+                    android:textColor="#000000"
+                    android:textSize="30dp"
+                    android:fontFamily="@font/scd5" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="km"
+                    android:textColor="#000000"
+                    android:textSize="30dp"
+                    android:fontFamily="@font/scd5"/>
+            </LinearLayout>
 
             <ImageButton
                 android:id="@+id/plus"

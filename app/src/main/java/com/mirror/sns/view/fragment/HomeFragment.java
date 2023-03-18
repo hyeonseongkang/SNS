@@ -38,6 +38,7 @@ import com.mirror.sns.view.AddFriendActivity;
 import com.mirror.sns.view.CreatePostActivity;
 import com.mirror.sns.view.DetailPostActivity;
 import com.mirror.sns.view.DetailUserActivity;
+import com.mirror.sns.view.SettingRadiusActivity;
 import com.mirror.sns.viewmodel.LocationViewModel;
 import com.mirror.sns.viewmodel.LoginViewModel;
 import com.mirror.sns.viewmodel.PostViewModel;
@@ -267,7 +268,8 @@ public class HomeFragment extends Fragment {
         homeBinding.radius.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                
+                Intent intent = new Intent(getActivity(), SettingRadiusActivity.class);
+                startActivity(intent);
             }
         });
 
