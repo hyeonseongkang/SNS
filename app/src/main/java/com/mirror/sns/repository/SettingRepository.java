@@ -12,17 +12,23 @@ public class SettingRepository {
 
     private MutableLiveData<Boolean> setRadiusResult;
 
+    private MutableLiveData<String> radiusLiveData;
+
 
     public SettingRepository(Application application) {
         this.application = application;
 
         setRadiusResult = new MutableLiveData<>();
 
+        radiusLiveData = new MutableLiveData<>();
+
     }
 
     public MutableLiveData<Boolean> getSetRadiusResult() {
         return setRadiusResult;
     }
+
+    public MutableLiveData<String> getRadiusLiveData() { return radiusLiveData; }
 
     public void setRadius(String radius) {
         SharedPreferences sharedPreferences = application.getSharedPreferences("setting", Context.MODE_PRIVATE);
@@ -33,5 +39,12 @@ public class SettingRepository {
         editor.commit();
         setRadiusResult.setValue(true);
 
+    }
+
+    public void getRadius() {
+        SharedPreferences sharedPreferences = application.getSharedPreferences("setting", Context.MODE_PRIVATE);
+
+        String radius = sharedPreferences.getString("radius" , "0.5");
+        getRadiusLiveData().setValue(radius);
     }
 }

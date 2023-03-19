@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.mirror.sns.R;
 import com.mirror.sns.databinding.ActivitySettingRadiusBinding;
@@ -27,11 +28,19 @@ public class SettingRadiusActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.fadein_left, R.anim.none);
         settingViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(SettingViewModel.class);
 
+        settingViewModel.getRadius();
+        settingViewModel.getRadiusLiveData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                settingRadiusBinding.radius.setText(s);
+            }
+        });
+
         settingViewModel.getSetRadiusResult().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
                 if (aBoolean) {
-
+                    Toast.makeText(SettingRadiusActivity.this, "설정 완료", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -62,6 +71,14 @@ public class SettingRadiusActivity extends AppCompatActivity {
                 if (radius < 10.1) {
                     settingRadiusBinding.radius.setText(String.valueOf(radius));
                 }
+            }
+        });
+
+        settingRadiusBinding.backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(R.anim.none, R.anim.fadeout_left);
             }
         });
     }

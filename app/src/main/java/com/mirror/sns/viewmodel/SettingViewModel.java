@@ -14,20 +14,31 @@ public class SettingViewModel extends AndroidViewModel {
 
     private SettingRepository repository;
 
-    private LiveData<Boolean> SetRadiusResult;
+    private LiveData<Boolean> setRadiusResult;
 
+    private LiveData<String> radiusLiveData;
 
     public SettingViewModel(@NonNull @NotNull Application application) {
         super(application);
 
         repository = new SettingRepository(application);
+
+        setRadiusResult = repository.getSetRadiusResult();
+        radiusLiveData = repository.getRadiusLiveData();
+
     }
 
     public LiveData<Boolean> getSetRadiusResult() {
         return repository.getSetRadiusResult();
     };
 
+    public LiveData<String> getRadiusLiveData() { return repository.getRadiusLiveData();}
+
     public void setRadius(String radius) {
         repository.setRadius(radius);
+    }
+
+    public void getRadius() {
+        repository.getRadius();
     }
 }
