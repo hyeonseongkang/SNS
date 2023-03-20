@@ -19,6 +19,7 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,6 +43,7 @@ import com.mirror.sns.view.SettingRadiusActivity;
 import com.mirror.sns.viewmodel.LocationViewModel;
 import com.mirror.sns.viewmodel.LoginViewModel;
 import com.mirror.sns.viewmodel.PostViewModel;
+import com.mirror.sns.viewmodel.SettingViewModel;
 import com.mirror.sns.viewmodel.UserManagementViewModel;
 
 import java.util.ArrayList;
@@ -60,6 +62,7 @@ public class HomeFragment extends Fragment {
     private PostViewModel postViewModel;
     private UserManagementViewModel userManagementViewModel;
     private LocationViewModel locationViewModel;
+    private SettingViewModel settingViewModel;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
@@ -77,6 +80,8 @@ public class HomeFragment extends Fragment {
     List<Post> currentPosts = new ArrayList<>();
 
     private UserLocation userLocation;
+
+    private String radius;
 
 
     public HomeFragment() {
@@ -117,15 +122,25 @@ public class HomeFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
 
+        settingViewModel = new ViewModelProvider(requireActivity()).get(SettingViewModel.class);
+        settingViewModel.getRadius();
+        settingViewModel.getRadiusLiveData().observe(getActivity(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                radius = s;
+                locationViewModel.getLocation(firebaseUser.getUid());
+            }
+        });
+
         locationViewModel = new ViewModelProvider(requireActivity()).get(LocationViewModel.class);
         locationViewModel.setLocation(firebaseUser.getUid());
-        locationViewModel.getLocation(firebaseUser.getUid());
+
 
         locationViewModel.getLocation().observe(getActivity(), new Observer<UserLocation>() {
             @Override
             public void onChanged(UserLocation userLocation) {
                 HomeFragment.this.userLocation = userLocation;
-                locationViewModel.getNearUsersUid(userLocation);
+                locationViewModel.getNearUsersUid(userLocation, radius);
             }
         });
 

@@ -85,7 +85,7 @@ public class LocationRepository {
         }
     }
 
-    public void getNearUsersUid(UserLocation userLocation) {
+    public void getNearUsersUid(UserLocation userLocation, String radius) {
         userLocationsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
@@ -104,7 +104,7 @@ public class LocationRepository {
                     float distance1 = location1.distanceTo(location2) / 1000; // km
 
                     // 2km 이내에 있는 유저 uid만 저장
-                    if (distance1 < 2) {
+                    if (distance1 < Double.parseDouble(radius)) {
                         usersUid.add(localUserLocation.getUid());
                     }
                 }
