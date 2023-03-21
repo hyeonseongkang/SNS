@@ -1,8 +1,12 @@
 package com.mirror.sns.view.fragment;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,6 +20,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
@@ -123,6 +129,11 @@ public class HomeFragment extends Fragment {
         firebaseUser = firebaseAuth.getCurrentUser();
 
         settingViewModel = new ViewModelProvider(requireActivity()).get(SettingViewModel.class);
+        locationViewModel = new ViewModelProvider(requireActivity()).get(LocationViewModel.class);
+        userManagementViewModel = new ViewModelProvider(requireActivity()).get(UserManagementViewModel.class);
+        loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
+        postViewModel = new ViewModelProvider(requireActivity()).get(PostViewModel.class);
+
         settingViewModel.getRadius();
         settingViewModel.getRadiusLiveData().observe(getActivity(), new Observer<String>() {
             @Override
@@ -132,8 +143,8 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        locationViewModel = new ViewModelProvider(requireActivity()).get(LocationViewModel.class);
-        locationViewModel.setLocation(firebaseUser.getUid());
+
+        locationViewModel.setLocation(firebaseUser.getUid(), getLocation());
 
 
         locationViewModel.getLocation().observe(getActivity(), new Observer<UserLocation>() {
@@ -152,9 +163,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        userManagementViewModel = new ViewModelProvider(requireActivity()).get(UserManagementViewModel.class);
-        loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
-        postViewModel = new ViewModelProvider(requireActivity()).get(PostViewModel.class);
+
 
         //loginViewModel.logout();
         userManagementViewModel.getUserInfo(firebaseUser.getUid());
@@ -288,6 +297,34 @@ public class HomeFragment extends Fragment {
             }
         });
 
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.P)
+    public UserLocation getLocation() {
+        LocationManager locationManager = null;
+        UserLocation userLocation = new UserLocation();
+
+        locationManager =  (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions((Activity) getActivity().getMainExecutor(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    0);
+        } else {
+            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+            if (location == null) {
+                location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            }
+//            String provider = location.getProvider();
+            double longitude = location.getLongitude();
+            double latitude = location.getLatitude();
+           // double altitude = location.getAltitude();
+            userLocation.setLongitude(longitude);
+            userLocation.setLatitude(latitude);
+
+        }
+
+        return userLocation;
     }
 
 

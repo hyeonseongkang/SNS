@@ -33,7 +33,7 @@ public class LocationViewModel extends AndroidViewModel {
     public void getLocation(String uid) { repository.getLocation(uid);}
 
     @RequiresApi(api = Build.VERSION_CODES.P)
-    public void setLocation(String uid) { repository.setLocation(uid);}
+    public void setLocation(String uid, UserLocation userLocation) { repository.setLocation(uid, userLocation);}
 
     public void getNearUsersUid(UserLocation userLocation, String radius) { repository.getNearUsersUid(userLocation, radius); }
 }

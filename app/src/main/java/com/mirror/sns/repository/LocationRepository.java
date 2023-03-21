@@ -1,5 +1,6 @@
 package com.mirror.sns.repository;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
@@ -45,9 +46,13 @@ public class LocationRepository {
         nearUsersUid = new MutableLiveData<>();
     }
 
-    public MutableLiveData<UserLocation> getLocation() { return location; }
+    public MutableLiveData<UserLocation> getLocation() {
+        return location;
+    }
 
-    public MutableLiveData<List<String>> getNearUsersUid() {return nearUsersUid; }
+    public MutableLiveData<List<String>> getNearUsersUid() {
+        return nearUsersUid;
+    }
 
     public void getLocation(String uid) {
         userLocationsRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -65,24 +70,33 @@ public class LocationRepository {
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.P)
-    public void setLocation(String uid) {
-        LocationManager locationManager = null;
-        locationManager =  (LocationManager) application.getSystemService(Context.LOCATION_SERVICE);
-        application.getSystemService(Context.LOCATION_SERVICE);
-        if (ContextCompat.checkSelfPermission(application.getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions((Activity) application.getMainExecutor(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    0);
-        } else {
-            android.location.Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            String provider = location.getProvider();
-            double longitude = location.getLongitude();
-            double latitude = location.getLatitude();
-            double altitude = location.getAltitude();
 
-            userLocationsRef.child(uid).setValue(new UserLocation(uid, latitude, longitude));
+    public void setLocation(String uid, UserLocation location) {
+            userLocationsRef.child(uid).setValue(new UserLocation(uid, location.getLatitude(), location.getLongitude()));
+//        LocationManager locationManager = null;
+//        locationManager = (LocationManager) application.getSystemService(Context.LOCATION_SERVICE);
+//        // application.getSystemService(Context.LOCATION_SERVICE);
+//        if (ActivityCompat.checkSelfPermission(application.getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(application.getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+//            return;
+//
+//
+//        Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+//        System.out.println("tlqkf" + location);
+//        if (location == null) {
+//            location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//            System.out.println("tlqkf2 " + location);
+//        }
+//
+//        if (location != null) {
+//            //   String provider = location.getProvider();
+//            double longitude = location.getLongitude();
+//            double latitude = location.getLatitude();
+//            // double altitude = location.getAltitude();
+//
+//            userLocationsRef.child(uid).setValue(new UserLocation(uid, latitude, longitude));
+//        }
 
-        }
+
     }
 
     public void getNearUsersUid(UserLocation userLocation, String radius) {
