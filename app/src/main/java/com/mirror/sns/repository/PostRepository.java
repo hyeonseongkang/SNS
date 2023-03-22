@@ -456,13 +456,15 @@ public class PostRepository {
     }
 
     public void findTag(String inputTagText) {
+        Log.d(TAG, inputTagText);
         postsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 ArrayList<Post> tagPosts = new ArrayList<>();
                 for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                    Log.d(TAG, snapshot1.getValue().toString());
                     for (DataSnapshot snapshot2 : snapshot1.getChildren()) {
-                       // Log.d("post snapshot2 data ", snapshot2.getValue().toString());
+                        Log.d("post snapshot2 data ", snapshot2.getValue().toString());
                         String content = snapshot2.child("content").getValue(String.class);
                         String key = snapshot2.child("key").getValue(String.class);
                         String postPhotoUri = snapshot2.child("postPhotoUri").getValue(String.class);

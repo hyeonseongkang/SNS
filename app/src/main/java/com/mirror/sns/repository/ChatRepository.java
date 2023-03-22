@@ -46,6 +46,9 @@ public class ChatRepository {
     private MutableLiveData<Boolean> resultSetChatRoom;
     private MutableLiveData<Chat> resultSetChat;
 
+    private MutableLiveData<Boolean> visited;
+    private MutableLiveData<Boolean> leaveChatRoom;
+
     public ChatRepository(Application application) {
         this.application = application;
 
@@ -61,6 +64,9 @@ public class ChatRepository {
 
         resultSetChatRoom = new MutableLiveData<>();
         resultSetChat = new MutableLiveData<>();
+
+        visited = new MutableLiveData<>();
+        leaveChatRoom = new MutableLiveData<>();
     }
 
     public MutableLiveData<List<ChatRoom>> getChatRoomListLiveData() {
@@ -79,8 +85,16 @@ public class ChatRepository {
 
     public MutableLiveData<Chat> getResultSetChat() { return resultSetChat; }
 
+    public MutableLiveData<Boolean> getVisited() {
+        return visited;
+    }
+
+    public MutableLiveData<Boolean> getLeaveChatRoom() {
+        return leaveChatRoom;
+    }
+
     public void getChatRoomList(String uid) {
-        chatRoomRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+        chatRoomRef.child(uid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 chatRoomList.clear();
@@ -180,8 +194,8 @@ public class ChatRepository {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void sendChat(String chatRoomKey, Chat chat) {
 
-        if (chat.getChat().isEmpty())
-            return;
+//        if (chat.getChat().isEmpty())
+//            return;
 
         LocalDate now = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
@@ -201,22 +215,42 @@ public class ChatRepository {
     }
 
     public void setChatMetaData(String chatRoomKey, Chat chat, String requestUid, String responseUid) {
-        chatRoomRef.child(requestUid)
-                .child(chatRoomKey)
-                .child("chatMetaData")
-                .setValue(new ChatMetaData(chat.getNickName(), chat.getChat(), chat.getTime(), "")).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull @NotNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    chatRoomRef.child(responseUid)
-                            .child(chatRoomKey)
-                            .child("chatMetaData")
-                            .setValue(new ChatMetaData(chat.getNickName(), chat.getChat(), chat.getTime(), ""));
-                }
-            }
-        });
-        //  (lastUserName, lastMessage, lastMessageDate, unReadChatCount)
+//        chatRoomRef.child(requestUid)
+//                .child(chatRoomKey)
+//                .child("chatMetaData")
+//                .setValue(new ChatMetaData(chat.getNickName(), chat.getChat(), chat.getTime(), "")).addOnCompleteListener(new OnCompleteListener<Void>() {
+//            @Override
+//            public void onComplete(@NonNull @NotNull Task<Void> task) {
+//                if (task.isSuccessful()) {
+//                    chatRoomRef.child(responseUid)
+//                            .child(chatRoomKey)
+//                            .child("chatMetaData")
+//                            .setValue(new ChatMetaData(chat.getNickName(), chat.getChat(), chat.getTime(), ""));
+//                }
+//            }
+//        });
     }
 
+    // 채팅방 나갔는지 확인
+    public void getLeaveChatRoom(String userUid, String myUid, String itemKey) {
+        chatRoomRef.child(userUid).child(myUid).child(itemKey).child("leaveChatRoom").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                boolean value = snapshot.getValue(Boolean.class);
+
+                if (value) {
+                    leaveChatRoom.setValue(true);
+                } else {
+                    leaveChatRoom.setValue(false);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+    }
 
 }

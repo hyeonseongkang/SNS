@@ -1,49 +1,66 @@
 package com.mirror.sns.model;
 
+import android.util.Log;
+
 public class Chat {
-    private String userUid;
-    private String nickName;
-    private String chat;
+    private String myNickName;
+    private String sender;
+    private String receiver;
+    private String message;
+    private String date;
     private String time;
+    private boolean checked;
 
     public Chat() {}
 
-    public Chat(String userUid, String nickName, String chat, String time) {
-        this.userUid = userUid;
-        this.nickName = nickName;
-        this.chat = chat;
+    public Chat(String myNickName, String sender, String receiver, String message, String date, String time, boolean checked) {
+        this.myNickName = myNickName;
+        this.sender = sender;
+        this.receiver = receiver;
+        this.message = message;
+        this.date = date;
         this.time = time;
+        this.checked = checked;
     }
 
-    public String getUserUid() {
-        return userUid;
+
+    public String getMyNickName() { return myNickName; }
+
+    public String getSender() {
+        return sender;
     }
 
-    public void setUserUid(String userUid) {
-        this.userUid = userUid;
+    public String getReceiver() {
+        return receiver;
     }
 
-    public String getNickName() {
-        return nickName;
+    public String getMessage() {
+        return message;
     }
 
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
+    public String getDate() {
+        return date;
     }
 
-    public String getChat() {
-        return chat;
+    public void setDate(String date) {
+        this.date = date;
     }
 
-    public void setChat(String chat) {
-        this.chat = chat;
-    }
-
-    public String getTime() {
-        return time;
-    }
+    public String getTime() { return time; }
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public boolean getChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
+
+    public void printChatData(String TAG) {
+        Log.d(TAG, getSender() + " " + getReceiver() + " " + getMessage() + " " + getDate() + " " + getTime() + " " + getChecked());
     }
 }

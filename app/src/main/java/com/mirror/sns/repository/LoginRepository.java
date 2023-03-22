@@ -121,6 +121,7 @@ public class LoginRepository {
                             Log.d(TAG, "success email signIn");
                         } else {
                             // 가입 실패
+                            Log.d(TAG, String.valueOf(task.getException()));
                             Log.d(TAG, "fail email signIn");
                         }
                     }

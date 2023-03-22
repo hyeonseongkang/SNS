@@ -292,6 +292,7 @@ public class HomeFragment extends Fragment {
         homeBinding.radius.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+             //   loginViewModel.logout();
                 Intent intent = new Intent(getActivity(), SettingRadiusActivity.class);
                 startActivity(intent);
             }
@@ -316,11 +317,14 @@ public class HomeFragment extends Fragment {
                 location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             }
 //            String provider = location.getProvider();
-            double longitude = location.getLongitude();
-            double latitude = location.getLatitude();
-           // double altitude = location.getAltitude();
-            userLocation.setLongitude(longitude);
-            userLocation.setLatitude(latitude);
+            if (location != null) {
+                double longitude = location.getLongitude();
+                double latitude = location.getLatitude();
+                // double altitude = location.getAltitude();
+                userLocation.setLongitude(longitude);
+                userLocation.setLatitude(latitude);
+            }
+
 
         }
 

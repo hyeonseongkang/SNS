@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.mirror.sns.R;
@@ -37,6 +38,11 @@ public class ChatActivity extends AppCompatActivity {
 
     private String userUid; // 상대방 UID
     private String chatRoomKey;
+
+    private boolean visited;
+
+    private boolean leaveChatRoom; // 상대방이 채팅방을 나갔는지 확인, true -> 나감, false -> 안나감
+
 
     private User currUser; // me
     @Override
@@ -67,7 +73,18 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-
+        // 상대방이 채팅방을 나간경우
+        chatViewModel.getLeaveChatRoom(userUid, FirebaseAuth.getInstance().getUid(), chatRoomKey);
+        chatViewModel.getLeaveChatRoom().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean) {
+                    leaveChatRoom = true;
+                } else {
+                    leaveChatRoom = false;
+                }
+            }
+        });
 
         chatViewModel.getResultSetChat().observe(this, new Observer<Chat>() {
             @Override
@@ -83,9 +100,7 @@ public class ChatActivity extends AppCompatActivity {
         chatViewModel.getChatListLiveData().observe(this, new Observer<List<Chat>>() {
             @Override
             public void onChanged(List<Chat> chats) {
-                for (Chat chat: chats) {
-                    Log.d(TAG, chat.getChat());
-                }
+
 
                 chatAdapter.setChats(chats, FirebaseAuth.getInstance().getUid());
             }
@@ -101,7 +116,21 @@ public class ChatActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View view) {
-                chatViewModel.sendChat(chatRoomKey, new Chat(FirebaseAuth.getInstance().getUid(), currUser.getNickName(), chatBinding.message.getText().toString(), ""));
+
+                if (visited) {
+                    Log.d(TAG, "상대가 채팅방에 있습니다.");
+                } else {
+                    Log.d(TAG, "상대가 채팅방에 없습니다.");
+                }
+
+                // 상대방이 채팅방을 나갔을 경우
+                if (leaveChatRoom) {
+                    Toast.makeText(ChatActivity.this, "상대방이 채팅방을 나갔습니다.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                //chatViewModel.sendChat();
+               // chatViewModel.sendChat(chatRoomKey, new Chat(FirebaseAuth.getInstance().getUid(), currUser.getNickName(), chatBinding.message.getText().toString(), ""));
             }
         });
 
