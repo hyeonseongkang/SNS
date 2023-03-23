@@ -3,17 +3,23 @@ package com.mirror.sns.model;
 public class ChatRoom {
 
     private String key;
-    private String user1;
-    private String user2;
-    private ChatMetaData chatMetaData;
+    private User user;
+    private LastMessage lastMessage;
+    private boolean visited;
+    private int unReadChatCount;
+    private boolean leaveChatRoom;
+    private boolean firstUp;
 
-    public ChatRoom(){}
+    public ChatRoom() {}
 
-    public ChatRoom(String key, String user1, String user2, ChatMetaData chatMetaData) {
+    public ChatRoom(String key,User user, LastMessage lastMessage, boolean visited, int unReadChatCount, boolean leaveChatRoom, boolean firstUp) {
         this.key = key;
-        this.user1 = user1;
-        this.user2 = user2;
-        this.chatMetaData = chatMetaData;
+        this.user = user;
+        this.lastMessage = lastMessage;
+        this.visited = visited;
+        this.unReadChatCount = unReadChatCount;
+        this.leaveChatRoom = leaveChatRoom;
+        this.firstUp = firstUp;
     }
 
     public String getKey() {
@@ -24,27 +30,43 @@ public class ChatRoom {
         this.key = key;
     }
 
-    public String getUser1() {
-        return user1;
+    public User getUser() { return user; }
+
+    public void setUser(User user) { this.user = user;}
+
+    public LastMessage getLastMessage() {
+        return lastMessage;
     }
 
-    public void setUser1(String user1) {
-        this.user1 = user1;
+    public void setLastMessage(LastMessage lastMessage) {
+        this.lastMessage = lastMessage;
     }
 
-    public String getUser2() {
-        return user2;
+    public void setVisited(boolean visited) {
+        this.visited = visited;
     }
 
-    public void setUser2(String user2) {
-        this.user2 = user2;
+    public boolean getVisited() {
+        return visited;
     }
 
-    public ChatMetaData getChatMetaData() {
-        return chatMetaData;
+    public void setUnReadChatCount(int count) {
+        this.unReadChatCount = count;
     }
 
-    public void setChatMetaData(ChatMetaData chatMetaData) {
-        this.chatMetaData = chatMetaData;
+    public int getUnReadChatCount() {
+        return unReadChatCount;
+    }
+
+    public boolean isLeaveChatRoom() {
+        return leaveChatRoom;
+    }
+
+    public boolean isFirstUp() {
+        return firstUp;
+    }
+
+    public void setFirstUp(boolean firstUp) {
+        this.firstUp = firstUp;
     }
 }
