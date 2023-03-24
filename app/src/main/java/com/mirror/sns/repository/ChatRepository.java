@@ -25,6 +25,8 @@ import org.jetbrains.annotations.NotNull;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class ChatRepository {
@@ -49,6 +51,8 @@ public class ChatRepository {
     private MutableLiveData<Boolean> visited;
     private MutableLiveData<Boolean> leaveChatRoom;
 
+    private MutableLiveData<HashMap<List<String>, Integer>> unReadChatCount;
+
     public ChatRepository(Application application) {
         this.application = application;
 
@@ -67,6 +71,8 @@ public class ChatRepository {
 
         visited = new MutableLiveData<>();
         leaveChatRoom = new MutableLiveData<>();
+
+        unReadChatCount = new MutableLiveData<>();
     }
 
     public MutableLiveData<List<ChatRoom>> getChatRoomListLiveData() {
@@ -92,6 +98,8 @@ public class ChatRepository {
     public MutableLiveData<Boolean> getLeaveChatRoom() {
         return leaveChatRoom;
     }
+
+    public MutableLiveData<HashMap<List<String>, Integer>> getUnReadChatCount() { return unReadChatCount; }
 
     public void getChatRoomList(String uid) {
         chatRoomRef.child(uid).addValueEventListener(new ValueEventListener() {
@@ -244,6 +252,79 @@ public class ChatRepository {
                     leaveChatRoom.setValue(false);
                 }
 
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    // 읽지 않은 채팅 수
+    public void getUnReadChatCount(String myUid) {
+        HashMap<List<String>, Integer> hashMap = new LinkedHashMap<>();
+        // chats / myUid / .. 값들에 변경사항이 일어나면 호출
+        /*
+        chats
+                myUid
+                        userUid(1)
+                                    itemKey(1)
+                                               pushKey(1)
+                                                          Chat(class)
+                                               pushKey(2)
+                                                          Chat(class)
+                                               pushKey(3)
+                                                          Chat(class)
+
+                                    itemKey(2)
+                                               pushKey(1)
+                                                          Chat(class)
+                                    ...
+         */
+        chatRef.child(myUid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+
+                // userUids
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+
+                    // itemKeys
+                    for (DataSnapshot snapshot2 : snapshot1.getChildren()) {
+                        int count = 0;
+
+
+                        // keyList에는 나와 채팅하는 상대의 uid(userUid)와 어떤 item으로 부터 채팅이 시작됐는지 확인하기 위한 itemKey가 저장됨
+                        List<String> keyList = new ArrayList<>();
+                        keyList.add(snapshot1.getKey());
+                        boolean first = true;
+
+                        // pushKeys
+                        for (DataSnapshot snapshot3 : snapshot2.getChildren()) {
+                            Chat chat = snapshot3.getValue(Chat.class);
+                            if (first) {
+                                // itemKey
+                                keyList.add(snapshot2.getKey());
+                                first = false;
+                            }
+
+                            // 내가 보낸 메시지가 아니라면
+                            if (!(chat.getSender().equals(myUid))) {
+                                // 확인을 하지 않았다면 count 증가
+                                if (!(chat.getChecked())) {
+                                    count++;
+                                }
+                            }
+                            /*
+                            keyList -> 상대 uid, itemKey
+                            count -> 읽지 않은 채팅 수
+                             */
+                            hashMap.put(keyList, count);
+                        }
+
+                    }
+                }
+                unReadChatCount.setValue(hashMap);
             }
 
             @Override
