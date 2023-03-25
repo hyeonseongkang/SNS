@@ -38,6 +38,9 @@ public class ChatRepository {
     private DatabaseReference chatRoomRef;
     private DatabaseReference chatRef;
 
+    private MutableLiveData<List<HashMap<List<String>, List<Chat>>>> myChats;
+    private List<HashMap<List<String>, List<Chat>>> myChatList;
+
     private MutableLiveData<List<ChatRoom>> chatRoomListLiveData;
     private List<ChatRoom> chatRoomList;
 
@@ -59,6 +62,9 @@ public class ChatRepository {
         chatRoomRef = FirebaseDatabase.getInstance().getReference("chatRoom");
         chatRef = FirebaseDatabase.getInstance().getReference("chat");
 
+        myChats = new MutableLiveData<>();
+        myChatList = new ArrayList<>();
+
         chatRoomListLiveData = new MutableLiveData<>();
         chatRoomList = new ArrayList<>();
 
@@ -73,6 +79,10 @@ public class ChatRepository {
         leaveChatRoom = new MutableLiveData<>();
 
         unReadChatCount = new MutableLiveData<>();
+    }
+
+    public MutableLiveData<List<HashMap<List<String>, List<Chat>>>> getMyChats() {
+        return myChats;
     }
 
     public MutableLiveData<List<ChatRoom>> getChatRoomListLiveData() {
@@ -101,6 +111,40 @@ public class ChatRepository {
 
     public MutableLiveData<HashMap<List<String>, Integer>> getUnReadChatCount() { return unReadChatCount; }
 
+    public void getMyChats(String myUid) {
+        chatRef.child(myUid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                myChatList.clear();
+                // userUids
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                    // itemKeys
+                    for (DataSnapshot snapshot2 : snapshot1.getChildren()) {
+                        HashMap<List<String>, List<Chat>> hashMap = new HashMap<>();
+                        List<String> keys = new ArrayList<>();
+                        keys.add(snapshot1.getKey()); // userUid
+                        keys.add(snapshot2.getKey()); // itemKey;
+                        List<Chat> chats = new ArrayList<>();
+                        // chats
+                        for (DataSnapshot snapshot3 : snapshot2.getChildren()) {
+                            Chat chat = snapshot3.getValue(Chat.class);
+                            chats.add(chat);
+                        }
+                        hashMap.put(keys, chats);
+                        myChatList.add(hashMap);
+                    }
+                }
+                myChats.setValue(myChatList);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+
+    }
     public void getChatRoomList(String uid) {
         chatRoomRef.child(uid).addValueEventListener(new ValueEventListener() {
             @Override
