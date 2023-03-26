@@ -111,6 +111,29 @@ public class ChatRepository {
 
     public MutableLiveData<HashMap<List<String>, Integer>> getUnReadChatCount() { return unReadChatCount; }
 
+    // 채팅방에 들어갔을 때 true
+    public void setVisited(String myUid, String userUid, String itemKey, boolean visit) {
+        chatRoomRef.child(myUid).child(userUid).child(itemKey).child("visited").setValue(visit);
+    }
+
+    // 상대방이 채팅방에 들어와 있는지 확인
+    public void getVisited(String userUid, String myUid, String itemKey) {
+        chatRoomRef.child(userUid).child(myUid).child(itemKey).child("visited").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                if (snapshot.getValue(Boolean.class) != null) {
+                    boolean visit = snapshot.getValue(Boolean.class);
+                    visited.setValue(visit);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+    }
+
     public void getMyChats(String myUid) {
         chatRef.child(myUid).addValueEventListener(new ValueEventListener() {
             @Override
