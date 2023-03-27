@@ -41,6 +41,9 @@ public class ChatRepository {
     private MutableLiveData<List<HashMap<List<String>, List<Chat>>>> myChats;
     private List<HashMap<List<String>, List<Chat>>> myChatList;
 
+    private MutableLiveData<List<Chat>> chats;
+    private List<Chat> chatList;
+
     private MutableLiveData<List<ChatRoom>> chatRoomListLiveData;
     private List<ChatRoom> chatRoomList;
 
@@ -65,6 +68,9 @@ public class ChatRepository {
         myChats = new MutableLiveData<>();
         myChatList = new ArrayList<>();
 
+        chats = new MutableLiveData<>();
+        chatList = new ArrayList<>();
+
         chatRoomListLiveData = new MutableLiveData<>();
         chatRoomList = new ArrayList<>();
 
@@ -84,6 +90,8 @@ public class ChatRepository {
     public MutableLiveData<List<HashMap<List<String>, List<Chat>>>> getMyChats() {
         return myChats;
     }
+
+    public MutableLiveData<List<Chat>> getChats() { return chats; }
 
     public MutableLiveData<List<ChatRoom>> getChatRoomListLiveData() {
         return chatRoomListLiveData;
@@ -401,4 +409,22 @@ public class ChatRepository {
         });
     }
 
+    public void getMyChats(String myUid, String userUid) {
+        chatRef.child(myUid).child(userUid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                chatList.clear();
+                for (DataSnapshot snapshot1: snapshot.getChildren()) {
+                    Chat chat = snapshot1.getValue(Chat.class);
+                    chatList.add(chat);
+                }
+                chats.setValue(chatList);
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+    }
 }
